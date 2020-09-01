@@ -2,7 +2,8 @@ import React from "react";
 import "./Header.scss";
 
 import { Avatar } from "@material-ui/core";
-import CommentIcon from '@material-ui/icons/Comment';
+import HistoryIcon from '@material-ui/icons/History';
+
 import SearchIcon from '@material-ui/icons/Search';
 
 import ToggleOffIcon from '@material-ui/icons/ToggleOff';
@@ -20,7 +21,7 @@ function Header() {
           src=""
         />
 
-        <CommentIcon />
+        <HistoryIcon />
       </div>
 
       <div className="header__search">

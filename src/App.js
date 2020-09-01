@@ -1,6 +1,7 @@
 import React from 'react';
 import "./App.css";
-import Header from "./Header";
+import Header from "./comps/Header/Header";
+import Sidebar from "./comps/Sidebar/Sidebar";
 
 function App() {
   return (
@@ -8,8 +9,11 @@ function App() {
       <h1>UtopiChat</h1>
 
       <Header />
-      {/* Sidebar */}
-      {/* React-Router -> Chat screen */}
+      <div className="app__body">
+        <Sidebar />
+
+        {/* React-Router -> Chat screen */}
+      </div>
     </div>
   );
 }
