@@ -9,23 +9,21 @@ import Chat from './comps/Chat/Chat';
 function App() {
   return (
     <div className="App">
-      <h1>UtopiChat</h1>
+      <Router>
+        <Header />
+        <div className="app__body">
+          <Sidebar />
 
-      <Header />
-      <div className="app__body">
-        <Sidebar />
-
-        {/* React-Router -> Chat screen */}
-        <Switch>
-          <Route path="/channel/:channelId">
-            <h1>Chat Screen</h1>
-            <Chat/>
-          </Route>
-          <Route path="/">
-            <h1>Welcome</h1>
-          </Route>
-        </Switch>
-      </div>
+          <Switch>
+            <Route path="/channel/:channelId">
+              <Chat/>
+            </Route>
+            <Route path="/">
+              <h1>Welcome</h1>
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 }
