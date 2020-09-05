@@ -4,20 +4,21 @@ import { useParams } from "react-router-dom";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import db from "../../firebase";
+import Message from "../Message/Message";
 
 function Chat() {
   const { channelId } = useParams();
   const [channelDetails, setChannelDetails] = useState(null);
-  const [channelMessages, setChannelMessages] = useState(null);
+  const [channelMessages, setChannelMessages] = useState([]);
 
-  // returns all details from current channel
+  // fetch all details from current channel
   useEffect(() => {
     if (channelId) {
       db.collection('channels')
         .doc(channelId)
         .onSnapshot((snapshot) => setChannelDetails(snapshot.data()))
     }
-  // returns all messages from current channel
+  // fetch all messages from current channel
     db.collection('channels').doc(channelId)
       .collection('messages')
       .orderBy('timestamp', 'asc')
@@ -42,6 +43,17 @@ function Chat() {
             <InfoOutlinedIcon /> Details
           </p>
         </div>
+      </div>
+
+      <div className="chat__messages">
+        {channelMessages.map(({ message, timestamp, user, userimage }) => (
+          <Message
+            message={message}
+            timestamp={timestamp}
+            user={user}
+            userImage={userimage}
+          />
+        ))}
       </div>
     </div>
   )
