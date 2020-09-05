@@ -1,15 +1,19 @@
 import React from "react";
 import "./Login.scss";
 import { Button } from "@material-ui/core";
-import { auth, provider } from "firebase";
+import { auth, provider } from "../../firebase";
 
-function Login() {
+
+function Login({setCookie}) {
 
   const signIn = (e) => {
     auth
       .signInWithPopup(provider)
       .then(result => {
         console.log(result);
+        const token = result.credential.accessToken;
+        const user = result.user;
+        setCookie("user", token);
       })
       .catch(error => {
         alert(error.message)

@@ -5,16 +5,20 @@ import Sidebar from "./comps/Sidebar/Sidebar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Chat from './comps/Chat/Chat';
 import Login from './comps/Login/Login';
+import {useCookies} from 'react-cookie';
 
 
 function App() {
   const [user, setUser] = useState(null);
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
   return (
     <div className="App">
       <Router>
-        {!user ? (
-          <Login />
+        {!cookies.user ? (
+          <Login 
+            setCookie={setCookie}
+          />
         ) : (
           <>
             <Header />
