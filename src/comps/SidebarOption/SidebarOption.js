@@ -1,5 +1,6 @@
 import React from "react";
 import "./SidebarOption.scss";
+
 import { useHistory } from "react-router-dom";
 import db from "../../firebase";
 

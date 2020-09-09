@@ -12,10 +12,13 @@ import LiveTvIcon from '@material-ui/icons/LiveTv';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
+
 import db from "../../firebase"
+import { useStateValue } from "../../StateProvider";
 
 function Sidebar() {
   const [channels, setChannels] = useState([]);
+  const [{ user }] = useStateValue();
 
   useEffect(() => {
     // snapshot of channels collection
@@ -36,7 +39,7 @@ function Sidebar() {
           <h2>UtopiChat</h2>
           <h3>
             <FiberManualRecordIcon />
-            Eric Ho
+            {user?.displayName}
           </h3>
         </div>
         <SidebarOption Icon={LanguageIcon} />
@@ -50,7 +53,7 @@ function Sidebar() {
       <hr />
       <SidebarOption Icon={AddIcon} addChannelOption={true} title="Add Channel" />
 
-      {/* Connet to db and list all the channels */}
+      {/* Connect to db and list all the channels */}
       {channels.map((channel) => {
         return <SidebarOption title={channel.name} id={channel.id} />
       })}

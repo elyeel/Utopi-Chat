@@ -10,15 +10,17 @@ import ToggleOffIcon from '@material-ui/icons/ToggleOff';
 // import ToggleOnIcon from '@material-ui/icons/ToggleOn';
 
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useStateValue } from "../../StateProvider";
 
 function Header() {
+  const [{ user }] = useStateValue();
   return (
     <div className="header">
       <div className="header__left">
         <Avatar
           className="header__avatar"
-          alt="Eric Ho"
-          src=""
+          alt={user?.displayName}
+          src={user?.photoURL}
         />
 
         <HistoryIcon />
