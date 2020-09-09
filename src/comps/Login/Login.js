@@ -10,10 +10,11 @@ function Login({setCookie}) {
     auth
       .signInWithPopup(provider)
       .then(result => {
-        console.log(result);
-        const token = result.credential.accessToken;
-        const user = result.user;
-        setCookie("user", token);
+        // console.log(result);
+        // const token = result.credential.accessToken;
+        // const user = result.user;
+        // console.log(user,token);
+        setCookie('user', result.additionalUserInfo.profile);
       })
       .catch(error => {
         alert(error.message)

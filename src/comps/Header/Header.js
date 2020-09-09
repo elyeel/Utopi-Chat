@@ -10,15 +10,29 @@ import ToggleOffIcon from '@material-ui/icons/ToggleOff';
 // import ToggleOnIcon from '@material-ui/icons/ToggleOn';
 
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {auth} from '../../firebase';
 
-function Header() {
+function Header({setCookie,removeCookie,cookies}) {
+  const logOut = function (e) {
+    auth.signOut()
+    .then(() => {
+      removeCookie("user")
+      console.log("logged out!");
+    })
+    .catch((error) => {
+      alert(error.message)
+    })
+  }
+
+  console.log(cookies);
+
   return (
     <div className="header">
       <div className="header__left">
         <Avatar
           className="header__avatar"
-          alt="Eric Ho"
-          src=""
+          alt={cookies.user.name ? cookies.user.name : "Eric Ho"}
+          src={cookies.user.picture}
         />
 
         <HistoryIcon />
@@ -35,7 +49,9 @@ function Header() {
         <ToggleOffIcon className="header__right--toggle"/>
 
         {/* log out */}
-        <ExitToAppIcon />
+        <ExitToAppIcon 
+          onClick={logOut}
+        />
       </div>
     </div>
   )

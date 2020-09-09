@@ -14,7 +14,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import db from "../../firebase"
 
-function Sidebar() {
+function Sidebar({cookies}) {
   const [channels, setChannels] = useState([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function Sidebar() {
           <h2>UtopiChat</h2>
           <h3>
             <FiberManualRecordIcon />
-            Eric Ho
+            {cookies.user.name}
           </h3>
         </div>
         <SidebarOption Icon={LanguageIcon} />

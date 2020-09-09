@@ -21,9 +21,17 @@ function App() {
           />
         ) : (
           <>
-            <Header />
+            <Header
+              cookies={cookies}
+              setCookie={setCookie}
+              removeCookie={removeCookie}
+              user={user}
+              setUser={setUser}
+            />
             <div className="app__body">
-              <Sidebar />
+              <Sidebar 
+                cookies={cookies}
+              />
               <Switch>
                 <Route path="/channel/:channelId">
                   <Chat/>
