@@ -2,17 +2,31 @@ import React from "react";
 import "./Header.scss";
 
 import { Avatar } from "@material-ui/core";
-import HistoryIcon from '@material-ui/icons/History';
+import HistoryIcon from "@material-ui/icons/History";
 
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from "@material-ui/icons/Search";
 
-import ToggleOffIcon from '@material-ui/icons/ToggleOff';
+import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 // import ToggleOnIcon from '@material-ui/icons/ToggleOn';
 
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { useStateValue } from "../../StateProvider";
+import { auth } from "../../firebase";
+import { actionTypes } from "../../reducer";
 
 function Header() {
+  const [state, dispatch] = useStateValue();
+
+  const logOut = (event) => {
+    auth.signOut().then(() => {
+      dispatch({
+        type: actionTypes.LOG_OUT,
+        user: ""
+      })
+      console.log("User logged out!");
+    });
+  };
+
   const [{ user }] = useStateValue();
   return (
     <div className="header">
@@ -34,13 +48,13 @@ function Header() {
 
       <div className="header__right">
         {/* night-mode icon */}
-        <ToggleOffIcon className="header__right--toggle"/>
+        <ToggleOffIcon className="header__right--toggle" />
 
         {/* log out */}
-        <ExitToAppIcon />
+        <ExitToAppIcon onClick={logOut} />
       </div>
     </div>
-  )
+  );
 }
 
 export default Header;
