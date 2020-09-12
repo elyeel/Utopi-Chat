@@ -3,7 +3,7 @@ import useTranslator from './hooks/useTranslator';
 
 function App() {
   const { translate } = useTranslator();
-  ['blue grapes', '如何如何好'].forEach(message=>translate(message, 'de'));
+  ['blue grapes', '如何如何好', 'blaue Trauben'].forEach(message=>translate(message, 'en'));
   
   return (
     <div className="App">
