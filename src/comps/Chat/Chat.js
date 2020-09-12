@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./Chat.scss";
+
 import { useParams } from "react-router-dom";
+
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import db from "../../firebase";
 import Message from "../Message/Message";
+import ChatForm from "../ChatForm/ChatForm"
 
 function Chat() {
   const { channelId } = useParams();
+
   const [channelDetails, setChannelDetails] = useState(null);
   const [channelMessages, setChannelMessages] = useState([]);
 
@@ -27,7 +31,6 @@ function Chat() {
     );
   }, [channelId])
 
-  console.log('messages: ', channelMessages);
   return (
     <div className="chat">
       <div className="chat__header">
@@ -54,6 +57,13 @@ function Chat() {
             userImage={userimage}
           />
         ))}
+      </div>
+
+      <div className='chat__form'>
+        <ChatForm
+          db={db}
+          channelId={channelId}
+        />
       </div>
     </div>
   )
