@@ -9,7 +9,7 @@ import db from "../../firebase";
 import Message from "../Message/Message";
 import ChatForm from "../ChatForm/ChatForm"
 
-function Chat() {
+function Chat({onlineUsers}) {
   const { channelId } = useParams();
 
   const [channelDetails, setChannelDetails] = useState(null);
@@ -39,6 +39,10 @@ function Chat() {
             <strong>#{channelDetails?.name}</strong>
             <StarBorderOutlinedIcon />
           </h4>
+        </div>
+
+        <div>
+          <h5>{onlineUsers.length} user(/s) online</h5>
         </div>
 
         <div className="chat__headerRight">

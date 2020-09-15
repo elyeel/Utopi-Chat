@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "./App.css";
 import Header from "./comps/Header/Header";
 import Sidebar from "./comps/Sidebar/Sidebar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Chat from './comps/Chat/Chat';
-import Login from './comps/Login/Login';
-import {useCookies} from 'react-cookie';
-
+import Chat from "./comps/Chat/Chat";
+import Login from "./comps/Login/Login";
+import { useCookies } from "react-cookie";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   return (
     <div className="App">
       <Router>
         {!cookies.user ? (
-          <Login 
-            setCookie={setCookie}
-          />
+          <Login setCookie={setCookie} />
         ) : (
           <>
             <Header
@@ -29,12 +27,14 @@ function App() {
               setUser={setUser}
             />
             <div className="app__body">
-              <Sidebar 
+              <Sidebar
                 cookies={cookies}
+                setOnlineUsers={setOnlineUsers}
+                onlineUsers={onlineUsers}
               />
               <Switch>
                 <Route path="/channel/:channelId">
-                  <Chat/>
+                  <Chat onlineUsers={onlineUsers} />
                 </Route>
                 <Route path="/">
                   <h1>Welcome</h1>

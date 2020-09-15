@@ -1,25 +1,36 @@
 import React from "react";
 import "./Login.scss";
-import { Button } from "@material-ui/core";
+import { Button, responsiveFontSizes } from "@material-ui/core";
 import { auth, provider } from "../../firebase";
+import db from "../../firebase";
 
-
-function Login({setCookie}) {
-
+function Login({ setCookie }) {
   const signIn = (e) => {
     auth
       .signInWithPopup(provider)
-      .then(result => {
-        // console.log(result);
+      .then((result) => {
+        const res = { ...result };
+        console.log(res);
         // const token = result.credential.accessToken;
         // const user = result.user;
         // console.log(user,token);
-        setCookie('user', result.additionalUserInfo.profile);
+        setCookie("user", result.additionalUserInfo.profile);
+        db.collection("users")
+          .doc(result.additionalUserInfo.profile.id)
+          .set({
+            name: result.additionalUserInfo.profile.name,
+            locale: result.additionalUserInfo.profile.locale,
+            id: result.additionalUserInfo.profile.id,
+            picture: result.additionalUserInfo.profile.picture,
+            channelId: "none",
+          })
+          .then((docRef) => console.log("User added with ID", docRef.id))
+          .catch((error) => console.error("Error adding User", error));
       })
-      .catch(error => {
-        alert(error.message)
-      })
-  }
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
   return (
     <div className="login">
       <div className="login__container">
@@ -29,7 +40,7 @@ function Login({setCookie}) {
         <Button onClick={signIn}>Sign In with Google</Button>
       </div>
     </div>
-  )
+  );
 }
 
 export default Login;
