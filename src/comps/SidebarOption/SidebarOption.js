@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./SidebarOption.scss";
 import { useHistory } from "react-router-dom";
-// import db from "../../firebase";
 
 function SidebarOption({
   Icon,
@@ -35,11 +34,11 @@ function SidebarOption({
                 console.error("Error in updating the array of users!")
               );
           }
-          db.collection("channelUsers")
-            .doc(id)
-            .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
+          // db.collection("channelUsers")
+          //   .doc(id)
+          //   .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
           setCurrChannel((prev) => {
-            if (prev !== null) {
+            if (prev !== null && prev !== id) {
               console.log("prev = ", prev);
               // set previous channel users decrease by 1
               db.collection("channelUsers")
@@ -108,16 +107,13 @@ function SidebarOption({
     }
   };
 
-  // const usersOnline = () => {
-  //   let num = 0;
-  //   db.collection("channelUsers")
-  //     .doc(id)
-  //     .onSnapshot((snaps) => {
-  //       num = snaps.data().users.length;
-  //       setNumUsers(snaps.data().users.length);
-  //     });
-  //   return num;
-  // };
+  const initNumUsers = () => {
+    console.log("calls");
+    db.collection("channelUsers")
+      .doc(id)
+      .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
+    return numUsers;
+  };
 
   return (
     <>
@@ -132,7 +128,9 @@ function SidebarOption({
           <h3 className="sidebarOption__channel">
             <span className="sidebarOption__hash">#</span>
             {title}
-            {id && <span className="sidebarOption__numUsers">{numUsers}</span>}
+            {id && (
+              <span className="sidebarOption__numUsers">{initNumUsers()}</span>
+            )}
           </h3>
         )}
       </div>

@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Chat from "./comps/Chat/Chat";
 import Login from "./comps/Login/Login";
 import { useCookies } from "react-cookie";
+import db from "./firebase";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -16,7 +17,7 @@ function App() {
     <div className="App">
       <Router>
         {!cookies.user ? (
-          <Login setCookie={setCookie} />
+          <Login setCookie={setCookie} db={db} />
         ) : (
           <>
             <Header
@@ -25,16 +26,19 @@ function App() {
               removeCookie={removeCookie}
               user={user}
               setUser={setUser}
+              currChannel={currChannel}
+              db={db}
             />
             <div className="app__body">
               <Sidebar
                 cookies={cookies}
                 setCurrChannel={setCurrChannel}
                 currChannel={currChannel}
+                db={db}
               />
               <Switch>
                 <Route path="/channel/:channelId">
-                  <Chat currChannel={currChannel} />
+                  <Chat currChannel={currChannel} db={db} />
                 </Route>
                 <Route path="/">
                   <h1>Welcome</h1>

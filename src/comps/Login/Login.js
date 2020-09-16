@@ -2,9 +2,8 @@ import React from "react";
 import "./Login.scss";
 import { Button, responsiveFontSizes } from "@material-ui/core";
 import { auth, provider } from "../../firebase";
-import db from "../../firebase";
 
-function Login({ setCookie }) {
+function Login({ setCookie, db }) {
   const signIn = (e) => {
     auth
       .signInWithPopup(provider)

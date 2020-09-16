@@ -12,9 +12,8 @@ import LiveTvIcon from "@material-ui/icons/LiveTv";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
-import db from "../../firebase";
 
-function Sidebar({ cookies, currChannel, setCurrChannel }) {
+function Sidebar({ cookies, currChannel, setCurrChannel, db }) {
   const [channels, setChannels] = useState([]);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ function Sidebar({ cookies, currChannel, setCurrChannel }) {
         }))
       );
     });
-  }, []);
+  }, [db]);
 
   return (
     <div className="sidebar">
