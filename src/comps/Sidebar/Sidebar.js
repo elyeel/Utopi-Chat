@@ -14,7 +14,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 import db from "../../firebase";
 
-function Sidebar({ cookies, onlineUsers, setOnlineUsers }) {
+function Sidebar({ cookies, currChannel, setCurrChannel }) {
   const [channels, setChannels] = useState([]);
 
   useEffect(() => {
@@ -61,8 +61,8 @@ function Sidebar({ cookies, onlineUsers, setOnlineUsers }) {
             key={channel.id}
             title={channel.name}
             id={channel.id}
-            onlineUsers={onlineUsers}
-            setOnlineUsers={setOnlineUsers}
+            currChannel={currChannel}
+            setCurrChannel={setCurrChannel}
             cookies={cookies}
             db={db}
           />

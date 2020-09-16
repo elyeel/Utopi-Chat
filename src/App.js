@@ -10,7 +10,7 @@ import { useCookies } from "react-cookie";
 function App() {
   const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [currChannel, setCurrChannel] = useState(null);
 
   return (
     <div className="App">
@@ -29,12 +29,12 @@ function App() {
             <div className="app__body">
               <Sidebar
                 cookies={cookies}
-                setOnlineUsers={setOnlineUsers}
-                onlineUsers={onlineUsers}
+                setCurrChannel={setCurrChannel}
+                currChannel={currChannel}
               />
               <Switch>
                 <Route path="/channel/:channelId">
-                  <Chat onlineUsers={onlineUsers} />
+                  <Chat currChannel={currChannel} />
                 </Route>
                 <Route path="/">
                   <h1>Welcome</h1>

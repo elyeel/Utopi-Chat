@@ -8,8 +8,8 @@ function SidebarOption({
   title,
   id,
   addChannelOption,
-  onlineUsers,
-  setOnlineUsers,
+  currChannel,
+  setCurrChannel,
   cookies,
   db,
 }) {
@@ -34,11 +34,29 @@ function SidebarOption({
               .catch((error) =>
                 console.error("Error in updating the array of users!")
               );
-          } else {
-            db.collection("channelUsers")
-              .doc(id)
-              .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
           }
+          db.collection("channelUsers")
+            .doc(id)
+            .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
+          setCurrChannel((prev) => {
+            if (prev !== null) {
+              console.log("prev = ", prev);
+              // set previous channel users decrease by 1
+              db.collection("channelUsers")
+                .doc(prev)
+                .get()
+                .then((doc) => {
+                  const newArr = doc.data().users;
+                  db.collection("channelUsers")
+                    .doc(prev)
+                    .update({
+                      users: newArr.filter((cid) => cid !== cookies.user.id),
+                    });
+                });
+            }
+            // set current channel to current
+            return id;
+          });
           // doc.data().users.push(cookies.user.id);
           // console.log(doc.data());
         })
@@ -114,11 +132,7 @@ function SidebarOption({
           <h3 className="sidebarOption__channel">
             <span className="sidebarOption__hash">#</span>
             {title}
-            {id && (
-              <span className="sidebarOption__numUsers">
-                {numUsers}
-              </span>
-            )}
+            {id && <span className="sidebarOption__numUsers">{numUsers}</span>}
           </h3>
         )}
       </div>
