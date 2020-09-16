@@ -14,17 +14,18 @@ function Login({ setCookie, db }) {
         // const user = result.user;
         // console.log(user,token);
         setCookie("user", result.additionalUserInfo.profile);
-        db.collection("users")
-          .doc(result.additionalUserInfo.profile.id)
-          .set({
-            name: result.additionalUserInfo.profile.name,
-            locale: result.additionalUserInfo.profile.locale,
-            id: result.additionalUserInfo.profile.id,
-            picture: result.additionalUserInfo.profile.picture,
-            channelId: "none",
-          })
-          .then((docRef) => console.log("User added with ID", docRef.id))
-          .catch((error) => console.error("Error adding User", error));
+
+        // db.collection("users")
+        //   .doc(result.additionalUserInfo.profile.id)
+        //   .set({
+        //     name: result.additionalUserInfo.profile.name,
+        //     locale: result.additionalUserInfo.profile.locale,
+        //     id: result.additionalUserInfo.profile.id,
+        //     picture: result.additionalUserInfo.profile.picture,
+        //     channelId: "none",
+        //   })
+        //   .then((docRef) => console.log("User added with ID", docRef.id))
+        //   .catch((error) => console.error("Error adding User", error));
       })
       .catch((error) => {
         alert(error.message);

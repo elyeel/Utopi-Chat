@@ -112,7 +112,7 @@ function SidebarOption({
     db.collection("channelUsers")
       .doc(id)
       .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
-    return numUsers;
+    if (numUsers > 0) return numUsers;
   };
 
   return (

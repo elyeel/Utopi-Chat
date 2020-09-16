@@ -15,15 +15,18 @@ import { auth } from "../../firebase";
 function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
   // log out function, erase user id from channel users
   const logOut = function (e) {
-    db.collection("channelUsers")
-      .doc(currChannel)
-      .get()
-      .then((doc) => {
-        const arrUsers = doc.data().users;
-        db.collection("channelUsers")
-          .doc(currChannel)
-          .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
-      });
+    if (currChannel) {
+
+      db.collection("channelUsers")
+        .doc(currChannel)
+        .get()
+        .then((doc) => {
+          const arrUsers = doc.data().users;
+          db.collection("channelUsers")
+            .doc(currChannel)
+            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+        });
+    }
     auth
       .signOut()
       .then(() => {
