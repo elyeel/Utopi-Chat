@@ -23,6 +23,14 @@
   }
 
   h3 {
+    display:flex;
     font-weight: 500;
+    flex: 1;
+    align-items: center;
+  }
+
+  &__numUsers {
+    margin-left: auto;
+    padding-right: 0.5rem;
   }
 }
