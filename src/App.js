@@ -1,8 +1,7 @@
 import React from 'react';
-import useTranslator from './hooks/useTranslator';
+import translate from './helpers/translate';
 
 function App() {
-  const { translate } = useTranslator();
   ['blue grapes', '如何如何好', 'blaue Trauben'].forEach(message=>translate(message, 'en'));
   
   return (
