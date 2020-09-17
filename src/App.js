@@ -1,4 +1,5 @@
 import React from 'react';
+import toxicityWarningModal from './comps/toxicity-warning-modal';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       {/* Header */}
       {/* Sidebar */}
       {/* React-Router -> Chat screen */}
+      <toxicityWarningModal/>
     </div>
   );
 }
