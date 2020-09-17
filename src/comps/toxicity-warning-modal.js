@@ -25,7 +25,7 @@ export default function ToxicityWarningModal() {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-descriptin'>
-          The machine learning algorithms we use detected high toxicity in your message. Your message will not be sent. Please try wording what you're saying slightly less harshly.
+          The machine learning algorithms we use detected toxic meaning in your message. Your message will not be sent. Try wording things differently.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
