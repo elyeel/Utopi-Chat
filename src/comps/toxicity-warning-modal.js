@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function toxicityWarningModal() {
+export default function ToxicityWarningModal() {
   const [open, setOpen] = useState(true);
   const handleClose = () => {
     setOpen(false);
