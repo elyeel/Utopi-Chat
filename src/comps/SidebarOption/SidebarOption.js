@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./SidebarOption.scss";
 import { useHistory } from "react-router-dom";
+import db from "../../firebase";
 
 function SidebarOption({
   Icon,
@@ -10,7 +11,6 @@ function SidebarOption({
   currChannel,
   setCurrChannel,
   cookies,
-  db,
 }) {
   const history = useHistory();
   const [numUsers, setNumUsers] = useState(0);
@@ -24,6 +24,7 @@ function SidebarOption({
         .get()
         .then((doc) => {
           const arrUsers = doc.data().users;
+          // if user not in the channel users array then add user into the channel user array
           if (!arrUsers.some((e) => e === cookies.user.id)) {
             arrUsers.push(cookies.user.id);
             db.collection("channelUsers")
@@ -37,6 +38,8 @@ function SidebarOption({
           // db.collection("channelUsers")
           //   .doc(id)
           //   .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
+          
+          // if prev channel != null && != id => push user's id into users(array,doc) then setCurrChannel with current channel
           setCurrChannel((prev) => {
             if (prev !== null && prev !== id) {
               console.log("prev = ", prev);
@@ -91,27 +94,37 @@ function SidebarOption({
     const channelName = prompt("Please enter the channel name");
 
     if (channelName) {
-      db.collection("channels").add({
-        name: channelName,
-      });
-      db.collection("channelUsers")
-        .doc(id)
-        .set({
-          id,
-          users: [],
+      db.collection("channels")
+        .add({
+          name: channelName,
         })
-        .then((doc) => console.log(doc))
-        .catch((error) =>
-          console.error("Error adding online users by channel", error)
-        );
+        .then((docRef) => {
+          console.log("docRef :", docRef.id);
+          db.collection("channelUsers")
+            .doc(docRef.id)
+            .set({
+              id: docRef.id,
+              users: [],
+            })
+            .then((doc) => console.log(doc))
+            .catch((error) =>
+              console.error("Error adding online users by channel", error)
+            );
+        })
+        .catch((error) => console.error("Error in adding new channel", error));
+
+      addChannelOption = false;
     }
   };
 
   const initNumUsers = () => {
-    console.log("calls");
+    // useEffect here? to reduce calls to firebase
+    console.log("calls", id);
     db.collection("channelUsers")
       .doc(id)
-      .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
+      .onSnapshot((snaps) => {
+        if (snaps.data()) setNumUsers(snaps.data().users.length);
+      });
     if (numUsers > 0) return numUsers;
   };
 
