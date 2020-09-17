@@ -2,7 +2,10 @@ import React from 'react';
 import translate from './helpers/translate';
 
 function App() {
-  ['blue grapes', '如何如何好', 'blaue Trauben'].forEach(message=>translate(message, 'en'));
+  translate({
+    text: ['blue grapes', '如何如何好', 'blaue Trauben'],
+    target_language: 'en'
+  });
   
   return (
     <div className="App">
