@@ -1,23 +1,17 @@
-  import React, { useState } from "react";
-  import "./App.css";
-  import Header from "./comps/Header/Header";
-  import Sidebar from "./comps/Sidebar/Sidebar";
-  import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-  import Chat from "./comps/Chat/Chat";
-  import Login from "./comps/Login/Login";
-  import { useCookies } from "react-cookie";
-  import db from "./firebase";
-  import translate from './helpers/translate';
+import React, { useState } from "react";
+import "./App.css";
+import Header from "./comps/Header/Header";
+import Sidebar from "./comps/Sidebar/Sidebar";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Chat from "./comps/Chat/Chat";
+import Login from "./comps/Login/Login";
+import { useCookies } from "react-cookie";
+import db from "./firebase";
   
 function App() {
   const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
-
-  translate({
-    text: ['blue grapes', '如何如何好', 'blaue Trauben'],
-    target_language: 'en'
-  });
 
   return (
     <div className="App">

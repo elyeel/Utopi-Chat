@@ -12,9 +12,17 @@ import LiveTvIcon from "@material-ui/icons/LiveTv";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
+import translate from '../../helpers/translate';
+
 
 function Sidebar({ cookies, currChannel, setCurrChannel, db }) {
   const [channels, setChannels] = useState([]);
+  const [languageModal, setLanguageModal] = useState(false);
+
+  translate({
+    text: ['blue grapes', '如何如何好', 'blaue Trauben'],
+    target_language: 'en'
+  });
 
   useEffect(() => {
     // snapshot of channels collection
@@ -38,7 +46,7 @@ function Sidebar({ cookies, currChannel, setCurrChannel, db }) {
             {cookies.user.name}
           </h3>
         </div>
-        <SidebarOption Icon={LanguageIcon} />
+        <SidebarOption Icon={LanguageIcon} onClick={()=>setLanguageModal(true)}/>
       </div>
       <SidebarOption Icon={TvIcon} title="Joined Channels" />
       <SidebarOption Icon={MarkunreadMailboxIcon} title="Unread Mail" />
