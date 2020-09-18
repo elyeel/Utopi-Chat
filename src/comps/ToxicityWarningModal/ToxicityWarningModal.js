@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,16 +8,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import './ToxicityWarningModal.scss';
 
-export default function ToxicityWarningModal() {
-  const [open, setOpen] = useState(true);
+export default function ToxicityWarningModal({isOpen, closeModal}) {
   const handleClose = () => {
-    setOpen(false);
+    closeModal();
   }
 
   return (
     <div>
       <Dialog
-      open={open}
+      open={isOpen}
       onClose={handleClose}
       aria-labelledby='alert-dialog-title'
       aria-describedby='alert-dialog-description'
