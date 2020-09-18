@@ -4,15 +4,17 @@ import "./Chat.scss";
 import { useParams } from "react-router-dom";
 
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
+import StarOutlinedIcon from "@material-ui/icons/StarOutlined";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Message from "../Message/Message";
 import ChatForm from "../ChatForm/ChatForm";
 
-function Chat({ db }) {
+function Chat({ db, cookies }) {
   const { channelId } = useParams();
 
   const [channelDetails, setChannelDetails] = useState(null);
   const [channelMessages, setChannelMessages] = useState([]);
+  const [favouriteChannel, setFavouriteChannel] = useState(false);
 
   // fetch all details from current channel
   useEffect(() => {
@@ -29,7 +31,46 @@ function Chat({ db }) {
       .onSnapshot((snapshot) =>
         setChannelMessages(snapshot.docs.map((doc) => doc.data()))
       );
-  }, [channelId, db]);
+    db.collection("favouriteChannels")
+      .doc(cookies.user.id)
+      .onSnapshot((snaps) => {
+        if (snaps)
+          setFavouriteChannel(
+            snaps.data().channels.some((elem) => elem === channelId)
+          );
+      });
+  }, [channelId, db, cookies.user.id]);
+
+  const setFavourite = () => {
+    // get favourite channels list and save it into channels
+    let channels = [];
+    db.collection("favouriteChannels")
+      .doc(cookies.user.id)
+      .get()
+      .then((doc) => {
+        // console.log("from db ", doc.data().channels);
+        channels = doc.data().channels;
+        // if favourite channel => change it to not and delist channel from favouriteChannel list
+        if (favouriteChannel) {
+          channels = channels.filter((elem) => elem !== channelId);
+          // else => change it to favourite channel and list channel on favouriteChannel list
+        } else {
+          channels.push(channelId);
+          console.log(channels);
+        }
+        // update channels to db
+        db.collection("favouriteChannels")
+          .doc(cookies.user.id)
+          .update({ channels: channels })
+          .then(() => console.log("Favourite Channels is updated"))
+          .catch((error) =>
+            console.error("Error updating Favourite Channels!", error)
+          );
+        // setFavouriteChannel(!favouriteChannel);
+      })
+      .catch((error) => console.log("Document is not exist", error));
+    // console.log("before ", channels);
+  };
 
   return (
     <div className="chat">
@@ -37,7 +78,13 @@ function Chat({ db }) {
         <div className="chat__headerLeft">
           <h4 className="chat__channelName">
             <strong>#{channelDetails?.name}</strong>
-            <StarBorderOutlinedIcon />
+            <span>
+              {favouriteChannel ? (
+                <StarOutlinedIcon onClick={setFavourite} />
+              ) : (
+                <StarBorderOutlinedIcon onClick={setFavourite} />
+              )}
+            </span>
           </h4>
         </div>
 

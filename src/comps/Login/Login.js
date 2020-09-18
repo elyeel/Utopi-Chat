@@ -8,12 +8,21 @@ function Login({ setCookie, db }) {
     auth
       .signInWithPopup(provider)
       .then((result) => {
-        const res = { ...result };
-        console.log(res);
+        // const res = { ...result };
+        // console.log(res);
         // const token = result.credential.accessToken;
         // const user = result.user;
         // console.log(user,token);
         setCookie("user", result.additionalUserInfo.profile);
+        db.collection("favouriteChannels")
+          .doc(result.additionalUserInfo.profile.id)
+          .set({ channels: [] })
+          .then((docRef) =>
+            console.log(docRef, ", ", result.additionalUserInfo.profile.id)
+          )
+          .catch((error) =>
+            console.error("Error adding user to Favourite Channels List")
+          );
 
         // db.collection("users")
         //   .doc(result.additionalUserInfo.profile.id)

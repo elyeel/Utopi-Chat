@@ -38,7 +38,7 @@ function App() {
               />
               <Switch>
                 <Route path="/channel/:channelId">
-                  <Chat currChannel={currChannel} db={db} />
+                  <Chat currChannel={currChannel} db={db} cookies={cookies} />
                 </Route>
                 <Route path="/">
                   <h1>Welcome</h1>

@@ -1,7 +1,7 @@
 import React from "react";
 import "./Message.scss";
 
-function Message({ message, timestamp, user, userImage }) {
+function Message({ message, timestamp, user, userImage, id }) {
   return (
     <div className="message">
       <img src={userImage} alt="" />
