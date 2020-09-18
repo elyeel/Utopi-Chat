@@ -61,7 +61,11 @@ function Chat({ db }) {
       </div>
 
       <div className="chat__form">
-        <ChatForm db={db} channelId={channelId} />
+        <ChatForm
+          db={db}
+          channelId={channelId}
+          channelName={channelDetails?.name}
+        />
       </div>
     </div>
   );
