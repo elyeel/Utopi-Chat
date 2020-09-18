@@ -26,7 +26,7 @@ export default function ToxicityWarningModal({isOpen, closeModal}) {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id='alert-dialog-descriptin'>
-          The machine learning algorithms we use detected toxic meaning in your message. Your message will not be sent. Try wording things differently.
+          The <a target='_blank' href='https://github.com/tensorflow/tfjs-models/tree/master/toxicity'>machine learning algorithms</a> we use detected toxic meaning in your message. Your message will not be sent. Try wording things differently.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
