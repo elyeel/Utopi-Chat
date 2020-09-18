@@ -4,7 +4,6 @@ import "./App.css";
 import Header from "./comps/Header/Header";
 import Sidebar from "./comps/Sidebar/Sidebar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import toxicityCheck from './helpers/toxicity';
 import Chat from "./comps/Chat/Chat";
 import Login from "./comps/Login/Login";
 import { useCookies } from "react-cookie";
@@ -14,8 +13,6 @@ function App() {
   const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
-  
-  toxicityCheck('just wanted to say, have a nice day ok?', result => console.log(result));
   
   return (
     <div className="App">
