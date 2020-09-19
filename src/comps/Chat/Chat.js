@@ -29,7 +29,18 @@ function Chat({ db, cookies }) {
       .collection("messages")
       .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) =>
-        setChannelMessages(snapshot.docs.map((doc) => doc.data()))
+        setChannelMessages(
+          snapshot.docs.map((doc) => {
+            // console.log("docs",doc.id);
+            return {
+              id: doc.id,
+              message: doc.data().message,
+              user: doc.data().user,
+              userimage: doc.data().userimage,
+              timestamp: doc.data().timestamp
+            };
+          })
+        )
       );
     db.collection("favouriteChannels")
       .doc(cookies.user.id)
@@ -72,6 +83,8 @@ function Chat({ db, cookies }) {
     // console.log("before ", channels);
   };
 
+  
+
   return (
     <div className="chat">
       <div className="chat__header">
@@ -90,7 +103,7 @@ function Chat({ db, cookies }) {
 
         <div className="chat__headerRight">
           <p>
-            <InfoOutlinedIcon /> Details
+            <InfoOutlinedIcon  /> Details
           </p>
         </div>
       </div>

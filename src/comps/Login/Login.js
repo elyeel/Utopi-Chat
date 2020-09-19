@@ -15,14 +15,25 @@ function Login({ setCookie, db }) {
         // console.log(user,token);
         setCookie("user", result.additionalUserInfo.profile);
         db.collection("favouriteChannels")
-          .doc(result.additionalUserInfo.profile.id)
-          .set({ channels: [] })
-          .then((docRef) =>
-            console.log(docRef, ", ", result.additionalUserInfo.profile.id)
-          )
-          .catch((error) =>
-            console.error("Error adding user to Favourite Channels List")
-          );
+          .doc("result.additionalUserInfo.profile.id")
+          .get()
+          .then((doc) => {
+            if (doc.data()) {
+              db.collection("favouriteChannels")
+                .doc(result.additionalUserInfo.profile.id)
+                .set({ channels: [] })
+                .then((docRef) =>
+                  console.log(
+                    docRef,
+                    ", ",
+                    result.additionalUserInfo.profile.id
+                  )
+                )
+                .catch((error) =>
+                  console.error("Error adding user to Favourite Channels List")
+                );
+            }
+          });
 
         // db.collection("users")
         //   .doc(result.additionalUserInfo.profile.id)

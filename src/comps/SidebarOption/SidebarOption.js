@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./SidebarOption.scss";
 import { useHistory } from "react-router-dom";
 import db from "../../firebase";
+import click from "./graceful.mp3";
 
 function SidebarOption({
   Icon,
@@ -14,6 +15,7 @@ function SidebarOption({
 }) {
   const history = useHistory();
   const [numUsers, setNumUsers] = useState(0);
+  const clickAudio = new Audio(click);
 
   const selectChannel = () => {
     if (id) {
@@ -38,7 +40,7 @@ function SidebarOption({
           // db.collection("channelUsers")
           //   .doc(id)
           //   .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
-          
+
           // if prev channel != null && != id => push user's id into users(array,doc) then setCurrChannel with current channel
           setCurrChannel((prev) => {
             if (prev !== null && prev !== id) {
@@ -119,7 +121,7 @@ function SidebarOption({
 
   const initNumUsers = () => {
     // useEffect here? to reduce calls to firebase
-    console.log("calls", id);
+    // console.log("calls", id);
     db.collection("channelUsers")
       .doc(id)
       .onSnapshot((snaps) => {
@@ -128,6 +130,24 @@ function SidebarOption({
     if (numUsers > 0) return numUsers;
   };
 
+  useEffect(() => {
+    if (id) {
+      db.collection("channels")
+        .doc(id)
+        .collection("messages")
+        .onSnapshot({
+          error: (e) => console.error(e),
+          next: (next) => playSound(clickAudio),
+          complete: (queryCompleted) =>
+            queryCompleted ? playSound(clickAudio) : {},
+        });
+    }
+  }, [id, clickAudio]);
+
+  const playSound = (audioFile) => {
+    audioFile.play();
+  };
+  // onClick={() => playSound(clickAudio)}
   return (
     <>
       <div
