@@ -9,6 +9,7 @@ function SidebarOption({
   id,
   addChannelOption,
   currChannel,
+  changeLanguage,
   setCurrChannel,
   cookies,
 }) {
@@ -132,9 +133,9 @@ function SidebarOption({
     <>
       <div
         className="sidebarOption"
-        onClick={addChannelOption ? addChannel : selectChannel}
+        onClick={addChannelOption ? addChannel : (changeLanguage ? changeLanguage : selectChannel)}
       >
-        {Icon && <Icon className="sidebarOption__icon" />}
+        {Icon && <Icon className="sidebarOption__icon"/>}
         {Icon ? (
           <h3>{title}</h3>
         ) : (
