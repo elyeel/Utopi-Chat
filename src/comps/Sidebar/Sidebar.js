@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LanguageSelectionModal from '../LanguageSelectionModal/LanguageSelectionModal';
 import "./Sidebar.scss";
 
 // Material Icons
@@ -17,7 +18,7 @@ import translate from '../../helpers/translate';
 
 function Sidebar({ cookies, currChannel, setCurrChannel, db }) {
   const [channels, setChannels] = useState([]);
-  const [languageModal, setLanguageModal] = useState(false);
+  const [languageModal, setLanguageModal] = useState(true);
 
   translate({
     text: ['blue grapes', '如何如何好', 'blaue Trauben'],
@@ -38,6 +39,7 @@ function Sidebar({ cookies, currChannel, setCurrChannel, db }) {
 
   return (
     <div className="sidebar">
+      {languageModal && <LanguageSelectionModal isOpen={languageModal} closeModal={()=>setLanguageModal(false)}/>}
       <div className="sidebar__header">
         <div className="sidebar__info">
           <h2>UtopiChat</h2>
@@ -46,7 +48,7 @@ function Sidebar({ cookies, currChannel, setCurrChannel, db }) {
             {cookies.user.name}
           </h3>
         </div>
-        <SidebarOption Icon={LanguageIcon} onClick={()=>setLanguageModal(true)}/>
+        <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/>
       </div>
       <SidebarOption Icon={TvIcon} title="Joined Channels" />
       <SidebarOption Icon={MarkunreadMailboxIcon} title="Unread Mail" />
