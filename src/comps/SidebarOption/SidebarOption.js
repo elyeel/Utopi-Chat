@@ -135,11 +135,10 @@ function SidebarOption({
       db.collection("channels")
         .doc(id)
         .collection("messages")
-        .onSnapshot({
-          error: (e) => console.error(e),
-          next: (next) => playSound(clickAudio),
-          complete: (queryCompleted) =>
-            queryCompleted ? playSound(clickAudio) : {},
+        .onSnapshot((snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") playSound(clickAudio);
+          });
         });
     }
   }, [id, clickAudio]);

@@ -8,16 +8,26 @@ import Login from "./comps/Login/Login";
 import { useCookies } from "react-cookie";
 import db from "./firebase";
 
+db.enablePersistence()
+  .then((doc) => console.log("Local storage enabled", doc))
+  .catch((error) => console.error("Failed to enable local storage", error));
+
 function App() {
   const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
+  const [messages, setMessages] = useState(null);
 
   return (
     <div className="App">
       <Router>
         {!cookies.user ? (
-          <Login setCookie={setCookie} db={db} />
+          <Login
+            setCookie={setCookie}
+            db={db}
+            setMessages={setMessages}
+            messages={messages}
+          />
         ) : (
           <>
             <Header

@@ -3,7 +3,7 @@ import "./Login.scss";
 import { Button, responsiveFontSizes } from "@material-ui/core";
 import { auth, provider } from "../../firebase";
 
-function Login({ setCookie, db }) {
+function Login({ setCookie, db, messages, setMessages }) {
   const signIn = (e) => {
     auth
       .signInWithPopup(provider)
@@ -26,23 +26,17 @@ function Login({ setCookie, db }) {
           .catch((error) =>
             console.error("Error adding user to Favourite Channels List")
           );
-        // .then((doc) => {
-        //   if (doc.data()) {
-        //     db.collection("favouriteChannels")
-        //       .doc(result.additionalUserInfo.profile.id)
-        //       .set({ channels: [] })
-        //       .then((docRef) =>
-        //         console.log(
-        //           docRef,
-        //           ", ",
-        //           result.additionalUserInfo.profile.id
-        //         )
-        //       )
-        //       .catch((error) =>
-        //         console.error("Error adding user to Favourite Channels List")
-        //       );
-        //   }
-        // });
+        db.collection("channels")
+          .get()
+          .then((docs) => {
+            if (docs) {
+              docs.docs.map();
+              setMessages(docs.docs);
+              localStorage.setItem("msg", JSON.stringify(docs.docs));
+            }
+          })
+          .catch((error) => console.error("Error in getting messages", error));
+
 
         // db.collection("users")
         //   .doc(result.additionalUserInfo.profile.id)
