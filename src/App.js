@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import Header from "./comps/Header/Header";
 import Sidebar from "./comps/Sidebar/Sidebar";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Chat from "./comps/Chat/Chat";
 import Login from "./comps/Login/Login";
-import { useCookies } from "react-cookie";
 import db from "./firebase";
+
+import "./App.css";
   
 function App() {
   const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState('none');
 
   return (
     <div className="App">
@@ -41,7 +42,7 @@ function App() {
               />
               <Switch>
                 <Route path="/channel/:channelId">
-                  <Chat currChannel={currChannel} db={db} />
+                  <Chat currChannel={currChannel} db={db} language={language} />
                 </Route>
                 <Route path="/">
                   <h1>Welcome</h1>
