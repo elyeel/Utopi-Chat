@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import translate from '../../helpers/translate';
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Message from "../Message/Message";
@@ -9,20 +8,11 @@ import ChatForm from "../ChatForm/ChatForm";
 
 import "./Chat.scss";
 
-function Chat({ db, language }) {
+function Chat({ db }) {
   const { channelId } = useParams();
 
   const [channelDetails, setChannelDetails] = useState(null);
   const [channelMessages, setChannelMessages] = useState([]);
-
-  useEffect(()=> {
-    if (language !== 'none') {
-      translate({
-        text: ['hello'],
-        target_language: 'zh'
-      });
-    }
-  },[language])
 
   // fetch all details from current channel
   useEffect(() => {
