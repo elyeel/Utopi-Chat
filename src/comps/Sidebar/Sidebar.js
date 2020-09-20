@@ -16,7 +16,7 @@ import AddIcon from "@material-ui/icons/Add";
 import translate from '../../helpers/translate';
 
 
-function Sidebar({ cookies, currChannel, setCurrChannel, db }) {
+function Sidebar({ cookies, language, setLanguage, currChannel, setCurrChannel, db }) {
   const [channels, setChannels] = useState([]);
   const [languageModal, setLanguageModal] = useState(true);
 
@@ -39,7 +39,14 @@ function Sidebar({ cookies, currChannel, setCurrChannel, db }) {
 
   return (
     <div className="sidebar">
-      {languageModal && <LanguageSelectionModal isOpen={languageModal} closeModal={()=>setLanguageModal(false)}/>}
+      {languageModal &&
+        <LanguageSelectionModal
+          isOpen={languageModal}
+          closeModal={()=>setLanguageModal(false)}
+          language={language}
+          setLanguage={setLanguage}
+        />
+      }
       <div className="sidebar__header">
         <div className="sidebar__info">
           <h2>UtopiChat</h2>

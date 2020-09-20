@@ -13,8 +13,8 @@ import Select from '@material-ui/core/Select';
 
 import './LanguageSelectionModal.scss';
 
-export default function LanguageSelectionModal({isOpen, closeModal}) {
-  const [language, setLanguage] = useState(null);
+export default function LanguageSelectionModal({isOpen, closeModal, language, setLanguage}) {
+  const [newLanguage, setNewLanguage] = useState(language);
   const [languageMenuState, setLanguageMenuState] = useState(false);
   const languages = {
     'ar': 'Arabic',
@@ -70,6 +70,7 @@ export default function LanguageSelectionModal({isOpen, closeModal}) {
   }
 
   const handleClose = () => {
+    setLanguage(newLanguage);
     closeModal();
   }
 
@@ -100,8 +101,8 @@ export default function LanguageSelectionModal({isOpen, closeModal}) {
             open={languageMenuState}
             onClose={()=>setLanguageMenuState(false)}
             onOpen={()=>setLanguageMenuState(true)}
-            value={language}
-            onChange={e=>setLanguage(e.target.value)}
+            value={newLanguage}
+            onChange={e=>setNewLanguage(e.target.value)}
           >
             {languageDropdown}
           </Select>

@@ -12,6 +12,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
+  const [language, setLanguage] = useState('en');
 
   return (
     <div className="App">
@@ -35,6 +36,8 @@ function App() {
                 setCurrChannel={setCurrChannel}
                 currChannel={currChannel}
                 db={db}
+                language={language}
+                setLanguage={setLanguage}
               />
               <Switch>
                 <Route path="/channel/:channelId">
