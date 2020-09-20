@@ -1,18 +1,25 @@
 import React, {useState} from "react";
 import ToxicityWarningModal from '../ToxicityWarningModal/ToxicityWarningModal';
 import { useCookies } from "react-cookie";
-import './ChatForm.scss'
 import toxicityCheck from '../../helpers/toxicityCheck';
+import Loading from '../Loading';
+import Button from '@material-ui/core/Button';
+
+
+import './ChatForm.scss'
 
 export default function ChatForm({ db, channelId, channelName }) {
   const [cookies] = useCookies(["user"]);
   const [msg, setMsg] = useState("");
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const submitMsg = (event) => {
     event.preventDefault();
+    setLoading(true);
     toxicityCheck(msg)
     .then(res => {
+      setLoading(false);
       if (res) {
         setModal(true);
         setMsg('');
@@ -43,9 +50,9 @@ export default function ChatForm({ db, channelId, channelName }) {
         placeholder={`Enter a message to #${channelName}`}
         onChange={(event) => setMsg(event.target.value)}
       ></input>
-      <button type="submit" onClick={submitMsg} className='chat__btn'>
+      {!loading ? (<Button type="submit" onClick={submitMsg} className='chat__btn'>
         Send
-      </button>
+      </Button>) : <Loading type='spokes' color='#0021a3'/>}
     </form>
   );
 }
