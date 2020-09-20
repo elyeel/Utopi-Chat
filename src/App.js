@@ -13,7 +13,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
-  const [language, setLanguage] = useState('none');
+  const [language, setLanguage] = useState('en');
 
   return (
     <div className="App">
