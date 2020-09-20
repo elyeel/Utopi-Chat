@@ -92,7 +92,7 @@ export default function LanguageSelectionModal({isOpen, closeModal, language, se
       disableBackdropClick
       >
         <DialogTitle id='alert-dialog-title'>
-          {'Translate Messages'}
+          {'Change Your Language'}
           <IconButton aria-label="close" onClick={closeModal}>
             <CloseIcon />
           </IconButton>
@@ -110,7 +110,6 @@ export default function LanguageSelectionModal({isOpen, closeModal, language, se
               value={newLanguage}
               onChange={e=>setNewLanguage(e.target.value)}
             >
-              <MenuItem key='none' value='none'>Original</MenuItem>
               {languageDropdown}
             </Select>
           </FormControl>
