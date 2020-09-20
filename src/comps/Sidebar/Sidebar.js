@@ -13,17 +13,11 @@ import LiveTvIcon from "@material-ui/icons/LiveTv";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
-import translate from '../../helpers/translate';
 
 
 function Sidebar({ cookies, language, setLanguage, currChannel, setCurrChannel, db }) {
   const [channels, setChannels] = useState([]);
-  const [languageModal, setLanguageModal] = useState(true);
-
-  translate({
-    text: ['blue grapes', '如何如何好', 'blaue Trauben'],
-    target_language: 'en'
-  });
+  const [languageModal, setLanguageModal] = useState(false);
 
   useEffect(() => {
     // snapshot of channels collection
@@ -52,7 +46,7 @@ function Sidebar({ cookies, language, setLanguage, currChannel, setCurrChannel, 
           <h2>UtopiChat</h2>
           <h3>
             <FiberManualRecordIcon />
-            {cookies.user.name}
+            {cookies.user.name}1
           </h3>
         </div>
         <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/>
