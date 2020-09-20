@@ -12,6 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Loading from '../Loading';
 import translate from '../../helpers/translate';
 
 
@@ -20,7 +21,8 @@ import './TranslatedMessageModal.scss';
 export default function TranslatedMessageModal({isOpen, closeModal, message}) {
   const [language, setLanguage] = useState('none');
   const [languageMenuState, setLanguageMenuState] = useState(false);
-  const [translation, setTranslation] = useState(message);
+  const [translation, setTranslation] = useState('');
+  const [loading, setLoading] = useState(false);
   const languages = {
     'ar': 'Arabic',
     'bn': 'Bengali',
@@ -74,15 +76,18 @@ export default function TranslatedMessageModal({isOpen, closeModal, message}) {
     'cy': 'Welsh'
   }
 
-  const handleSubmit = () => {
-    setLanguage(language);
-    closeModal();
-  }
-
   useEffect(()=> {
     if (language !== 'none') {
+      setLoading(true);
       translate({text: message, target_language: language})
-      .then((res)=>setTranslation(res));
+      .then((res)=>{
+        setLoading(false);
+        setTranslation(res);
+      })
+      .catch(err=> {
+        setLoading(false);
+        console.log(err);
+      });
     }
   }, [language])
 
@@ -96,7 +101,7 @@ export default function TranslatedMessageModal({isOpen, closeModal, message}) {
     <div>
       <Dialog
       open={isOpen}
-      onClose={handleSubmit}
+      onClose={closeModal}
       aria-labelledby='alert-dialog-title'
       aria-describedby='alert-dialog-description'
       disableBackdropClick
@@ -126,13 +131,10 @@ export default function TranslatedMessageModal({isOpen, closeModal, message}) {
             <h4>Original:</h4>
             <p>{message}</p>
             <h4>Translation:</h4>
-            <p>{translation}</p>
+            {loading ? <Loading type='spokes' color='#0021a3'/> : <p>{translation}</p>}
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit} color='primary' autoFocus>
-            Select
-          </Button>
         </DialogActions>
       </Dialog>
     </div>
