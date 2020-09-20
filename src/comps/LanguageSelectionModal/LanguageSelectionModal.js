@@ -10,6 +10,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import './LanguageSelectionModal.scss';
 
@@ -69,7 +71,7 @@ export default function LanguageSelectionModal({isOpen, closeModal, language, se
     'cy': 'Welsh'
   }
 
-  const handleClose = () => {
+  const handleSubmit = () => {
     setLanguage(newLanguage);
     closeModal();
   }
@@ -84,35 +86,40 @@ export default function LanguageSelectionModal({isOpen, closeModal, language, se
     <div>
       <Dialog
       open={isOpen}
-      onClose={handleClose}
+      onClose={handleSubmit}
       aria-labelledby='alert-dialog-title'
       aria-describedby='alert-dialog-description'
-    >
-      <DialogTitle id='alert-dialog-title'>
-        {'Choose Your Language'}
-      </DialogTitle>
-      <DialogContent>
-        <FormControl>
-          <InputLabel id='open-select-label'>
-          Language
-          </InputLabel>
-          <Select
-            labelId='open-select-label'
-            open={languageMenuState}
-            onClose={()=>setLanguageMenuState(false)}
-            onOpen={()=>setLanguageMenuState(true)}
-            value={newLanguage}
-            onChange={e=>setNewLanguage(e.target.value)}
-          >
-            {languageDropdown}
-          </Select>
-        </FormControl>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color='primary' autofocus>
-          Select
-        </Button>
-      </DialogActions>
+      disableBackdropClick
+      >
+        <DialogTitle id='alert-dialog-title'>
+          {'Translate Messages'}
+          <IconButton aria-label="close" onClick={closeModal}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <FormControl>
+            <InputLabel id='open-select-label'>
+            Language
+            </InputLabel>
+            <Select
+              labelId='open-select-label'
+              open={languageMenuState}
+              onClose={()=>setLanguageMenuState(false)}
+              onOpen={()=>setLanguageMenuState(true)}
+              value={newLanguage}
+              onChange={e=>setNewLanguage(e.target.value)}
+            >
+              <MenuItem key='none' value='none'>Original</MenuItem>
+              {languageDropdown}
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSubmit} color='primary' autoFocus>
+            Select
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   )
