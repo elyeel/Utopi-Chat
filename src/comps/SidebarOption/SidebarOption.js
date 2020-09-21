@@ -15,6 +15,7 @@ function SidebarOption({
 }) {
   const history = useHistory();
   const [numUsers, setNumUsers] = useState(0);
+  const [isSelect, setIsSelect] = useState(true);
   const clickAudio = new Audio(click);
 
   const selectChannel = () => {
@@ -130,16 +131,22 @@ function SidebarOption({
     if (numUsers > 0) return numUsers;
   };
 
+  // notification feature with local storage comparison
   useEffect(() => {
-    if (id) {
+    const localDb = JSON.parse(localStorage.getItem(id));
+    if (id && localDb && localDb.length > 0) {
       db.collection("channels")
         .doc(id)
         .collection("messages")
         .onSnapshot((snapshot) => {
-          // snapshot.docChanges().forEach((change) => {
-          //   if (change.type === "added") playSound(clickAudio);
-          // });
-          if (snapshot.metadata.fromCache) playSound(clickAudio)
+          if (snapshot.docs.length > localDb.length) {
+            console.log("Increased, snaps = ", id);
+            snapshot.docChanges().forEach((change) => {
+              if (change.type === "added") playSound(clickAudio);
+            });
+          } else console.log("The Same");
+
+          // if (snapshot.metadata.fromCache) playSound(clickAudio);
           // let cache = snapshot.metadata.fromCache
           // console.log("Data came from ", cache)
         });
