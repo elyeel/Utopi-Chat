@@ -21,7 +21,6 @@
     "react-loading": "^2.0.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-scroll-to-bottom": "^4.0.0",
     "request": "^2.88.2",
     "uuidv4": "^6.2.3"
   },

@@ -47,26 +47,25 @@ function Chat({ db }) {
           </p>
         </div>
       </div>
-
-      <div className="chat__messages">
-        {channelMessages.map(({ id, message, timestamp, user, userimage }) => (
-          <Message
+        <div>
+          {channelMessages.map(({ id, message, timestamp, user, userimage }) => (
+            <Message
             key={id}
             message={message}
             timestamp={timestamp}
             user={user}
             userImage={userimage}
-          />
-        ))}
-      </div>
+            />
+            ))}
+        </div>
 
-      <div className="chat__form">
-        <ChatForm
-          db={db}
-          channelId={channelId}
-          channelName={channelDetails?.name}
-        />
-      </div>
+        <div className="chat__form">
+          <ChatForm
+            db={db}
+            channelId={channelId}
+            channelName={channelDetails?.name}
+          />
+        </div>
     </div>
   );
 }
