@@ -1,9 +1,14 @@
 body {
-  --utopia-color: #3f0f40;
+  --utopia-color: #00E8E8;
   overflow: hidden;
 }
 
 .app__body {
   display: flex;
   height: 100vh;
+}
+
+.welcome-page {
+  display: flex;
+  flex-direction: column;
 }

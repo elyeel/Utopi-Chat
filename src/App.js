@@ -46,7 +46,21 @@ function App() {
                   <Chat currChannel={currChannel} db={db} language={language} />
                 </Route>
                 <Route path="/">
-                  <h1>Welcome</h1>
+                  <div className='welcome-page'>
+                    <div><h2>Welcome</h2></div>
+                    <div>
+                      {/* <h3>About:</h3>
+                        Utopi-Chat is a chat page for general topics. You can translate the messages on each  */}
+                      <div>
+                        <h4>
+                          Developed By:
+                        </h4>
+                        <p><a href='https://github.com/eileenlimur'>Eileen</a></p>
+                        <p><a href='https://github.com/endonoh0/'>Eric</a></p>
+                        <p><a href='https://github.com/elyeel'>James</a></p>
+                      </div>
+                    </div>
+                  </div>
                 </Route>
               </Switch>
             </div>

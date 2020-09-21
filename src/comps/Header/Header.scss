@@ -5,6 +5,7 @@
   padding: 10px 0;
   background-color: var(--utopia-color);
   color: white;
+  height: 100px;
 
   .header__left {
     // flex: 0.3%;
@@ -25,7 +26,7 @@
 
   .header__search {
     // flex: 0.4;
-    background-clor: #421f44;
+    background-color: #421f44;
     text-align: center;
     display: flex;
     padding: 0 50px;
@@ -39,6 +40,11 @@
     }
   }
 
+  .header-logo {
+    font-family: 'Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif';   
+    font-size: 3em;
+  }
+    
 
   .header__right {
     // flex: 0.3;
