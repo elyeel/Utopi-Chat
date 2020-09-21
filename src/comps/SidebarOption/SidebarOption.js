@@ -136,9 +136,12 @@ function SidebarOption({
         .doc(id)
         .collection("messages")
         .onSnapshot((snapshot) => {
-          snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") playSound(clickAudio);
-          });
+          // snapshot.docChanges().forEach((change) => {
+          //   if (change.type === "added") playSound(clickAudio);
+          // });
+          if (snapshot.metadata.fromCache) playSound(clickAudio)
+          // let cache = snapshot.metadata.fromCache
+          // console.log("Data came from ", cache)
         });
     }
   }, [id, clickAudio]);

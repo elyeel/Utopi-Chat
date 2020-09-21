@@ -26,17 +26,54 @@ function Login({ setCookie, db, messages, setMessages }) {
           .catch((error) =>
             console.error("Error adding user to Favourite Channels List")
           );
+        // building array of objects from firestore
         db.collection("channels")
           .get()
           .then((docs) => {
             if (docs) {
-              docs.docs.map();
-              setMessages(docs.docs);
-              localStorage.setItem("msg", JSON.stringify(docs.docs));
+              let localVar = docs.docs.map((doc) => {
+                const channel = {};
+                channel.name = doc.data().name;
+                channel.messages = [];
+                channel.docId = doc.id;
+                return channel;
+              });
+              // console.log(localVar);
+
+              for (let channel of localVar) {
+                db.collection("channels")
+                  .doc(channel.docId)
+                  .collection("messages")
+                  .get()
+                  .then((msgs) => {
+                    for (let msg of msgs.docs) {
+                      // console.log(msg)
+                      channel.messages.push({
+                        messageId: msg.id,
+                        message: msg.data().message,
+                        timestamp: msg.data().timestamp.toDate(),
+                        user: msg.data().user,
+                        userimage: msg.data().userimage,
+                      });
+                    }
+                  })
+                  .catch((error) =>
+                    console.error(
+                      "Error in getting message from messages collection",
+                      error
+                    )
+                  );
+              }
+              console.log(localVar);
+              setTimeout(() => {
+                for (let local of localVar) {
+                  localStorage.setItem(local.docId, JSON.stringify(local.messages));
+                }
+                localStorage.setItem("parent", JSON.stringify(localVar));
+              }, 2000);
             }
           })
           .catch((error) => console.error("Error in getting messages", error));
-
 
         // db.collection("users")
         //   .doc(result.additionalUserInfo.profile.id)
