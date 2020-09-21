@@ -47,7 +47,7 @@ function Chat({ db }) {
           </p>
         </div>
       </div>
-        <div>
+        <div className="chat__messages">
           {channelMessages.map(({ id, message, timestamp, user, userimage }) => (
             <Message
             key={id}
