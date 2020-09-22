@@ -19,6 +19,23 @@
     }
   }
 
+  .message-box {
+    position: relative;
+  }
+
+  .translate-button {
+    background-color: rgba(107, 8, 205, 0.6);
+    color: black;
+    position: absolute;
+    top: -40px;
+    left: -10px;
+    height: 35px;
+    width: 35px;
+  }
+  .translate-button:hover {
+    background-color: rgba(107, 8, 205, 0.8);
+  }
+
   p {
     font-weight: normal;
   }

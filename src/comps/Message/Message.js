@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Message.scss";
 import TranslatedMessageModal from "../TranslatedMessageModal/TranslatedMessageModal";
 import Button from '@material-ui/core/Button';
+import TranslateIcon from '@material-ui/icons/Translate';
+import IconButton from '@material-ui/core/IconButton';
 
 
 function Message({ message, timestamp, user, userImage }) {
@@ -16,8 +18,16 @@ function Message({ message, timestamp, user, userImage }) {
           <span className="message__timestamp">
             {new Date(timestamp?.toDate()).toUTCString()}
           </span>
-          <p>{message}</p>
-          {ShowTranslateButton && <Button onClick={()=>setShowTranslation(true)}>Translate</Button>}
+          <div className='message-box'>
+            <p>{message}</p>
+            {ShowTranslateButton && (
+              <div >
+                <IconButton className='translate-button'>
+                  <TranslateIcon  onClick={()=>setShowTranslation(true)}/>
+                </IconButton>
+              </div>
+            )}
+          </div>
           <TranslatedMessageModal
             isOpen={showTranslation}
             closeModal={()=>setShowTranslation(false)}
