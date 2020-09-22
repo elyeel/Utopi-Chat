@@ -6,7 +6,8 @@ import { auth, provider } from "../../firebase";
 const localDb = async (db) => {
   // building array of objects from firestore
   try {
-    await db.collection("channels")
+    await db
+      .collection("channels")
       .get()
       .then((docs) => {
         if (docs) {
@@ -53,7 +54,7 @@ const localDb = async (db) => {
               );
           }
           console.log(localVar);
-          
+
           // setTimeout(() => {
           //   for (let local of localVar) {
           //     localStorage.setItem(local.docId, JSON.stringify(local.messages));
@@ -81,16 +82,28 @@ function Login({ setCookie, db, messages, setMessages }) {
         setCookie("user", result.additionalUserInfo.profile);
         db.collection("favouriteChannels")
           .doc(result.additionalUserInfo.profile.id)
-          .set({
-            id: result.additionalUserInfo.profile.id,
-            channels: [],
-          })
-          .then((docRef) =>
-            console.log(docRef, ", ", result.additionalUserInfo.profile.id)
-          )
-          .catch((error) =>
-            console.error("Error adding user to Favourite Channels List")
-          );
+          .get()
+          .then((fav) => {
+            if (fav && fav.data().channels.length <= 0) {
+              db.collection("favouriteChannels")
+                .doc(result.additionalUserInfo.profile.id)
+                .set({
+                  id: result.additionalUserInfo.profile.id,
+                  channels: [],
+                })
+                .then((docRef) =>
+                  console.log(
+                    docRef,
+                    ", ",
+                    result.additionalUserInfo.profile.id
+                  )
+                )
+                .catch((error) =>
+                  console.error("Error adding user to Favourite Channels List")
+                );
+            }
+          });
+
         // building array of objects from firestore
         localDb(db);
 

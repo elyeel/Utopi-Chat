@@ -133,25 +133,36 @@ function SidebarOption({
 
   // notification feature with local storage comparison
   useEffect(() => {
+    let favChannel = false;
     const localDb = JSON.parse(localStorage.getItem(id));
     if (id && localDb && localDb.length > 0) {
-      db.collection("channels")
-        .doc(id)
-        .collection("messages")
-        .onSnapshot((snapshot) => {
-          if (snapshot.docs.length > localDb.length) {
-            console.log("Increased, snaps = ", id);
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === "added") playSound(clickAudio);
-            });
-          } else console.log("The Same");
+      db.collection("favouriteChannels")
+        .doc(cookies.user.id)
+        .get()
+        .then((channels) => {
+          favChannel = channels
+            .data()
+            .channels.some((channel) => channel === id);
+        })
+        .then(() => {
+          db.collection("channels")
+            .doc(id)
+            .collection("messages")
+            .onSnapshot((snapshot) => {
+              if (snapshot.docs.length > localDb.length && favChannel) {
+                console.log("Increased, snaps = ", id);
+                snapshot.docChanges().forEach((change) => {
+                  if (change.type === "added") playSound(clickAudio);
+                });
+              } else console.log("The Same");
 
-          // if (snapshot.metadata.fromCache) playSound(clickAudio);
-          // let cache = snapshot.metadata.fromCache
-          // console.log("Data came from ", cache)
+              // if (snapshot.metadata.fromCache) playSound(clickAudio);
+              // let cache = snapshot.metadata.fromCache
+              // console.log("Data came from ", cache)
+            });
         });
     }
-  }, [id, clickAudio]);
+  });
 
   const playSound = (audioFile) => {
     audioFile.play();
