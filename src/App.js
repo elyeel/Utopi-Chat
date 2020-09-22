@@ -8,9 +8,9 @@ import Login from "./comps/Login/Login";
 import { useCookies } from "react-cookie";
 import db from "./firebase";
 
-db.enablePersistence()
-  .then((doc) => console.log("Local storage enabled", doc))
-  .catch((error) => console.error("Failed to enable local storage", error));
+// db.enablePersistence()
+//   .then((doc) => console.log("Local storage enabled", doc))
+//   .catch((error) => console.error("Failed to enable local storage", error));
 
 function App() {
   const [user, setUser] = useState(null);

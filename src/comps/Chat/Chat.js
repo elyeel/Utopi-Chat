@@ -18,6 +18,7 @@ function Chat({ db, cookies }) {
 
   // fetch all details from current channel
   useEffect(() => {
+    console.log(channelId);
     if (channelId) {
       db.collection("channels")
         .doc(channelId)

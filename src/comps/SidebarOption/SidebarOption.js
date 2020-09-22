@@ -149,9 +149,12 @@ function SidebarOption({
             .doc(id)
             .collection("messages")
             .onSnapshot((snapshot) => {
+              console.log(snapshot.docs.length, localDb.length, favChannel)
               if (snapshot.docs.length > localDb.length && favChannel) {
                 console.log("Increased, snaps = ", id);
+                console.log(snapshot.docChanges())
                 snapshot.docChanges().forEach((change) => {
+                  console.log('Playsound')
                   if (change.type === "added") playSound(clickAudio);
                 });
               } else console.log("The Same");
@@ -200,14 +203,14 @@ function SidebarOption({
         {Icon ? (
           <h3>{title}</h3>
         ) : (
-          <h3 className="sidebarOption__channel">
-            <span className="sidebarOption__hash">#</span>
-            {title}
-            {id && (
-              <span className="sidebarOption__numUsers">{initNumUsers()}</span>
-            )}
-          </h3>
-        )}
+            <h3 className="sidebarOption__channel">
+              <span className="sidebarOption__hash">#</span>
+              {title}
+              {id && (
+                <span className="sidebarOption__numUsers">{initNumUsers()}</span>
+              )}
+            </h3>
+          )}
       </div>
     </>
   );
