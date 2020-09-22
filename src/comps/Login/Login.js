@@ -101,6 +101,23 @@ function Login({ setCookie, db, messages, setMessages }) {
                 .catch((error) =>
                   console.error("Error adding user to Favourite Channels List")
                 );
+            } else {
+              db.collection("favouriteChannels")
+                .doc(result.additionalUserInfo.profile.id)
+                .set({
+                  id: result.additionalUserInfo.profile.id,
+                  channels: [],
+                })
+                .then((docRef) =>
+                  console.log(
+                    docRef,
+                    ", ",
+                    result.additionalUserInfo.profile.id
+                  )
+                )
+                .catch((error) =>
+                  console.error("Error adding user to Favourite Channels List")
+                );
             }
           });
 
