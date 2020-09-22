@@ -164,6 +164,28 @@ function SidebarOption({
     }
   });
 
+  useEffect(() => {
+    if (id) {
+      const tempArr = [];
+      db.collection("channels")
+        .doc(id)
+        .collection("messages")
+        .get()
+        .then((msgs) => {
+          for (let msg of msgs.docs) {
+            tempArr.push({
+              messageId: msg.id,
+              message: msg.data().message,
+              timestamp: msg.data().timestamp.toDate(),
+              user: msg.data().user,
+              userimage: msg.data().userimage,
+            });
+          }
+        })
+        .then(() => localStorage.setItem(id, JSON.stringify(tempArr)));
+    }
+  });
+
   const playSound = (audioFile) => {
     audioFile.play();
   };

@@ -105,7 +105,7 @@ function Login({ setCookie, db, messages, setMessages }) {
           });
 
         // building array of objects from firestore
-        localDb(db);
+        // localDb(db);
 
         // db.collection("users")
         //   .doc(result.additionalUserInfo.profile.id)
