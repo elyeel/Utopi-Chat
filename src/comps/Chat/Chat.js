@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Chat.scss";
-import db from '../../firebase'
+import db from "../../firebase";
 import { useParams } from "react-router-dom";
 
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
@@ -18,31 +18,41 @@ function Chat({ cookies }) {
 
   // fetch all details from current channel
   useEffect(() => {
-    console.log(channelId);
     if (channelId) {
       db.collection("channels")
         .doc(channelId)
         .onSnapshot((snapshot) => setChannelDetails(snapshot.data()));
     }
     // fetch all messages from current channel
+    console.log("From chat before", channelId);
     db.collection("channels")
       .doc(channelId)
       .collection("messages")
       .orderBy("timestamp", "asc")
-      .onSnapshot((snapshot) =>
+      .onSnapshot((snapshot) => {
         setChannelMessages(
           snapshot.docs.map((doc) => {
+              console.log("From chat inside snapshot", channelId);
+              return {
+                id: doc.id,
+                message: doc.data().message,
+                user: doc.data().user,
+                userimage: doc.data().userimage,
+                timestamp: doc.data().timestamp,
+              };
+            })
+          // setChannelMessages([...newMessages]);
             // console.log("docs",doc.id);
-            return {
-              id: doc.id,
-              message: doc.data().message,
-              user: doc.data().user,
-              userimage: doc.data().userimage,
-              timestamp: doc.data().timestamp
-            };
-          })
-        )
-      );
+            // console.log("From chat inside snapshot", channelId);
+            // return {
+            //   id: doc.id,
+            //   message: doc.data().message,
+            //   user: doc.data().user,
+            //   userimage: doc.data().userimage,
+            //   timestamp: doc.data().timestamp,
+            // }
+          );
+      })
     db.collection("favouriteChannels")
       .doc(cookies.user.id)
       .onSnapshot((snaps) => {
@@ -51,7 +61,7 @@ function Chat({ cookies }) {
             snaps.data().channels.some((elem) => elem === channelId)
           );
       });
-  }, [channelId, db, cookies.user.id]);
+  }, [channelId, cookies.user.id]);
 
   const setFavourite = () => {
     // get favourite channels list and save it into channels
@@ -84,8 +94,6 @@ function Chat({ cookies }) {
     // console.log("before ", channels);
   };
 
-  
-
   return (
     <div className="chat">
       <div className="chat__header">
@@ -104,7 +112,7 @@ function Chat({ cookies }) {
 
         <div className="chat__headerRight">
           <p>
-            <InfoOutlinedIcon  /> Details
+            <InfoOutlinedIcon /> Details
           </p>
         </div>
       </div>
@@ -122,7 +130,7 @@ function Chat({ cookies }) {
       </div>
 
       <div className="chat__form">
-        <ChatForm db={db} channelId={channelId} />
+        <ChatForm db={db} channelId={channelId} key={channelId} />
       </div>
     </div>
   );

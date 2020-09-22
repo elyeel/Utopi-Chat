@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import "./ChatForm.scss";
+import db from '../../firebase'
 
-export default function ChatForm({ db, channelId }) {
+export default function ChatForm({ channelId }) {
   const [cookies] = useCookies(["user"]);
   const [msg, setMsg] = useState("");
 
