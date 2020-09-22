@@ -11,30 +11,32 @@ function Message({ message, timestamp, user, userImage }) {
   const [showTranslation, setShowTranslation] = useState(false);
   return (
     <div className="message" onMouseEnter={()=>setShowTranslateButton(true)} onMouseLeave={()=>setShowTranslateButton(false)}>
-      <img src={userImage} alt="" />
-      <div className="message__info">
-        <h4>
-          {user}{" "}
-          <span className="message__timestamp">
-            {new Date(timestamp?.toDate()).toUTCString()}
-          </span>
-          <div className='message-box'>
-            <p>{message}</p>
-            {ShowTranslateButton && (
-              <div >
-                <IconButton className='translate-button'>
-                  <TranslateIcon  onClick={()=>setShowTranslation(true)}/>
-                </IconButton>
-              </div>
-            )}
-          </div>
-          <TranslatedMessageModal
-            isOpen={showTranslation}
-            closeModal={()=>setShowTranslation(false)}
-            message={message}
-          />
-        </h4>
+      <div className='message__left'>
+        <img src={userImage} alt="" />
+        <div className="message__info">
+          <h4>
+            {user}{" "}
+            <span className="message__timestamp">
+              {new Date(timestamp?.toDate()).toUTCString()}
+            </span>
+            <div className='message-box'>
+              <p>{message}</p>
+            </div>
+            <TranslatedMessageModal
+              isOpen={showTranslation}
+              closeModal={()=>setShowTranslation(false)}
+              message={message}
+            />
+          </h4>
+        </div>
       </div>
+      {ShowTranslateButton && (
+        <div >
+          <IconButton className='translate-button'>
+            <TranslateIcon  onClick={()=>setShowTranslation(true)}/>
+          </IconButton>
+        </div>
+      )}
     </div>
   )
 }
