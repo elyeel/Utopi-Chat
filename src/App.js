@@ -55,9 +55,9 @@ function App() {
                         <h4>
                           Developed By:
                         </h4>
-                        <p><a href='https://github.com/eileenlimur'>Eileen</a></p>
-                        <p><a href='https://github.com/endonoh0/'>Eric</a></p>
-                        <p><a href='https://github.com/elyeel'>James</a></p>
+                        <p><a target='_blank' href='https://github.com/eileenlimur'>Eileen</a></p>
+                        <p><a target='_blank' href='https://github.com/endonoh0/'>Eric</a></p>
+                        <p><a target='_blank' href='https://github.com/elyeel'>James</a></p>
                       </div>
                     </div>
                   </div>
