@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Chat.scss";
-
+import db from '../../firebase'
 import { useParams } from "react-router-dom";
 
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
@@ -9,7 +9,7 @@ import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Message from "../Message/Message";
 import ChatForm from "../ChatForm/ChatForm";
 
-function Chat({ db, cookies }) {
+function Chat({ cookies }) {
   const { channelId } = useParams();
 
   const [channelDetails, setChannelDetails] = useState(null);
