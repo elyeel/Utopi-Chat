@@ -11,22 +11,12 @@ export default function() {
     <Grid container spacing={3} className='stats-grid'>
       <Grid item xs={6} className='stats-cell'>
         <Card>
-          1
+          1 person online
         </Card>
       </Grid >
       <Grid item xs={6} className='stats-cell'>
         <Card>
-          2
-        </Card>
-      </Grid>
-      <Grid item xs={6} className='stats-cell'>
-        <Card>
-          3
-        </Card>
-      </Grid>
-      <Grid item xs={6} className='stats-cell'>
-        <Card>
-          4
+          2 countries online
         </Card>
       </Grid>
     </Grid>
