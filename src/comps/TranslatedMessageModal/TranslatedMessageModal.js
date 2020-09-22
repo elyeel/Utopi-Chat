@@ -29,7 +29,7 @@ export default function TranslatedMessageModal({isOpen, closeModal, message}) {
     'bs': 'Босански',
     'bg': 'български език',
     'zh': '汉语',
-    'zh-TW': '华语',
+    'zh-TW': '漢語',
     'hr': 'Hrvatski',
     'cs': 'Čeština',
     'da': 'Dansk',
