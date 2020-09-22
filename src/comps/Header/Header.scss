@@ -40,9 +40,20 @@
     }
   }
 
+  .header-logo-box {
+    margin: auto;
+    font-family: 'Impact, Haettenschweiler, Franklin Gothic Bold, Charcoal, Helvetica Inserat, Bitstream Vera Sans Bold, Arial Black, sans serif';   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .header-logo {
-    font-family: 'Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif';   
     font-size: 3em;
+  }
+
+  .header-motto {
+    font-size: 1em;
   }
     
 
