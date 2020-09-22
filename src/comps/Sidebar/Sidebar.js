@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LanguageSelectionModal from '../LanguageSelectionModal/LanguageSelectionModal';
+import StatBox from '../StatBox/StatBox';
 import "./Sidebar.scss";
 
 // Material Icons
@@ -45,19 +46,13 @@ function Sidebar({ cookies, language, setLanguage, currChannel, setCurrChannel, 
         <div className="sidebar__info">
           <h2>UtopiChat</h2>
           <h3>
-            <FiberManualRecordIcon />
+            <FiberManualRecordIcon/>
             {cookies.user.name}1
           </h3>
         </div>
         <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/>
       </div>
-      {/* <SidebarOption Icon={TvIcon} title="Joined Channels" />
-      <SidebarOption Icon={MarkunreadMailboxIcon} title="Unread Mail" />
-      <SidebarOption Icon={LiveTvIcon} title="Browse Channels" />
-      <SidebarOption Icon={ExpandLessIcon} title="Show Less" />
-      <hr />
-      <SidebarOption Icon={ExpandMoreIcon} title="Channels" />
-      <hr /> */}
+      <StatBox/>
       <SidebarOption
         Icon={AddIcon}
         addChannelOption={true}
