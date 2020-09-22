@@ -69,7 +69,7 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
         <h1 className='header-logo'>
           Utopi-Chat
         </h1>
-        <h2 className='header-motto'>Talk To People</h2>
+        <h2 className='header-motto'>🌍🌎🌏</h2>
       </div>
 
       <div className="header__right">

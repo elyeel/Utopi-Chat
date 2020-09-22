@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import LanguageSelectionModal from '../LanguageSelectionModal/LanguageSelectionModal';
+import FlagSelectionModal from '../FlagSelectionModal/FlagSelectionModal';
 import StatBox from '../StatBox/StatBox';
 import "./Sidebar.scss";
 
@@ -16,7 +16,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 
 
-function Sidebar({ cookies, language, setLanguage, currChannel, setCurrChannel, db }) {
+function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }) {
   const [channels, setChannels] = useState([]);
   const [languageModal, setLanguageModal] = useState(false);
 
@@ -35,11 +35,11 @@ function Sidebar({ cookies, language, setLanguage, currChannel, setCurrChannel, 
   return (
     <div className="sidebar">
       {languageModal &&
-        <LanguageSelectionModal
+        <FlagSelectionModal
           isOpen={languageModal}
           closeModal={()=>setLanguageModal(false)}
           language={language}
-          setLanguage={setLanguage}
+          setFlag={setFlag}
         />
       }
       <div className="sidebar__header">
