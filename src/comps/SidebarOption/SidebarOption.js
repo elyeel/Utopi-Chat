@@ -129,6 +129,18 @@ function SidebarOption({
     if (numUsers > 0) return numUsers;
   };
 
+  window.onbeforeunload = function() {
+    db.collection("channelUsers")
+        .doc(currChannel)
+        .get()
+        .then((doc) => {
+          const arrUsers = doc.data().users;
+          db.collection("channelUsers")
+            .doc(currChannel)
+            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+        });
+  };
+
   return (
     <>
       <div
