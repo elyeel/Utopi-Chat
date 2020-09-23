@@ -24,7 +24,6 @@
     "request": "^2.88.2",
     "uuidv4": "^6.2.3"
   },
-  "proxy": "http://localhost:3001",
   "secure": false,
   "scripts": {
     "start": "react-scripts start",
