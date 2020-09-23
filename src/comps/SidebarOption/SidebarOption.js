@@ -12,6 +12,7 @@ function SidebarOption({
   changeLanguage,
   setCurrChannel,
   cookies,
+  countUsers
 }) {
   const history = useHistory();
   const [numUsers, setNumUsers] = useState(0);
@@ -126,8 +127,14 @@ function SidebarOption({
       .onSnapshot((snaps) => {
         if (snaps.data()) setNumUsers(snaps.data().users.length);
       });
-    if (numUsers > 0) return numUsers;
+    if (numUsers > 0)  return numUsers;
   };
+
+  useEffect(()=> {
+    if (numUsers) {
+      countUsers(numUsers, id);
+    }
+  },[numUsers, id])
 
   return (
     <>

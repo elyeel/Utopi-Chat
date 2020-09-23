@@ -18,6 +18,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }) {
   const [channels, setChannels] = useState([]);
+  const [userCount, setUserCount] = useState({});
   const [languageModal, setLanguageModal] = useState(false);
 
   useEffect(() => {
@@ -31,6 +32,14 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
       );
     });
   }, [db]);
+
+  useEffect(()=>{
+    console.log(userCount);
+  },[userCount])
+
+  const modifyUserCount=(count, id)=>{
+    setUserCount(prev=>({...prev, [id]: count}));
+  }
 
   return (
     <div className="sidebar">
@@ -52,7 +61,7 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
         </div>
         {/* <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/> */}
       </div>
-      <StatBox/>
+      <StatBox userCount={Object.values(userCount).reduce((t, count) => t + count, 0)}/>
       <SidebarOption
         Icon={AddIcon}
         addChannelOption={true}
@@ -70,6 +79,7 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
             setCurrChannel={setCurrChannel}
             cookies={cookies}
             db={db}
+            countUsers={modifyUserCount}
           />
         );
       })}

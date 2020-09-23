@@ -8,10 +8,19 @@
 }
 
 .stat-card {
+  position: relative;
   height: 3em;
-  margin: 10px;
+  margin: 1em;
+  font-size: 1.5em;
   font-family: 'Impact, Haettenschweiler, Franklin Gothic Bold, Charcoal, Helvetica Inserat, Bitstream Vera Sans Bold, Arial Black, sans serif';   
+  overflow-y: scroll;
+}
 
+.stat-card-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 hr {
