@@ -139,19 +139,6 @@ function SidebarOption({
     }
   },[numUsers, id])
 
-  //untested function:
-  window.onbeforeunload = function() {
-    db.collection("channelUsers")
-        .doc(currChannel)
-        .get()
-        .then((doc) => {
-          const arrUsers = doc.data().users;
-          db.collection("channelUsers")
-            .doc(currChannel)
-            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
-        });
-  };
-
   // notification feature with local storage comparison
   useEffect(() => {
     let favChannel = false;
@@ -187,6 +174,32 @@ function SidebarOption({
         });
     }
   }, [id]);
+
+  useEffect(()=> {
+    window.addEventListener('beforeunload', function() {
+      console.log('hello');
+      db.collection("channelUsers")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        const arrUsers = doc.data().users;
+        db.collection("channelUsers")
+          .doc(id)
+          .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+      });
+    })
+    return window.removeEventListener('beforeunload', function() {
+      db.collection("channelUsers")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        const arrUsers = doc.data().users;
+        db.collection("channelUsers")
+          .doc(id)
+          .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+      });
+    })
+  },[])
 
   useEffect(() => {
     if (id) {
