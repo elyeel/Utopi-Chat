@@ -3,17 +3,142 @@ import "./Login.scss";
 import { Button, responsiveFontSizes } from "@material-ui/core";
 import { auth, provider } from "../../firebase";
 
-function Login({ setCookie, db }) {
+const localDb = async (db) => {
+  // building array of objects from firestore
+  try {
+    await db
+      .collection("channels")
+      .get()
+      .then((docs) => {
+        if (docs) {
+          let localVar = docs.docs.map((doc) => {
+            const channel = {};
+            channel.name = doc.data().name;
+            channel.messages = [];
+            channel.docId = doc.id;
+            return channel;
+          });
+          // console.log(localVar);
+
+          for (let channel of localVar) {
+            db.collection("channels")
+              .doc(channel.docId)
+              .collection("messages")
+              .get()
+              .then((msgs) => {
+                for (let msg of msgs.docs) {
+                  // console.log(msg)
+                  channel.messages.push({
+                    messageId: msg.id,
+                    message: msg.data().message,
+                    timestamp: msg.data().timestamp.toDate(),
+                    user: msg.data().user,
+                    userimage: msg.data().userimage,
+                  });
+                }
+              })
+              .then(() => {
+                for (let local of localVar) {
+                  localStorage.setItem(
+                    local.docId,
+                    JSON.stringify(local.messages)
+                  );
+                }
+                localStorage.setItem("parent", JSON.stringify(localVar));
+              })
+              .catch((error) =>
+                console.error(
+                  "Error in getting message from messages collection",
+                  error
+                )
+              );
+          }
+          console.log(localVar);
+
+          // setTimeout(() => {
+          //   for (let local of localVar) {
+          //     localStorage.setItem(local.docId, JSON.stringify(local.messages));
+          //   }
+          //   localStorage.setItem("parent", JSON.stringify(localVar));
+          // }, 2000);
+        }
+      })
+      .catch((error) => console.error("Error in getting messages", error));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+function Login({ setCookie, db, messages, setMessages }) {
   const signIn = (e) => {
     auth
       .signInWithPopup(provider)
       .then((result) => {
-        const res = { ...result };
-        console.log(res);
+        // const res = { ...result };
+        // console.log(res);
         // const token = result.credential.accessToken;
         // const user = result.user;
         // console.log(user,token);
         setCookie("user", result.additionalUserInfo.profile);
+        db.collection("favouriteChannels")
+          .doc(result.additionalUserInfo.profile.id)
+          .get()
+          .then((fav) => {
+            if (!fav) {
+              db.collection("favouriteChannels")
+                .doc(result.additionalUserInfo.profile.id)
+                .set({
+                  id: result.additionalUserInfo.profile.id,
+                  channels: [],
+                });
+            }
+            // else {
+            //   if (fav.data().channels.length <= 0) {
+            //     db.collection("favouriteChannels")
+            //       .doc(result.additionalUserInfo.profile.id)
+            //       .set({
+            //         id: result.additionalUserInfo.profile.id,
+            //         channels: [],
+            //       })
+            //       .then((docRef) =>
+            //         console.log(
+            //           docRef,
+            //           ", ",
+            //           result.additionalUserInfo.profile.id
+            //         )
+            //       )
+            //       .catch((error) =>
+            //         console.error(
+            //           "Error adding user to Favourite Channels List"
+            //         )
+            //       );
+            //   }
+            // }
+          })
+          .catch((error) => console.error(error));
+        // .then((fav) => {
+        //   if (fav && fav.data().channels.length <= 0) {
+        //     db.collection("favouriteChannels")
+        //       .doc(result.additionalUserInfo.profile.id)
+        //       .set({
+        //         id: result.additionalUserInfo.profile.id,
+        //         channels: [],
+        //       })
+        //       .then((docRef) =>
+        //         console.log(
+        //           docRef,
+        //           ", ",
+        //           result.additionalUserInfo.profile.id
+        //         )
+        //       )
+        //       .catch((error) =>
+        //         console.error("Error adding user to Favourite Channels List")
+        //       );
+        //   }
+        // });
+
+        // building array of objects from firestore
+        // localDb(db);
 
         // db.collection("users")
         //   .doc(result.additionalUserInfo.profile.id)

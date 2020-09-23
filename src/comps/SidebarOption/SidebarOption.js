@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./SidebarOption.scss";
 import { useHistory } from "react-router-dom";
 import db from "../../firebase";
+import click from "./graceful.mp3";
 
 function SidebarOption({
   Icon,
@@ -16,6 +17,8 @@ function SidebarOption({
 }) {
   const history = useHistory();
   const [numUsers, setNumUsers] = useState(0);
+  // const [isSelect, setIsSelect] = useState(true);
+  const clickAudio = new Audio(click);
 
   const selectChannel = () => {
     if (id) {
@@ -40,7 +43,7 @@ function SidebarOption({
           // db.collection("channelUsers")
           //   .doc(id)
           //   .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
-          
+
           // if prev channel != null && != id => push user's id into users(array,doc) then setCurrChannel with current channel
           setCurrChannel((prev) => {
             if (prev !== null && prev !== id) {
@@ -121,7 +124,7 @@ function SidebarOption({
 
   const initNumUsers = () => {
     // useEffect here? to reduce calls to firebase
-    console.log("calls", id);
+    // console.log("calls", id);
     db.collection("channelUsers")
       .doc(id)
       .onSnapshot((snaps) => {
@@ -136,6 +139,81 @@ function SidebarOption({
     }
   },[numUsers, id])
 
+  //untested function:
+  window.onbeforeunload = function() {
+    db.collection("channelUsers")
+        .doc(currChannel)
+        .get()
+        .then((doc) => {
+          const arrUsers = doc.data().users;
+          db.collection("channelUsers")
+            .doc(currChannel)
+            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+        });
+  };
+
+  // notification feature with local storage comparison
+  useEffect(() => {
+    let favChannel = false;
+    const localDb = JSON.parse(localStorage.getItem(id));
+    if (id && localDb && localDb.length > 0) {
+      db.collection("favouriteChannels")
+        .doc(cookies.user.id)
+        .get()
+        .then((channels) => {
+          favChannel = channels
+            .data()
+            .channels.some((channel) => channel === id);
+        })
+        .then(() => {
+          db.collection("channels")
+            .doc(id)
+            .collection("messages")
+            .onSnapshot((snapshot) => {
+              console.log(snapshot.docs.length, localDb.length, favChannel);
+              if (snapshot.docs.length > localDb.length && favChannel) {
+                console.log("Increased, snaps = ", id);
+                console.log(snapshot.docChanges());
+                snapshot.docChanges().forEach((change) => {
+                  console.log("Playsound");
+                  if (change.type === "added") playSound(clickAudio);
+                });
+              } else console.log("The Same");
+
+              // if (snapshot.metadata.fromCache) playSound(clickAudio);
+              // let cache = snapshot.metadata.fromCache
+              // console.log("Data came from ", cache)
+            });
+        });
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      const tempArr = [];
+      db.collection("channels")
+        .doc(id)
+        .collection("messages")
+        .get()
+        .then((msgs) => {
+          for (let msg of msgs.docs) {
+            tempArr.push({
+              messageId: msg.id,
+              message: msg.data().message,
+              timestamp: msg.data().timestamp.toDate(),
+              user: msg.data().user,
+              userimage: msg.data().userimage,
+            });
+          }
+        })
+        .then(() => localStorage.setItem(id, JSON.stringify(tempArr)));
+    }
+  });
+
+  const playSound = (audioFile) => {
+    audioFile.play();
+  };
+  // onClick={() => playSound(clickAudio)}
   return (
     <>
       <div

@@ -1,14 +1,13 @@
-import React, {useState} from "react";
-import ToxicityWarningModal from '../ToxicityWarningModal/ToxicityWarningModal';
+import React, { useState } from "react";
 import { useCookies } from "react-cookie";
-import toxicityCheck from '../../helpers/toxicityCheck';
+import "./ChatForm.scss";
+import db from '../../firebase'
 import Loading from '../Loading';
 import Button from '@material-ui/core/Button';
+import toxicityCheck from '../../helpers/toxicityCheck';
+import ToxicityWarningModal from '../ToxicityWarningModal/ToxicityWarningModal';
 
-
-import './ChatForm.scss'
-
-export default function ChatForm({ db, channelId, channelName }) {
+export default function ChatForm({ channelId, channelName }) {
   const [cookies] = useCookies(["user"]);
   const [msg, setMsg] = useState("");
   const [modal, setModal] = useState(false);
@@ -16,7 +15,6 @@ export default function ChatForm({ db, channelId, channelName }) {
 
   const submitMsg = (event) => {
     event.preventDefault();
-    setLoading(true);
     toxicityCheck(msg)
     .then(res => {
       setLoading(false);
@@ -31,16 +29,32 @@ export default function ChatForm({ db, channelId, channelName }) {
             message: msg,
             timestamp: new Date(Date.now()),
             user: cookies.user.name,
-            userimage: cookies.user.picture
+            userimage: cookies.user.picture,
           })
           .then((docRef) => {
+            const tempArr = [];
             console.log("Written with id :", docRef.id);
-            setMsg('');
-          })
-          .catch((error) => console.error("Error adding message: ", error));
-      }
-    })
-  };
+            setMsg("");
+              db.collection("channels")
+                .doc(channelId)
+                .collection("messages")
+                .get()
+                .then((msgs) => {
+                  for (let msg of msgs.docs) {
+                    tempArr.push({
+                      messageId: msg.id,
+                      message: msg.data().message,
+                      timestamp: msg.data().timestamp.toDate(),
+                      user: msg.data().user,
+                      userimage: msg.data().userimage,
+                    });
+                  }
+                })
+            .then(() => localStorage.setItem(channelId, JSON.stringify(tempArr)));
+      })
+      .catch((error) => console.error("Error adding message: ", error));
+    }
+  })};
 
   return (
     <form className="chat__text" onSubmit={submitMsg}>
