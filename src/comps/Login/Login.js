@@ -84,42 +84,58 @@ function Login({ setCookie, db, messages, setMessages }) {
           .doc(result.additionalUserInfo.profile.id)
           .get()
           .then((fav) => {
-            if (fav && fav.data().channels.length <= 0) {
+            if (!fav) {
               db.collection("favouriteChannels")
                 .doc(result.additionalUserInfo.profile.id)
                 .set({
                   id: result.additionalUserInfo.profile.id,
                   channels: [],
-                })
-                .then((docRef) =>
-                  console.log(
-                    docRef,
-                    ", ",
-                    result.additionalUserInfo.profile.id
-                  )
-                )
-                .catch((error) =>
-                  console.error("Error adding user to Favourite Channels List")
-                );
-            } else {
-              db.collection("favouriteChannels")
-                .doc(result.additionalUserInfo.profile.id)
-                .set({
-                  id: result.additionalUserInfo.profile.id,
-                  channels: [],
-                })
-                .then((docRef) =>
-                  console.log(
-                    docRef,
-                    ", ",
-                    result.additionalUserInfo.profile.id
-                  )
-                )
-                .catch((error) =>
-                  console.error("Error adding user to Favourite Channels List")
-                );
+                });
             }
-          });
+            // else {
+            //   if (fav.data().channels.length <= 0) {
+            //     db.collection("favouriteChannels")
+            //       .doc(result.additionalUserInfo.profile.id)
+            //       .set({
+            //         id: result.additionalUserInfo.profile.id,
+            //         channels: [],
+            //       })
+            //       .then((docRef) =>
+            //         console.log(
+            //           docRef,
+            //           ", ",
+            //           result.additionalUserInfo.profile.id
+            //         )
+            //       )
+            //       .catch((error) =>
+            //         console.error(
+            //           "Error adding user to Favourite Channels List"
+            //         )
+            //       );
+            //   }
+            // }
+          })
+          .catch((error) => console.error(error));
+        // .then((fav) => {
+        //   if (fav && fav.data().channels.length <= 0) {
+        //     db.collection("favouriteChannels")
+        //       .doc(result.additionalUserInfo.profile.id)
+        //       .set({
+        //         id: result.additionalUserInfo.profile.id,
+        //         channels: [],
+        //       })
+        //       .then((docRef) =>
+        //         console.log(
+        //           docRef,
+        //           ", ",
+        //           result.additionalUserInfo.profile.id
+        //         )
+        //       )
+        //       .catch((error) =>
+        //         console.error("Error adding user to Favourite Channels List")
+        //       );
+        //   }
+        // });
 
         // building array of objects from firestore
         // localDb(db);
