@@ -165,7 +165,7 @@ function SidebarOption({
             });
         });
     }
-  });
+  }, [id]);
 
   useEffect(() => {
     if (id) {
