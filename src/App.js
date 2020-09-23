@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -9,17 +8,27 @@ import Login from "./comps/Login/Login";
 import db from "./firebase";
 
 import "./App.css";
-  
+
+// db.enablePersistence()
+//   .then((doc) => console.log("Local storage enabled", doc))
+//   .catch((error) => console.error("Failed to enable local storage", error));
+
 function App() {
   const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   return (
     <div className="App">
       <Router>
         {!cookies.user ? (
-          <Login setCookie={setCookie} db={db} />
+          <Login
+            setCookie={setCookie}
+            db={db}
+            setMessages={setMessages}
+            messages={messages}
+          />
         ) : (
           <>
             <Header
@@ -40,21 +49,39 @@ function App() {
               />
               <Switch>
                 <Route path="/channel/:channelId">
-                  <Chat currChannel={currChannel} db={db} />
+                  <Chat currChannel={currChannel} db={db} cookies={cookies} />
                 </Route>
                 <Route path="/">
-                  <div className='welcome-page'>
-                    <div><h2>Welcome</h2></div>
+                  <div className="welcome-page">
+                    <div>
+                      <h2>Welcome</h2>
+                    </div>
                     <div>
                       {/* <h3>About:</h3>
                         Utopi-Chat is a chat page for general topics. You can translate the messages on each  */}
                       <div>
-                        <h4>
-                          Developed By:
-                        </h4>
-                        <p><a target='_blank' href='https://github.com/eileenlimur'>Eileen</a></p>
-                        <p><a target='_blank' href='https://github.com/endonoh0/'>Eric</a></p>
-                        <p><a target='_blank' href='https://github.com/elyeel'>James</a></p>
+                        <h4>Developed By:</h4>
+                        <p>
+                          <a
+                            target="_blank"
+                            href="https://github.com/eileenlimur"
+                          >
+                            Eileen
+                          </a>
+                        </p>
+                        <p>
+                          <a
+                            target="_blank"
+                            href="https://github.com/endonoh0/"
+                          >
+                            Eric
+                          </a>
+                        </p>
+                        <p>
+                          <a target="_blank" href="https://github.com/elyeel">
+                            James
+                          </a>
+                        </p>
                       </div>
                     </div>
                   </div>
