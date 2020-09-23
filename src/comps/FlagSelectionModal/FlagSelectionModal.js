@@ -18,9 +18,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import './FlagSelectionModal.scss';
 import flags from '../flags';
 
-export default function FlagSelectionModal({isOpen, closeModal, language, setLanguage}) {
-  const [newLanguage, setNewLanguage] = useState(language);
-  const [languageMenuState, setLanguageMenuState] = useState(false);
+export default function FlagSelectionModal({isOpen, closeModal, db, cookies}) {
+  const [flag, setFlag] = useState('');
+  const [flagMenuState, setFlagMenuState] = useState(false);
   const flagDropdown = flags.map(flag => {
     return (
     <MenuItem key={flag.code} value={flag.code}>{flag.code} {flag.emoji}</MenuItem>
@@ -28,7 +28,15 @@ export default function FlagSelectionModal({isOpen, closeModal, language, setLan
   });
 
   const handleSubmit = () => {
-    setLanguage(newLanguage);
+    if (flag) {
+      db.collection("users")
+        .doc(cookies.user.id)
+        .update({ flag_code: flag })
+        .then(() => console.log("Users array updated"))
+        .catch((error) => console.error("Error in updating", error));
+      };
+    }
+    setFlag('');
     closeModal();
   }
 
@@ -54,11 +62,11 @@ export default function FlagSelectionModal({isOpen, closeModal, language, setLan
             </InputLabel>
             <Select
               labelId='open-select-label'
-              open={languageMenuState}
-              onClose={()=>setLanguageMenuState(false)}
-              onOpen={()=>setLanguageMenuState(true)}
-              value={newLanguage}
-              onChange={e=>setNewLanguage(e.target.value)}
+              open={flagMenuState}
+              onClose={()=>setFlagMenuState(false)}
+              onOpen={()=>setFlagMenuState(true)}
+              value={flag}
+              onChange={e=>setFlag(e.target.value)}
             >
               <MenuItem value='none'><LanguageIcon/></MenuItem>
               {flagDropdown}

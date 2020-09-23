@@ -40,6 +40,8 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
           closeModal={()=>setLanguageModal(false)}
           language={language}
           setFlag={setFlag}
+          db={db}
+          cookies={cookies}
         />
       }
       <div className="sidebar__header">
