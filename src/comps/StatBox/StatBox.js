@@ -8,17 +8,17 @@ import './StatBox.scss';
 
 export default function() {
   return (
-    <Grid container spacing={3} className='stats-grid'>
-      <Grid item xs={6} className='stats-cell'>
-        <Card>
-          1 person online
+    // <Grid container spacing={3} className='stats-grid'>
+    //   <Grid item xs={6} className='stats-cell'>
+        <Card className='stat-card'>
+          1 X 👤
         </Card>
-      </Grid >
-      <Grid item xs={6} className='stats-cell'>
+      // </Grid >
+      /* <Grid item xs={6} className='stats-cell'>
         <Card>
           2 countries online
         </Card>
-      </Grid>
-    </Grid>
+      </Grid> */
+    // </Grid>
   )
 }

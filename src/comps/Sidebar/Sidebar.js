@@ -34,14 +34,14 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
 
   return (
     <div className="sidebar">
-      {languageModal &&
+      {/* {languageModal &&
         <FlagSelectionModal
           isOpen={languageModal}
           closeModal={()=>setLanguageModal(false)}
           language={language}
           setFlag={setFlag}
         />
-      }
+      } */}
       <div className="sidebar__header">
         <div className="sidebar__info">
           <h2>UtopiChat</h2>
@@ -50,7 +50,7 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
             {cookies.user.name}
           </h3>
         </div>
-        <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/>
+        {/* <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/> */}
       </div>
       <StatBox/>
       <SidebarOption
