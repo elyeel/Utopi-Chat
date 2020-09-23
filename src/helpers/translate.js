@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 export default function translate(request) {
-  return axios.post('/api/translate', {
+  return axios.post(process.env.REACT_APP_TRANSLATE_ENDPOINT, {
     text: request.text,
     target_language: request.target_language
   })
   .then(response => {
+    console.log(response);
     if (response.data.result) {
       return response.data.result.translations[0].translation
     } else {
