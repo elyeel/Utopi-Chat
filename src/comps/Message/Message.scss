@@ -1,15 +1,15 @@
 .message {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 12px;
   position: relative;
   justify-content: space-between;
-
 
   img {
     height: 40px;
     width: 40px;
     object-fit: contain;
+    border-radius: 50%;
   }
 
   .message__left {
@@ -34,7 +34,7 @@
     background-color: rgba(107, 8, 205, 0.4);
     color: black;
     position: absolute;
-    top: 20px;
+    top: 8px;
     right: 20px;
     height: 50px;
     width: 50px;
@@ -46,4 +46,10 @@
   p {
     font-weight: normal;
   }
+}
+.message:nth-child(odd) {
+  background: rgba(182, 174, 174, 0.2);
+}
+.message:nth-child(even) {
+  background: rgba(252, 252, 252, 0.7);
 }
