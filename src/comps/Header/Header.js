@@ -74,9 +74,9 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
 
       <div className="header__right">
         {/* night-mode icon */}
-        <IconButton>
+        {/* <IconButton>
           <ToggleOffIcon className="header__right--toggle" />
-        </IconButton>
+        </IconButton> */}
 
         {/* log out */}
         <IconButton onClick={logOut}>
