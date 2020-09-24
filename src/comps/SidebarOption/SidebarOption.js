@@ -134,7 +134,7 @@ function SidebarOption({
   };
 
   useEffect(()=> {
-    if (numUsers) {
+    if (countUsers) {
       countUsers(numUsers, id);
     }
   },[numUsers, id])
