@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Header from "./comps/Header/Header";
@@ -18,6 +18,12 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
   const [messages, setMessages] = useState([]);
+
+  useEffect(()=>{
+    if (cookies && cookies.user && cookies.user.id) {
+      db.collection("onlineUsers").doc(cookies.user.id);
+    }
+  },[cookies])
 
   return (
     <div className="App">
