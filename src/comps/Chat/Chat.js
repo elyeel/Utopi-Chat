@@ -14,16 +14,16 @@ function Chat({ cookies }) {
   const [channelDetails, setChannelDetails] = useState(null);
   const [channelMessages, setChannelMessages] = useState([]);
   const [favouriteChannel, setFavouriteChannel] = useState(false);
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     updateScroll();
-  }, [channelMessages])
+  }, [channelMessages]);
 
   // fetch all details from current channel
-  
+
   useEffect(() => {
     if (channelId) {
-      db.collection('channels')
+      db.collection("channels")
         .doc(channelId)
         .onSnapshot((snapshot) => setChannelDetails(snapshot.data()));
     }
@@ -36,27 +36,27 @@ function Chat({ cookies }) {
       .onSnapshot((snapshot) => {
         setChannelMessages(
           snapshot.docs.map((doc) => {
-              console.log("From chat inside snapshot", channelId);
-              return {
-                id: doc.id,
-                message: doc.data().message,
-                user: doc.data().user,
-                userimage: doc.data().userimage,
-                timestamp: doc.data().timestamp,
-              };
-            })
+            console.log("From chat inside snapshot", channelId);
+            return {
+              id: doc.id,
+              message: doc.data().message,
+              user: doc.data().user,
+              userimage: doc.data().userimage,
+              timestamp: doc.data().timestamp,
+            };
+          })
           // setChannelMessages([...newMessages]);
-            // console.log("docs",doc.id);
-            // console.log("From chat inside snapshot", channelId);
-            // return {
-            //   id: doc.id,
-            //   message: doc.data().message,
-            //   user: doc.data().user,
-            //   userimage: doc.data().userimage,
-            //   timestamp: doc.data().timestamp,
-            // }
-          );
-      })
+          // console.log("docs",doc.id);
+          // console.log("From chat inside snapshot", channelId);
+          // return {
+          //   id: doc.id,
+          //   message: doc.data().message,
+          //   user: doc.data().user,
+          //   userimage: doc.data().userimage,
+          //   timestamp: doc.data().timestamp,
+          // }
+        );
+      });
     db.collection("favouriteChannels")
       .doc(cookies.user.id)
       .onSnapshot((snaps) => {
@@ -99,17 +99,17 @@ function Chat({ cookies }) {
   };
 
   const updateScroll = () => {
-    const chatBox = document.getElementById('chat__messages');
+    const chatBox = document.getElementById("chat__messages");
     chatBox.scrollTop = chatBox.scrollHeight;
-  }
+  };
 
   return (
-    <div className='chat'>
-      <div className='chat__header'>
-        <div className='chat__headerLeft'>
-          <h4 className='chat__channelName'>
+    <div className="chat">
+      <div className="chat__header">
+        <div className="chat__headerLeft">
+          <h4 className="chat__channelName">
             <strong>#{channelDetails?.name}</strong>
-            <span>
+            <span className={favouriteChannel ? "favs" : ""}>
               {favouriteChannel ? (
                 <StarOutlinedIcon onClick={setFavourite} />
               ) : (
@@ -119,13 +119,13 @@ function Chat({ cookies }) {
           </h4>
         </div>
 
-        <div className='chat__headerRight'>
+        <div className="chat__headerRight">
           <p>
             <InfoOutlinedIcon /> Details
           </p>
         </div>
       </div>
-      <div id='chat__messages' className='chat__messages'>
+      <div id="chat__messages" className="chat__messages">
         {channelMessages.map(({ id, message, timestamp, user, userimage }) => (
           <Message
             key={id}
@@ -137,7 +137,7 @@ function Chat({ cookies }) {
         ))}
       </div>
 
-      <div className='chat__form'>
+      <div className="chat__form">
         <ChatForm
           db={db}
           channelId={channelId}

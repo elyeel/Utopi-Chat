@@ -19,13 +19,13 @@ function App() {
   const [currChannel, setCurrChannel] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (cookies && cookies.user && cookies.user.id) {
       db.collection("onlineUsers")
-      .doc(cookies.user.id)
-      .set({id: cookies.user.id});
+        .doc(cookies.user.id)
+        .set({ id: cookies.user.id });
     }
-  },[cookies])
+  }, [cookies]);
 
   return (
     <div className="App">

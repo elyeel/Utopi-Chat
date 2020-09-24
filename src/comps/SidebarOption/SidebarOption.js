@@ -129,9 +129,9 @@ function SidebarOption({
       .onSnapshot((snaps) => {
         if (snaps.data()) setNumUsers(snaps.data().users.length);
       });
-    if (numUsers > 0)  return numUsers;
+    if (numUsers > 0) return numUsers;
   };
-  
+
   // notification feature with local storage comparison
   useEffect(() => {
     let favChannel = false;
@@ -168,34 +168,32 @@ function SidebarOption({
     }
   }, [id]);
 
-  useEffect(()=> {
-    window.addEventListener('beforeunload', function() {
-      console.log('hello');
+  useEffect(() => {
+    window.addEventListener("beforeunload", function () {
+      console.log("hello");
       db.collection("channelUsers")
-      .doc(id)
-      .get()
-      .then((doc) => {
-        const arrUsers = doc.data().users;
-        db.collection("channelUsers")
-          .doc(id)
-          .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
-      });
-    })
+        .doc(id)
+        .get()
+        .then((doc) => {
+          const arrUsers = doc.data().users;
+          db.collection("channelUsers")
+            .doc(id)
+            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+        });
+    });
 
-
-    
-    return window.removeEventListener('beforeunload', function() {
+    return window.removeEventListener("beforeunload", function () {
       db.collection("channelUsers")
-      .doc(id)
-      .get()
-      .then((doc) => {
-        const arrUsers = doc.data().users;
-        db.collection("channelUsers")
-          .doc(id)
-          .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
-      });
-    })
-  },[])
+        .doc(id)
+        .get()
+        .then((doc) => {
+          const arrUsers = doc.data().users;
+          db.collection("channelUsers")
+            .doc(id)
+            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+        });
+    });
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -227,9 +225,15 @@ function SidebarOption({
     <>
       <div
         className="sidebarOption"
-        onClick={addChannelOption ? addChannel : (changeLanguage ? changeLanguage : selectChannel)}
+        onClick={
+          addChannelOption
+            ? addChannel
+            : changeLanguage
+            ? changeLanguage
+            : selectChannel
+        }
       >
-        {Icon && <Icon className="sidebarOption__icon"/>}
+        {Icon && <Icon className="sidebarOption__icon" />}
         {Icon ? (
           <h3>{title}</h3>
         ) : (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import FlagSelectionModal from '../FlagSelectionModal/FlagSelectionModal';
-import StatBox from '../StatBox/StatBox';
+import FlagSelectionModal from "../FlagSelectionModal/FlagSelectionModal";
+import StatBox from "../StatBox/StatBox";
 import "./Sidebar.scss";
 
 // Material Icons
@@ -15,8 +15,14 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 
-
-function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }) {
+function Sidebar({
+  cookies,
+  language,
+  setFlag,
+  currChannel,
+  setCurrChannel,
+  db,
+}) {
   const [channels, setChannels] = useState([]);
   const [userCount, setUserCount] = useState(0);
   // const [languageModal, setLanguageModal] = useState(false);
@@ -31,20 +37,19 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
         }))
       );
     });
-    db.collection('onlineUsers')
-    .onSnapshot(snapshot => {
+    db.collection("onlineUsers").onSnapshot((snapshot) => {
       setUserCount(snapshot.size);
-    })
+    });
   }, [db]);
 
-  useEffect(()=>{
-    window.addEventListener('beforeunload', function() {
-      setUserCount(prev => prev - 1);
-    })
-    return window.removeEventListener('beforeunload', function() {
-      setUserCount(prev => prev - 1);
-    })
-  },[])
+  useEffect(() => {
+    window.addEventListener("beforeunload", function () {
+      setUserCount((prev) => prev - 1);
+    });
+    return window.removeEventListener("beforeunload", function () {
+      setUserCount((prev) => prev - 1);
+    });
+  }, []);
 
   return (
     <div className="sidebar">
@@ -60,13 +65,13 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
         <div className="sidebar__info">
           <h2>UtopiChat</h2>
           <h3>
-            <FiberManualRecordIcon/>
+            <FiberManualRecordIcon />
             {cookies.user.name}
           </h3>
         </div>
         {/* <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/> */}
       </div>
-      <StatBox userCount={userCount}/>
+      <StatBox userCount={userCount} />
       <SidebarOption
         Icon={AddIcon}
         addChannelOption={true}
