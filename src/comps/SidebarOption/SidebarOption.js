@@ -13,7 +13,6 @@ function SidebarOption({
   changeLanguage,
   setCurrChannel,
   cookies,
-  countUsers
 }) {
   const history = useHistory();
   const [numUsers, setNumUsers] = useState(0);
@@ -132,13 +131,7 @@ function SidebarOption({
       });
     if (numUsers > 0)  return numUsers;
   };
-
-  useEffect(()=> {
-    if (countUsers) {
-      countUsers(numUsers, id);
-    }
-  },[numUsers, id])
-
+  
   // notification feature with local storage comparison
   useEffect(() => {
     let favChannel = false;
@@ -188,6 +181,9 @@ function SidebarOption({
           .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
       });
     })
+
+
+    
     return window.removeEventListener('beforeunload', function() {
       db.collection("channelUsers")
       .doc(id)

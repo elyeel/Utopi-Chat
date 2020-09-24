@@ -18,8 +18,8 @@ import AddIcon from "@material-ui/icons/Add";
 
 function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }) {
   const [channels, setChannels] = useState([]);
-  const [userCount, setUserCount] = useState({});
-  const [languageModal, setLanguageModal] = useState(false);
+  const [userCount, setUserCount] = useState(0);
+  // const [languageModal, setLanguageModal] = useState(false);
 
   useEffect(() => {
     // snapshot of channels collection
@@ -31,15 +31,20 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
         }))
       );
     });
+    db.collection('onlineUsers')
+    .onSnapshot(snapshot => {
+      setUserCount(snapshot.size);
+    })
   }, [db]);
 
   useEffect(()=>{
-    console.log(userCount);
-  },[userCount])
-
-  const modifyUserCount=(count, id)=>{
-    setUserCount(prev=>({...prev, [id]: count}));
-  }
+    window.addEventListener('beforeunload', function() {
+      setUserCount(prev => prev - 1);
+    })
+    return window.removeEventListener('beforeunload', function() {
+      setUserCount(prev => prev - 1);
+    })
+  },[])
 
   return (
     <div className="sidebar">
@@ -61,7 +66,7 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
         </div>
         {/* <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/> */}
       </div>
-      <StatBox userCount={Object.values(userCount).reduce((t, count) => t + count, 0)}/>
+      <StatBox userCount={userCount}/>
       <SidebarOption
         Icon={AddIcon}
         addChannelOption={true}
@@ -79,7 +84,6 @@ function Sidebar({ cookies, language, setFlag, currChannel, setCurrChannel, db }
             setCurrChannel={setCurrChannel}
             cookies={cookies}
             db={db}
-            countUsers={modifyUserCount}
           />
         );
       })}
