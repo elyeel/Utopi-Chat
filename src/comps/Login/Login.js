@@ -84,7 +84,7 @@ function Login({ setCookie, db, messages, setMessages }) {
           .doc(result.additionalUserInfo.profile.id)
           .get()
           .then((fav) => {
-            if (!fav) {
+            if (!fav.data()) {
               db.collection("favouriteChannels")
                 .doc(result.additionalUserInfo.profile.id)
                 .set({
