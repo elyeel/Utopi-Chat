@@ -15,6 +15,7 @@ export default function ChatForm({ channelId, channelName }) {
 
   const submitMsg = (event) => {
     event.preventDefault();
+    setLoading(true);
     toxicityCheck(msg).then((res) => {
       setLoading(false);
       if (res) {
