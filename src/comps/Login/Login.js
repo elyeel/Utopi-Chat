@@ -1,7 +1,10 @@
 import React from "react";
 import "./Login.scss";
 import { Button, responsiveFontSizes } from "@material-ui/core";
+
 import { auth, provider } from "../../firebase";
+import { useStateValue } from "../../StateProvider";
+import { actionTypes } from "../../reducer";
 
 const localDb = async (db) => {
   // building array of objects from firestore
@@ -70,28 +73,36 @@ const localDb = async (db) => {
 };
 
 function Login({ setCookie, db, messages, setMessages }) {
+  const [state, dispatch] = useStateValue();
+
+
   const signIn = (e) => {
     auth
       .signInWithPopup(provider)
       .then((result) => {
-        // const res = { ...result };
-        // console.log(res);
-        // const token = result.credential.accessToken;
-        // const user = result.user;
-        // console.log(user,token);
-        setCookie("user", result.additionalUserInfo.profile);
-        db.collection("favouriteChannels")
-          .doc(result.additionalUserInfo.profile.id)
-          .get()
-          .then((fav) => {
-            if (!fav.data()) {
-              db.collection("favouriteChannels")
-                .doc(result.additionalUserInfo.profile.id)
-                .set({
-                  id: result.additionalUserInfo.profile.id,
-                  channels: [],
-                });
-            }
+        console.log('result', result);
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: result.user
+        })
+      })
+      .catch(error => {
+        alert(error.message)
+      })
+
+        // setCookie("user", result.additionalUserInfo.profile);
+        // db.collection("favouriteChannels")
+        //   .doc(result.additionalUserInfo.profile.id)
+        //   .get()
+        //   .then((fav) => {
+        //     if (!fav.data()) {
+        //       db.collection("favouriteChannels")
+        //         .doc(result.additionalUserInfo.profile.id)
+        //         .set({
+        //           id: result.additionalUserInfo.profile.id,
+        //           channels: [],
+        //         });
+        //     }
             // else {
             //   if (fav.data().channels.length <= 0) {
             //     db.collection("favouriteChannels")
@@ -114,8 +125,8 @@ function Login({ setCookie, db, messages, setMessages }) {
             //       );
             //   }
             // }
-          })
-          .catch((error) => console.error(error));
+          // })
+          // .catch((error) => console.error(error));
         // .then((fav) => {
         //   if (fav && fav.data().channels.length <= 0) {
         //     db.collection("favouriteChannels")
@@ -151,10 +162,10 @@ function Login({ setCookie, db, messages, setMessages }) {
         //   })
         //   .then((docRef) => console.log("User added with ID", docRef.id))
         //   .catch((error) => console.error("Error adding User", error));
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
+      // })
+      // .catch((error) => {
+      //   alert(error.message);
+      // });
   };
   return (
     <div className="login">

@@ -66,7 +66,7 @@ function Sidebar({
           <h2>UtopiChat</h2>
           <h3>
             <FiberManualRecordIcon />
-            {cookies.user.name}
+            {/* {cookies.user.name} */}
           </h3>
         </div>
         {/* <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/> */}
@@ -87,7 +87,7 @@ function Sidebar({
             id={channel.id}
             currChannel={currChannel}
             setCurrChannel={setCurrChannel}
-            cookies={cookies}
+            // cookies={cookies}
             db={db}
           />
         );

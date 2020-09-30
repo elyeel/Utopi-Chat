@@ -16,34 +16,51 @@ import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { auth } from "../../firebase";
 
-function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
-  const history = useHistory();
-  // log out function, erase user id from channel users
-  const logOut = function (e) {
-    if (currChannel) {
+import { useStateValue } from "../../StateProvider";
+import { actionTypes } from "../../reducer";
 
-      db.collection("channelUsers")
-        .doc(currChannel)
-        .get()
-        .then((doc) => {
-          const arrUsers = doc.data().users;
-          db.collection("channelUsers")
-            .doc(currChannel)
-            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
-        });
-    }
-    auth
-      .signOut()
-      .then(() => {
-        removeCookie("user");
-        console.log("logged out!");
+function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
+  const [state, dispatch] = useStateValue();
+
+  const logOut = (event) => {
+    auth.signOut().then(() => {
+      dispatch({
+        type: actionTypes.LOG_OUT,
+        user: ""
       })
-      .catch((error) => {
-        alert(error.message);
-      });
+      console.log("User logged out!");
+    });
   };
 
-  console.log(cookies);
+  const [{ user }] = useStateValue();
+
+  const history = useHistory();
+  // log out function, erase user id from channel users
+  // const logOut = function (e) {
+  //   if (currChannel) {
+
+  //     db.collection("channelUsers")
+  //       .doc(currChannel)
+  //       .get()
+  //       .then((doc) => {
+  //         const arrUsers = doc.data().users;
+  //         db.collection("channelUsers")
+  //           .doc(currChannel)
+  //           .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+  //       });
+  //   }
+  //   auth
+  //     .signOut()
+  //     .then(() => {
+  //       removeCookie("user");
+  //       console.log("logged out!");
+  //     })
+  //     .catch((error) => {
+  //       alert(error.message);
+  //     });
+  // };
+
+  // console.log(cookies);
 
   return (
     <div className="header">

@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+// Firebase Database
+import db from "./firebase";
+
 import { useCookies } from "react-cookie";
+import { useStateValue } from './StateProvider';
+
+// Components
 import Header from "./comps/Header/Header";
 import Sidebar from "./comps/Sidebar/Sidebar";
 import Chat from "./comps/Chat/Chat";
 import Login from "./comps/Login/Login";
-import db from "./firebase";
 
+// Styling
 import "./App.css";
 
 // db.enablePersistence()
@@ -14,25 +21,27 @@ import "./App.css";
 //   .catch((error) => console.error("Failed to enable local storage", error));
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [{ user }, dispatch] = useStateValue();
+
+  // const [user, setUser] = useState(null);
+  // const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
-    if (cookies && cookies.user && cookies.user.id) {
-      db.collection("onlineUsers")
-        .doc(cookies.user.id)
-        .set({ id: cookies.user.id });
-    }
-  }, [cookies]);
+  // useEffect(() => {
+  //   if (cookies && cookies.user && cookies.user.id) {
+  //     db.collection("onlineUsers")
+  //       .doc(cookies.user.id)
+  //       .set({ id: cookies.user.id });
+  //   }
+  // }, [cookies]);
 
   return (
     <div className="App">
       <Router>
-        {!cookies.user ? (
+        {!user ? (
           <Login
-            setCookie={setCookie}
+            // setCookie={setCookie}
             db={db}
             setMessages={setMessages}
             messages={messages}
@@ -40,24 +49,25 @@ function App() {
         ) : (
           <>
             <Header
-              cookies={cookies}
-              setCookie={setCookie}
-              removeCookie={removeCookie}
-              user={user}
-              setUser={setUser}
+              // cookies={cookies}
+              // setCookie={setCookie}
+              // removeCookie={removeCookie}
+              // user={user}
+              // setUser={setUser}
               currChannel={currChannel}
               db={db}
             />
             <div className="app__body">
               <Sidebar
-                cookies={cookies}
+                // cookies={cookies}
                 setCurrChannel={setCurrChannel}
                 currChannel={currChannel}
                 db={db}
               />
               <Switch>
                 <Route path="/channel/:channelId">
-                  <Chat currChannel={currChannel} db={db} cookies={cookies} />
+                  {/* <Chat currChannel={currChannel} db={db} cookies={cookies} /> */}
+                  <Chat currChannel={currChannel} db={db} />
                 </Route>
                 <Route path="/">
                   <div className="welcome-page">
