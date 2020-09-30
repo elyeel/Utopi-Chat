@@ -15,13 +15,12 @@ function Chat({ cookies }) {
   const [channelDetails, setChannelDetails] = useState(null);
   const [channelMessages, setChannelMessages] = useState([]);
 
-  // const [favouriteChannel, setFavouriteChannel] = useState(false);
+  const [favouriteChannel, setFavouriteChannel] = useState(false);
 
   // useEffect(() => {
   //   updateScroll();
   // }, [channelMessages]);
 
-  // fetch all details from current channel
   // fetch all details from current channel
   useEffect(() => {
     if (channelId) {
@@ -85,36 +84,36 @@ function Chat({ cookies }) {
   // }, [channelId]);
   // }, [channelId, cookies.user.id]);
 
-  // const setFavourite = () => {
+  const setFavourite = () => {
   //   // get favourite channels list and save it into channels
-  //   let channels = [];
-  //   db.collection("favouriteChannels")
-  //     .doc(cookies.user.id)
-  //     .get()
-  //     .then((doc) => {
+    let channels = [];
+    db.collection("favouriteChannels")
+      .doc(cookies.user.id)
+      .get()
+      .then((doc) => {
   //       // console.log("from db ", doc.data().channels);
-  //       channels = doc.data().channels;
+        channels = doc.data().channels;
   //       // if favourite channel => change it to not and delist channel from favouriteChannel list
-  //       if (favouriteChannel) {
-  //         channels = channels.filter((elem) => elem !== channelId);
+        if (favouriteChannel) {
+          channels = channels.filter((elem) => elem !== channelId);
   //         // else => change it to favourite channel and list channel on favouriteChannel list
-  //       } else {
-  //         channels.push(channelId);
-  //         console.log(channels);
-  //       }
+        } else {
+          channels.push(channelId);
+          console.log(channels);
+        }
   //       // update channels to db
-  //       db.collection("favouriteChannels")
-  //         .doc(cookies.user.id)
-  //         .update({ channels: channels })
-  //         .then(() => console.log("Favourite Channels is updated"))
-  //         .catch((error) =>
-  //           console.error("Error updating Favourite Channels!", error)
-  //         );
+        db.collection("favouriteChannels")
+          .doc(cookies.user.id)
+          .update({ channels: channels })
+          .then(() => console.log("Favourite Channels is updated"))
+          .catch((error) =>
+            console.error("Error updating Favourite Channels!", error)
+          );
   //       // setFavouriteChannel(!favouriteChannel);
-  //     })
-  //     .catch((error) => console.log("Document is not exist", error));
+      })
+      .catch((error) => console.log("Document is not exist", error));
   //   // console.log("before ", channels);
-  // };
+  };
 
   const updateScroll = () => {
     const chatBox = document.getElementById("chat__messages");
@@ -127,13 +126,13 @@ function Chat({ cookies }) {
         <div className="chat__headerLeft">
           <h4 className="chat__channelName">
             <strong>#{channelDetails?.name}</strong>
-            {/* <span className={favouriteChannel ? "favs" : ""}>
+            <span className={favouriteChannel ? "favs" : ""}>
               {favouriteChannel ? (
                 <StarOutlinedIcon onClick={setFavourite} />
               ) : (
                 <StarBorderOutlinedIcon onClick={setFavourite} />
               )}
-            </span> */}
+            </span>
           </h4>
         </div>
 

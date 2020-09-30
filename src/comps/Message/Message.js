@@ -23,7 +23,7 @@ function Message({ message, timestamp, user, userImage }) {
               {new Date(timestamp?.toDate()).toUTCString()}
             </span>
             <div className="message-box">
-              <p>{message?.text}</p>
+              <p>{message}</p>
             </div>
             {/* <TranslatedMessageModal
               isOpen={showTranslation}

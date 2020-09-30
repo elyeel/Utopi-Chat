@@ -6,30 +6,35 @@ import Loading from "../Loading";
 import Button from "@material-ui/core/Button";
 import toxicityCheck from "../../helpers/toxicityCheck";
 import ToxicityWarningModal from "../ToxicityWarningModal/ToxicityWarningModal";
+import { useStateValue } from "../../StateProvider";
 
 export default function ChatForm({ channelId, channelName }) {
   const [cookies] = useCookies(["user"]);
   const [msg, setMsg] = useState("");
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [{ user }] = useStateValue();
 
   const submitMsg = (event) => {
     event.preventDefault();
+
+
     setLoading(true);
     toxicityCheck(msg).then((res) => {
       setLoading(false);
       if (res) {
         setModal(true);
         setMsg("");
-      } else {
-        db.collection("channels")
-          .doc(channelId)
+      } else if (channelId) {
+        db.collection("channels").doc(channelId)
           .collection("messages")
           .add({
             message: msg,
             timestamp: new Date(Date.now()),
-            user: cookies.user.name,
-            userimage: cookies.user.picture,
+            // user: cookies.user.name,
+            user: user.displayName,
+            // userimage: cookies.user.picture,
+            userimage: user.photoURL
           })
           .then((docRef) => {
             const tempArr = [];
@@ -60,7 +65,8 @@ export default function ChatForm({ channelId, channelName }) {
   };
 
   return (
-    <form className="chat__text" onSubmit={submitMsg}>
+    <form className="chat__text">
+    {/* <form className="chat__text" onSubmit={submitMsg}> */}
       <ToxicityWarningModal isOpen={modal} closeModal={() => setModal(false)} />
       <input
         className="chat__input"
