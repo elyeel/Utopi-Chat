@@ -139,6 +139,7 @@ function Login({ setCookie, db, messages, setMessages, onClick, loginWithGoogle 
     <Form className="login">
       <div className="login__container">
         <h1>Sign in</h1>
+
         <Form.Group>
           <Form.Label htmlFor="email">Email</Form.Label>
           <Form.Control
@@ -171,23 +172,23 @@ function Login({ setCookie, db, messages, setMessages, onClick, loginWithGoogle 
           </div>
         </div>
 
-        <div className="button__container">
-          <Button
-            type="submit"
-            onClick={event => {
-              signIn(email);
-              onClick(event, email, password);
-              setEmail("");
-              setPassword("");
-            }
-          }>
-            Sign in
-          </Button>
+        <Button
+          type="submit"
+          onClick={event => {
+            signIn(email);
+            onClick(event, email, password);
+            setEmail("");
+            setPassword("");
+          }
+        }>
+          Sign in
+        </Button>
 
-          <Button className="forgot-password mr-alt">
-            Sign in with <a onClick={login}>Google?</a>
-          </Button>
+        <div className="auth-group">
+          <p>Sign in with <a href="#" onClick={login}>Google?</a></p>
+          <p><a href="/register">Register</a></p>
         </div>
+
       </div>
     </Form>
     </>

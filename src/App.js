@@ -17,6 +17,7 @@ import Login from "./comps/Login/Login";
 import "./App.css";
 
 import { logout, login, register, loginWithGoogle } from './helpers/firebaseAuth'
+import Register from "./comps/Register/Register";
 
 
 // db.enablePersistence()
@@ -41,6 +42,9 @@ function App() {
     removeCookie('user');
   }, []);
 
+  const requestRegister = useCallback((event, email, password) => {
+    register(event, email, password, setCookie);
+  });
 
   useEffect(() => {
     if (cookies && cookies.user && cookies.user.id) {
@@ -50,24 +54,38 @@ function App() {
     }
   }, [cookies]);
 
+  if (cookies.user) {
+    console.log('cookie', cookies.user);
+  }
+  if (user) {
+    console.log('user', user);
+  }
   return (
     <div className="App">
       <Router>
-        {!cookies.user || !user ? (
-          <Login
-            setCookie={setCookie}
-            db={db}
-            setMessages={setMessages}
-            messages={messages}
-            onClick={requestLogin}
-            loginWithGoogle={e => (loginWithGoogle(setCookie))}
-          />
-        ) : (
+        {!cookies.user ? (
+          <Switch>
+            <Route path="/login">
+              <Login
+                setCookie={setCookie}
+                db={db}
+                setMessages={setMessages}
+                messages={messages}
+                onClick={requestLogin}
+                loginWithGoogle={e => (loginWithGoogle(setCookie))}
+              />)
+            </Route>
+            <Route path="/register">
+              {<Register onClick={requestRegister} />}
+            </Route>
+          </Switch>
+        ) :
+        (
           <>
             <Header
               // cookies={cookies}
               // setCookie={setCookie}
-              // removeCookie={removeCookie}
+              removeCookie={removeCookie}
               // user={user}
               // setUser={setUser}
               onClick={requestLogout}

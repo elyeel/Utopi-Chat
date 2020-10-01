@@ -23,7 +23,9 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel, onClick }) 
   const [state, dispatch] = useStateValue();
 
   const logOut = (event) => {
+    // onclick();
     auth.signOut().then(() => {
+      removeCookie("user");
       dispatch({
         type: actionTypes.LOG_OUT,
         user: ""
@@ -96,7 +98,7 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel, onClick }) 
         </IconButton> */}
 
         {/* log out */}
-        <IconButton onClick={logOut}>
+        <IconButton onClick={onClick}>
           <ExitToAppIcon  />
         </IconButton>
       </div>

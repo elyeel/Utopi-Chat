@@ -1,4 +1,4 @@
-.login {
+.register {
   height: 100vh;
   background: #f8f8f8;
   display: grid;
@@ -9,7 +9,7 @@
     text-align: center;
   }
 
-  .login__container {
+  .register__container {
     padding: 100px;
     text-align: end;
     background-color: white;
@@ -18,7 +18,7 @@
 
     .form-group {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       margin-top: 25px;
     }
 
@@ -42,10 +42,15 @@
   }
 }
 
-.auth-group {
+.auth-register {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  text-decoration: none;
+}
 
+.auth-login {
+  display: flex;
+  justify-content: center;
   a {
     text-decoration: none;
   }

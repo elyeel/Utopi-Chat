@@ -28,6 +28,7 @@ const register = (event, email, password, setCookie) => {
   auth.createUserWithEmailAndPassword(email, password)
     .then(() => {
       setCookie("user", email)
+      console.log('registered', email);
     })
     .catch(function (error) {
       let errorMessage = error.message;
@@ -37,7 +38,6 @@ const register = (event, email, password, setCookie) => {
 const loginWithGoogle = (setCookie) => {
   auth.signInWithPopup(provider).then(result => {
     const token = result.credential.accessToken;
-    const user = result.user
     setCookie("user", token);
   }).catch(error => console.log(error))
 }
