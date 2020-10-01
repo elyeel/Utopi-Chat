@@ -4,6 +4,12 @@
 // import db from "../../firebase";
 // import click from "./graceful.mp3";
 
+import React, { useState } from "react";
+import "./SidebarOption.scss";
+
+import { useHistory } from "react-router-dom";
+import db from "../../firebase";
+
 // function SidebarOption({
 //   Icon,
 //   title,
@@ -15,8 +21,8 @@
 //   cookies,
 // }) {
 //   const history = useHistory();
-//   const [numUsers, setNumUsers] = useState(0);
-//   // const [isSelect, setIsSelect] = useState(true);
+  // const [numUsers, setNumUsers] = useState(0);
+  // const [isSelect, setIsSelect] = useState(true);
 //   const clickAudio = new Audio(click);
 
 //   const selectChannel = () => {
@@ -121,16 +127,16 @@
 //     }
 //   };
 
-//   const initNumUsers = () => {
-//     // useEffect here? to reduce calls to firebase
-//     // console.log("calls", id);
-//     db.collection("channelUsers")
-//       .doc(id)
-//       .onSnapshot((snaps) => {
-//         if (snaps.data()) setNumUsers(snaps.data().users.length);
-//       });
-//     if (numUsers > 0) return numUsers;
-//   };
+  // const initNumUsers = (id) => {
+  //   // useEffect here? to reduce calls to firebase
+  //   // console.log("calls", id);
+  //   db.collection("channelUsers")
+  //     .doc(id)
+  //     .onSnapshot((snaps) => {
+  //       if (snaps.data()) setNumUsers(snaps.data().users.length);
+  //     });
+  //   if (numUsers > 0) return numUsers;
+  // };
 
 //   // notification feature with local storage comparison
 //   useEffect(() => {
@@ -195,27 +201,27 @@
 //     });
 //   }, []);
 
-//   useEffect(() => {
-//     if (id) {
-//       const tempArr = [];
-//       db.collection("channels")
-//         .doc(id)
-//         .collection("messages")
-//         .get()
-//         .then((msgs) => {
-//           for (let msg of msgs.docs) {
-//             tempArr.push({
-//               messageId: msg.id,
-//               message: msg.data().message,
-//               timestamp: msg.data().timestamp.toDate(),
-//               user: msg.data().user,
-//               userimage: msg.data().userimage,
-//             });
-//           }
-//         })
-//         .then(() => localStorage.setItem(id, JSON.stringify(tempArr)));
-//     }
-//   });
+  // useEffect(() => {
+  //   if (id) {
+  //     const tempArr = [];
+  //     db.collection("channels")
+  //       .doc(id)
+  //       .collection("messages")
+  //       .get()
+  //       .then((msgs) => {
+  //         for (let msg of msgs.docs) {
+  //           tempArr.push({
+  //             messageId: msg.id,
+  //             message: msg.data().message,
+  //             timestamp: msg.data().timestamp.toDate(),
+  //             user: msg.data().user,
+  //             userimage: msg.data().userimage,
+  //           });
+  //         }
+  //       })
+  //       .then(() => localStorage.setItem(id, JSON.stringify(tempArr)));
+  //   }
+  // });
 
 //   const playSound = (audioFile) => {
 //     audioFile.play();
@@ -252,14 +258,29 @@
 
 // export default SidebarOption;
 
-import React from "react";
-import "./SidebarOption.scss";
 
-import { useHistory } from "react-router-dom";
-import db from "../../firebase";
 
-function SidebarOption({ Icon, title, id, addChannelOption }) {
+function SidebarOption({ Icon, title, id, addChannelOption,
+  currChannel,
+  changeLanguage,
+  setCurrChannel,
+  cookies,
+}) {
+  const [numUsers, setNumUsers] = useState(0);
+  const [isSelect, setIsSelect] = useState(true);
+
   const history = useHistory();
+
+  const initNumUsers = () => {
+    // useEffect here? to reduce calls to firebase
+    // console.log("calls", id);
+    db.collection("channelUsers")
+      .doc(id)
+      .onSnapshot((snaps) => {
+        if (snaps.data()) setNumUsers(snaps.data().users.length);
+      });
+    if (numUsers > 0) return numUsers;
+  };
 
   const selectChannel = () => {
     if (id) {
@@ -286,7 +307,9 @@ function SidebarOption({ Icon, title, id, addChannelOption }) {
       { Icon ? (<h3>{title}</h3>
       ) : (
           <h3 className="sidebarOption__channel">
-            <span className="sidebarOption__hash">#</span>{title}
+            <span className="sidebarOption__hash">#</span>
+            {title}
+            {id && ( <span className="sidebarOption__numUsers">{initNumUsers()}</span> )}
           </h3>
         )}
     </div>

@@ -31,10 +31,8 @@ export default function ChatForm({ channelId, channelName }) {
           .add({
             message: msg,
             timestamp: new Date(Date.now()),
-            // user: cookies.user.name,
-            user: user.displayName,
-            // userimage: cookies.user.picture,
-            userimage: user.photoURL
+            user: user?.displayName || cookies?.user.name || "Eric Ho",
+            userimage: user?.photoURL || cookies?.user.picture || "https://via.placeholder.com/150"
           })
           .then((docRef) => {
             const tempArr = [];

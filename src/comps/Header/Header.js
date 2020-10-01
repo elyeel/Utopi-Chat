@@ -19,7 +19,7 @@ import { auth } from "../../firebase";
 import { useStateValue } from "../../StateProvider";
 import { actionTypes } from "../../reducer";
 
-function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
+function Header({ setCookie, removeCookie, cookies, db, currChannel, onClick }) {
   const [state, dispatch] = useStateValue();
 
   const logOut = (event) => {

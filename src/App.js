@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Firebase Database
@@ -16,6 +16,9 @@ import Login from "./comps/Login/Login";
 // Styling
 import "./App.css";
 
+import { logout, login, register, loginWithGoogle } from './helpers/firebaseAuth'
+
+
 // db.enablePersistence()
 //   .then((doc) => console.log("Local storage enabled", doc))
 //   .catch((error) => console.error("Failed to enable local storage", error));
@@ -24,27 +27,40 @@ function App() {
   const [{ user }, dispatch] = useStateValue();
 
   // const [user, setUser] = useState(null);
-  // const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currChannel, setCurrChannel] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  // useEffect(() => {
-  //   if (cookies && cookies.user && cookies.user.id) {
-  //     db.collection("onlineUsers")
-  //       .doc(cookies.user.id)
-  //       .set({ id: cookies.user.id });
-  //   }
-  // }, [cookies]);
+  // listen to acition events from auth comps
+  const requestLogin = useCallback((event, email, password) => {
+    login(event, email, password, setCookie);
+  });
+
+  const requestLogout = useCallback(() => {
+    logout();
+    removeCookie('user');
+  }, []);
+
+
+  useEffect(() => {
+    if (cookies && cookies.user && cookies.user.id) {
+      db.collection("onlineUsers")
+        .doc(cookies.user.id)
+        .set({ id: cookies.user.id });
+    }
+  }, [cookies]);
 
   return (
     <div className="App">
       <Router>
-        {!user ? (
+        {!cookies.user || !user ? (
           <Login
-            // setCookie={setCookie}
+            setCookie={setCookie}
             db={db}
             setMessages={setMessages}
             messages={messages}
+            onClick={requestLogin}
+            loginWithGoogle={e => (loginWithGoogle(setCookie))}
           />
         ) : (
           <>
@@ -54,12 +70,13 @@ function App() {
               // removeCookie={removeCookie}
               // user={user}
               // setUser={setUser}
+              onClick={requestLogout}
               currChannel={currChannel}
               db={db}
             />
             <div className="app__body">
               <Sidebar
-                // cookies={cookies}
+                cookies={cookies}
                 setCurrChannel={setCurrChannel}
                 currChannel={currChannel}
                 db={db}
