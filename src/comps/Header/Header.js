@@ -4,9 +4,8 @@ import "./Header.scss";
 
 import Avatar from "@material-ui/core/Avatar";
 import HistoryIcon from "@material-ui/icons/History";
-import HomeIcon from '@material-ui/icons/Home';
-import IconButton from '@material-ui/core/IconButton';
-
+import HomeIcon from "@material-ui/icons/Home";
+import IconButton from "@material-ui/core/IconButton";
 
 import SearchIcon from "@material-ui/icons/Search";
 
@@ -21,7 +20,6 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
   // log out function, erase user id from channel users
   const logOut = function (e) {
     if (currChannel) {
-
       db.collection("channelUsers")
         .doc(currChannel)
         .get()
@@ -54,7 +52,7 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
           src={cookies.user.picture}
         /> */}
         <IconButton>
-          <HomeIcon onClick={()=>history.push('/')}/>
+          <HomeIcon onClick={() => history.push("/")} />
         </IconButton>
 
         {/* <HistoryIcon /> */}
@@ -65,11 +63,11 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
 
         <input placeholder="Search for a channel" />
       </div> */}
-    <div className='header-logo-box'>
-        <h1 className='header-logo'>
-          Utopi-Chat
-        </h1>
-        <h2 className='header-motto'>🌍🌎🌏</h2>
+      <div className="header-logo-box">
+        <h1 className="header-logo">Utopi-Chat</h1>
+        <h2 className="header-motto">
+          <span role="img" aria-label="Globe" >🌍🌎🌏</span>
+        </h2>
       </div>
 
       <div className="header__right">
@@ -80,7 +78,7 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
 
         {/* log out */}
         <IconButton onClick={logOut}>
-          <ExitToAppIcon  />
+          <ExitToAppIcon />
         </IconButton>
       </div>
     </div>

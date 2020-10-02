@@ -9,7 +9,7 @@ import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Message from "../Message/Message";
 import ChatForm from "../ChatForm/ChatForm";
 
-function Chat({ cookies }) {
+function Chat({ cookies, currChannel }) {
   const { channelId } = useParams();
   const [channelDetails, setChannelDetails] = useState(null);
   const [channelMessages, setChannelMessages] = useState([]);
@@ -26,46 +26,46 @@ function Chat({ cookies }) {
       db.collection("channels")
         .doc(channelId)
         .onSnapshot((snapshot) => setChannelDetails(snapshot.data()));
-    }
-    // fetch all messages from current channel
-    console.log("From chat before", channelId);
-    db.collection("channels")
-      .doc(channelId)
-      .collection("messages")
-      .orderBy("timestamp", "asc")
-      .onSnapshot((snapshot) => {
-        setChannelMessages(
-          snapshot.docs.map((doc) => {
-            console.log("From chat inside snapshot", channelId);
-            return {
-              id: doc.id,
-              message: doc.data().message,
-              user: doc.data().user,
-              userimage: doc.data().userimage,
-              timestamp: doc.data().timestamp,
-            };
-          })
-          // setChannelMessages([...newMessages]);
-          // console.log("docs",doc.id);
-          // console.log("From chat inside snapshot", channelId);
-          // return {
-          //   id: doc.id,
-          //   message: doc.data().message,
-          //   user: doc.data().user,
-          //   userimage: doc.data().userimage,
-          //   timestamp: doc.data().timestamp,
-          // }
-        );
-      });
-    db.collection("favouriteChannels")
-      .doc(cookies.user.id)
-      .onSnapshot((snaps) => {
-        if (snaps)
-          setFavouriteChannel(
-            snaps.data().channels.some((elem) => elem === channelId)
+      // fetch all messages from current channel
+      console.log("From chat before", channelId);
+      db.collection("channels")
+        .doc(channelId)
+        .collection("messages")
+        .orderBy("timestamp", "asc")
+        .onSnapshot((snapshot) => {
+          console.log("From chat inside snapshot", channelId, currChannel);
+          setChannelMessages(
+            snapshot.docs.map((doc) => {
+              return {
+                id: doc.id,
+                message: doc.data().message,
+                user: doc.data().user,
+                userimage: doc.data().userimage,
+                timestamp: doc.data().timestamp,
+              };
+            })
+            // setChannelMessages([...newMessages]);
+            // console.log("docs",doc.id);
+            // console.log("From chat inside snapshot", channelId);
+            // return {
+            //   id: doc.id,
+            //   message: doc.data().message,
+            //   user: doc.data().user,
+            //   userimage: doc.data().userimage,
+            //   timestamp: doc.data().timestamp,
+            // }
           );
-      });
-  }, [channelId, cookies.user.id]);
+        });
+      db.collection("favouriteChannels")
+        .doc(cookies.user.id)
+        .onSnapshot((snaps) => {
+          if (snaps)
+            setFavouriteChannel(
+              snaps.data().channels.some((elem) => elem === channelId)
+            );
+        });
+    }
+  }, [channelId, currChannel, cookies.user.id]);
 
   const setFavourite = () => {
     // get favourite channels list and save it into channels
@@ -139,6 +139,7 @@ function Chat({ cookies }) {
 
       <div className="chat__form">
         <ChatForm
+          key={channelId}
           db={db}
           channelId={channelId}
           channelName={channelDetails?.name}

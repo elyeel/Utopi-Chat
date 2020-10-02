@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./SidebarOption.scss";
-import { useHistory } from "react-router-dom";
 import db from "../../firebase";
 import click from "./graceful.mp3";
+import useSidebarOption from "../hooks/sidebarOptHooks";
 
 function SidebarOption({
   Icon,
@@ -14,123 +14,129 @@ function SidebarOption({
   setCurrChannel,
   cookies,
 }) {
-  const history = useHistory();
   const [numUsers, setNumUsers] = useState(0);
-  // const [isSelect, setIsSelect] = useState(true);
   const clickAudio = new Audio(click);
+  const { addChannel, selectChannel } = useSidebarOption({
+    id: id,
+    cookies: cookies,
+    setCurrChannel: setCurrChannel,
+    setNumUsers: setNumUsers,
+    numUsers: numUsers,
+    currChannel: currChannel,
+  });
 
-  const selectChannel = () => {
-    if (id) {
-      history.push(`/channel/${id}`);
-      // check # of users online on this channel
-      db.collection("channelUsers")
-        .doc(id)
-        .get()
-        .then((doc) => {
-          const arrUsers = doc.data().users;
-          // if user not in the channel users array then add user into the channel user array
-          if (!arrUsers.some((e) => e === cookies.user.id)) {
-            arrUsers.push(cookies.user.id);
-            db.collection("channelUsers")
-              .doc(id)
-              .update({ users: arrUsers })
-              .then(() => setNumUsers(arrUsers.length))
-              .catch((error) =>
-                console.error("Error in updating the array of users!")
-              );
-          }
-          // db.collection("channelUsers")
-          //   .doc(id)
-          //   .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
+  // const selectChannel = () => {
+  //   if (id) {
+  //     history.push(`/channel/${id}`);
+  //     // check # of users online on this channel
+  //     db.collection("channelUsers")
+  //       .doc(id)
+  //       .get()
+  //       .then((doc) => {
+  //         const arrUsers = doc.data().users;
+  //         // if user not in the channel users array then add user into the channel user array
+  //         if (!arrUsers.some((e) => e === cookies.user.id)) {
+  //           arrUsers.push(cookies.user.id);
+  //           db.collection("channelUsers")
+  //             .doc(id)
+  //             .update({ users: arrUsers })
+  //             .then(() => setNumUsers(arrUsers.length))
+  //             .catch((error) =>
+  //               console.error("Error in updating the array of users!")
+  //             );
+  //         }
+  //         // db.collection("channelUsers")
+  //         //   .doc(id)
+  //         //   .onSnapshot((snaps) => setNumUsers(snaps.data().users.length));
 
-          // if prev channel != null && != id => push user's id into users(array,doc) then setCurrChannel with current channel
-          setCurrChannel((prev) => {
-            if (prev !== null && prev !== id) {
-              console.log("prev = ", prev);
-              // set previous channel users decrease by 1
-              db.collection("channelUsers")
-                .doc(prev)
-                .get()
-                .then((doc) => {
-                  const newArr = doc.data().users;
-                  db.collection("channelUsers")
-                    .doc(prev)
-                    .update({
-                      users: newArr.filter((cid) => cid !== cookies.user.id),
-                    });
-                });
-            }
-            // set current channel to current
-            return id;
-          });
-          // doc.data().users.push(cookies.user.id);
-          // console.log(doc.data());
-        })
-        .catch((error) =>
-          console.error("Error in pushing a users into array", error)
-        );
-    } else {
-      history.push("title");
-    }
+  //         // if prev channel != null && != id => push user's id into users(array,doc) then setCurrChannel with current channel
+  //         setCurrChannel((prev) => {
+  //           if (prev !== null && prev !== id) {
+  //             console.log("prev = ", prev);
+  //             // set previous channel users decrease by 1
+  //             db.collection("channelUsers")
+  //               .doc(prev)
+  //               .get()
+  //               .then((doc) => {
+  //                 const newArr = doc.data().users;
+  //                 db.collection("channelUsers")
+  //                   .doc(prev)
+  //                   .update({
+  //                     users: newArr.filter((cid) => cid !== cookies.user.id),
+  //                   });
+  //               });
+  //           }
+  //           // set current channel to current
+  //           return id;
+  //         });
+  //         // doc.data().users.push(cookies.user.id);
+  //         // console.log(doc.data());
+  //       })
+  //       .catch((error) =>
+  //         console.error("Error in pushing a users into array", error)
+  //       );
+  //   } else {
+  //     history.push("title");
+  //   }
 
-    // usersArr.push(cookies.user.id);
-    // db.collection("channelUsers")
-    //   .doc(id)
-    //   .update({ users: usersArr })
-    //   .then(() => console.log("Users array updated"))
-    //   .catch((error) => console.error("Error in updating", error));
-    // });
+  //   // usersArr.push(cookies.user.id);
+  //   // db.collection("channelUsers")
+  //   //   .doc(id)
+  //   //   .update({ users: usersArr })
+  //   //   .then(() => console.log("Users array updated"))
+  //   //   .catch((error) => console.error("Error in updating", error));
+  //   // });
 
-    // db.collection("users")
-    //   .doc(cookies.user.id)
-    //   .update({ channelId: id })
-    //   .then((doc) => console.log("User updated ", doc))
-    //   .catch((error) => console.error("Error updating User", error));
+  //   // db.collection("users")
+  //   //   .doc(cookies.user.id)
+  //   //   .update({ channelId: id })
+  //   //   .then((doc) => console.log("User updated ", doc))
+  //   //   .catch((error) => console.error("Error updating User", error));
 
-    // .then((users) => {
-    //   // const test = users;
-    //   // console.log(users);
-    // })
-    // .catch((error) => console.error("Can't get channel users data", error));
-  };
+  //   // .then((users) => {
+  //   //   // const test = users;
+  //   //   // console.log(users);
+  //   // })
+  //   // .catch((error) => console.error("Can't get channel users data", error));
+  // };
 
-  const addChannel = () => {
-    const channelName = prompt("Please enter the channel name");
+  // const addChannel = () => {
+  //   const channelName = prompt("Please enter the channel name");
 
-    if (channelName) {
-      db.collection("channels")
-        .add({
-          name: channelName,
-        })
-        .then((docRef) => {
-          console.log("docRef :", docRef.id);
-          db.collection("channelUsers")
-            .doc(docRef.id)
-            .set({
-              id: docRef.id,
-              users: [],
-            })
-            .then((doc) => console.log(doc))
-            .catch((error) =>
-              console.error("Error adding online users by channel", error)
-            );
-        })
-        .catch((error) => console.error("Error in adding new channel", error));
+  //   if (channelName) {
+  //     db.collection("channels")
+  //       .add({
+  //         name: channelName,
+  //       })
+  //       .then((docRef) => {
+  //         console.log("docRef :", docRef.id);
+  //         db.collection("channelUsers")
+  //           .doc(docRef.id)
+  //           .set({
+  //             id: docRef.id,
+  //             users: [],
+  //           })
+  //           .then((doc) => console.log(doc))
+  //           .catch((error) =>
+  //             console.error("Error adding online users by channel", error)
+  //           );
+  //       })
+  //       .catch((error) => console.error("Error in adding new channel", error));
 
-      addChannelOption = false;
-    }
-  };
+  //     addChannelOption = false;
+  //   }
+  // };
 
-  const initNumUsers = () => {
-    // useEffect here? to reduce calls to firebase
-    // console.log("calls", id);
-    db.collection("channelUsers")
-      .doc(id)
-      .onSnapshot((snaps) => {
-        if (snaps.data()) setNumUsers(snaps.data().users.length);
-      });
-    if (numUsers > 0) return numUsers;
-  };
+  // const initNumUsers = () => {
+  //   // useEffect here? to reduce calls to firebase
+  //   // console.log("calls", id);
+  //   db.collection("channelUsers")
+  //     .doc(id)
+  //     .onSnapshot((snaps) => {
+  //       if (snaps.data()) setNumUsers(snaps.data().users.length);
+  //     });
+  //   if (numUsers > 0) return numUsers;
+  // };
 
   // notification feature with local storage comparison
   useEffect(() => {
@@ -152,10 +158,10 @@ function SidebarOption({
             .onSnapshot((snapshot) => {
               console.log(snapshot.docs.length, localDb.length, favChannel);
               if (snapshot.docs.length > localDb.length && favChannel) {
-                console.log("Increased, snaps = ", id);
-                console.log(snapshot.docChanges());
+                // console.log("Increased, snaps = ", id);
+                // console.log(snapshot.docChanges());
                 snapshot.docChanges().forEach((change) => {
-                  console.log("Playsound");
+                  // console.log("Playsound");
                   if (change.type === "added") playSound(clickAudio);
                 });
               } else console.log("The Same");
@@ -193,7 +199,7 @@ function SidebarOption({
             .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
         });
     });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (id) {
@@ -241,7 +247,9 @@ function SidebarOption({
             <span className="sidebarOption__hash">#</span>
             {title}
             {id && (
-              <span className="sidebarOption__numUsers">{initNumUsers()}</span>
+              <span className="sidebarOption__numUsers">
+                {numUsers > 0 ? numUsers : ""}
+              </span>
             )}
           </h3>
         )}
