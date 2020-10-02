@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import StarOutlinedIcon from "@material-ui/icons/StarOutlined";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import Alert from '@material-ui/lab/Alert';
 import Message from "../Message/Message";
 import ChatForm from "../ChatForm/ChatForm";
 
@@ -14,6 +15,7 @@ function Chat({ cookies }) {
   const [channelDetails, setChannelDetails] = useState(null);
   const [channelMessages, setChannelMessages] = useState([]);
   const [favouriteChannel, setFavouriteChannel] = useState(false);
+  const [alert, setAlert] = useState(false);
 
   useEffect(() => {
     updateScroll();
@@ -103,8 +105,16 @@ function Chat({ cookies }) {
     chatBox.scrollTop = chatBox.scrollHeight;
   };
 
+  const showAlert = () => {
+    setAlert(true);
+    setTimeout(()=> {
+      setAlert(false);
+    }, 3000)
+  };
+
   return (
     <div className="chat">
+      {alert && <Alert severity="error" className='error'>Your message is blank!</Alert>}
       <div className="chat__header">
         <div className="chat__headerLeft">
           <h4 className="chat__channelName">
@@ -139,6 +149,7 @@ function Chat({ cookies }) {
 
       <div className="chat__form">
         <ChatForm
+          showAlert={showAlert}
           db={db}
           channelId={channelId}
           channelName={channelDetails?.name}
