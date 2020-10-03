@@ -34,6 +34,7 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
       .signOut()
       .then(() => {
         removeCookie("user");
+        removeCookie("channel");
         console.log("logged out!");
       })
       .catch((error) => {
@@ -41,7 +42,7 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
       });
   };
 
-  console.log(cookies);
+  // console.log(cookies);
 
   return (
     <div className="header">
@@ -66,7 +67,9 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
       <div className="header-logo-box">
         <h1 className="header-logo">Utopi-Chat</h1>
         <h2 className="header-motto">
-          <span role="img" aria-label="Globe" >🌍🌎🌏</span>
+          <span role="img" aria-label="Globe">
+            🌍🌎🌏
+          </span>
         </h2>
       </div>
 

@@ -15,7 +15,7 @@ import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["user", "channel"]);
   const [currChannel, setCurrChannel] = useState(null);
   const [messages, setMessages] = useState([]);
 
@@ -51,6 +51,7 @@ function App() {
             <div className="app__body">
               <Sidebar
                 cookies={cookies}
+                setCookie={setCookie}
                 setCurrChannel={setCurrChannel}
                 currChannel={currChannel}
                 db={db}

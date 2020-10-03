@@ -13,12 +13,14 @@ function SidebarOption({
   changeLanguage,
   setCurrChannel,
   cookies,
+  setCookie,
 }) {
   const [numUsers, setNumUsers] = useState(0);
   const clickAudio = new Audio(click);
   const { addChannel, selectChannel } = useSidebarOption({
     id: id,
     cookies: cookies,
+    setCookie: setCookie,
     setCurrChannel: setCurrChannel,
     setNumUsers: setNumUsers,
     numUsers: numUsers,
@@ -156,7 +158,7 @@ function SidebarOption({
             .doc(id)
             .collection("messages")
             .onSnapshot((snapshot) => {
-              console.log(snapshot.docs.length, localDb.length, favChannel);
+              // console.log(snapshot.docs.length, localDb.length, favChannel);
               if (snapshot.docs.length > localDb.length && favChannel) {
                 // console.log("Increased, snaps = ", id);
                 // console.log(snapshot.docChanges());
@@ -164,7 +166,7 @@ function SidebarOption({
                   // console.log("Playsound");
                   if (change.type === "added") playSound(clickAudio);
                 });
-              } else console.log("The Same");
+              } // else console.log("The Same");
 
               // if (snapshot.metadata.fromCache) playSound(clickAudio);
               // let cache = snapshot.metadata.fromCache

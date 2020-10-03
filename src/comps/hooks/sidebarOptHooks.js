@@ -7,6 +7,7 @@ export default function useSidebarOption({
   id,
   setCurrChannel,
   cookies,
+  setCookie,
   setNumUsers,
   numUsers,
   currChannel,
@@ -19,6 +20,7 @@ export default function useSidebarOption({
   const selectChannel = () => {
     if (id) {
       history.push(`/channel/${id}`);
+      setCookie("channel", id);
       // check # of users online on this channel
       db.collection("channelUsers")
         .doc(id)
@@ -40,7 +42,7 @@ export default function useSidebarOption({
           // if prev channel != null && != id => push user's id into users(array,doc) then setCurrChannel with current channel
           setCurrChannel((prev) => {
             if (prev && prev !== null && prev !== id) {
-              console.log("prev = ", prev, id);
+              // console.log("prev = ", prev, id);
               // set previous channel users decrease by 1
               db.collection("channelUsers")
                 .doc(prev)
@@ -61,13 +63,13 @@ export default function useSidebarOption({
                 })
                 .then(() => {
                   // set current channel to current
-                  console.log("got here");
+                  // console.log("got here");
                   return id;
                 });
               // return id;
-            } 
-              console.log("id =", id);
-              return id;
+            }
+            // console.log("id =", id);
+            return id;
           });
         })
         .catch((error) =>

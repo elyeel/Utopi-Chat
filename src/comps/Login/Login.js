@@ -53,7 +53,7 @@ const localDb = async (db) => {
                 )
               );
           }
-          console.log(localVar);
+          // console.log(localVar);
 
           // setTimeout(() => {
           //   for (let local of localVar) {
