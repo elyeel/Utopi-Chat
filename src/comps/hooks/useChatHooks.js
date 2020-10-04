@@ -12,7 +12,7 @@ export default function useChatHooks(channelId, cookies, currChannel) {
     // fetch all messages from current channel
     if (channelId && cookies.channel) {
       db.collection("channels")
-        .doc(cookies.channel)
+        .doc(channelId)
         .collection("messages")
         .orderBy("timestamp", "asc")
         .onSnapshot((snapshot) => {
@@ -30,6 +30,12 @@ export default function useChatHooks(channelId, cookies, currChannel) {
           );
         });
     }
+    const unsub = db
+      .collection("channels")
+      .doc(channelId)
+      .collection("messages")
+      .onSnapshot(() => {});
+    return () => {unsub()};
   }, [channelId, cookies.user.id, cookies.channel]);
 
   useEffect(() => {

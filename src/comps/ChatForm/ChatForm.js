@@ -33,7 +33,7 @@ export default function ChatForm({ channelId, channelName, cookies }) {
           })
           .then((docRef) => {
             const tempArr = [];
-            console.log("Written with id :", docRef.id);
+            console.log("Written with id :", docRef.id, channelId);
             setMsg("");
             db.collection("channels")
               .doc(channelId)
