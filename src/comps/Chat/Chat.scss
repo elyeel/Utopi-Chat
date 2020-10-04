@@ -4,7 +4,15 @@
   flex: 0.7;
   flex-grow: 1;
   height: 100%;
+  position: relative;
   // padding-bottom: 65px;
+
+  .error {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
 
   .chat__header {
     display: flex;
