@@ -10,8 +10,9 @@ export default function useChatHooks(channelId, cookies, currChannel) {
 
   useEffect(() => {
     // fetch all messages from current channel
+    console.log(channelId)
     if (channelId && cookies.channel) {
-      db.collection("channels")
+      const unsubscribe = db.collection("channels")
         .doc(cookies.channel)
         .collection("messages")
         .orderBy("timestamp", "asc")
@@ -19,6 +20,7 @@ export default function useChatHooks(channelId, cookies, currChannel) {
           // console.log("From chat inside snapshot", channelId, cookies.channel);
           setChannelMessages(
             snapshot.docs.map((doc) => {
+              console.log(channelId)
               return {
                 id: doc.id,
                 message: doc.data().message,
@@ -29,7 +31,10 @@ export default function useChatHooks(channelId, cookies, currChannel) {
             })
           );
         });
-    }
+        return function cleanup() {
+          unsubscribe();
+        }
+      }
   }, [channelId, cookies.user.id, cookies.channel]);
 
   useEffect(() => {
