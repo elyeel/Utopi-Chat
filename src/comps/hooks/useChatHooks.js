@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import db from "../../firebase";
-let count = 0;
 
 // fetch all details from current channel
 export default function useChatHooks(channelId, cookies, currChannel) {
@@ -49,13 +48,6 @@ export default function useChatHooks(channelId, cookies, currChannel) {
         });
     }
   }, [channelId, cookies]);
-
-  useEffect(() => {
-    if (channelId) {
-      ++count;
-      console.log(`Channel Id got changed ${count} with ${channelId} `);
-    }
-  }, [channelId]);
 
   useEffect(() => {
     if (channelId) {
