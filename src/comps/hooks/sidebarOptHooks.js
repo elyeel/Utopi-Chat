@@ -16,6 +16,7 @@ export default function useSidebarOption({
   // const [cookies] = useCookies(["user"]);
   const history = useHistory();
   const [addChannelOption, setAddChannelOption] = useState(true);
+  const [selected, setSelected] = useState(false);
 
   const selectChannel = () => {
     if (id) {
@@ -78,6 +79,7 @@ export default function useSidebarOption({
     } else {
       history.push("title");
     }
+    setSelected(true);
     // return numUsers;
   };
 
@@ -119,11 +121,5 @@ export default function useSidebarOption({
     // if (numUsers > 0) return numUsers;
   }, [id, setNumUsers]);
 
-  // const initNumUsers = () => {
-  // useEffect here? to reduce calls to firebase
-  // console.log("calls", id);
-
-  // };
-
-  return { addChannel, selectChannel };
+  return { addChannel, selectChannel, selected };
 }
