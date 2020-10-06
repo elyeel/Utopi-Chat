@@ -16,7 +16,8 @@ function SidebarOption({
   setCookie,
 }) {
   const [numUsers, setNumUsers] = useState(0);
-  const clickAudio = new Audio(click);
+  const [favChannel, setFavChannel] = useState(false);
+  let clickAudio = new Audio(click);
   const { addChannel, selectChannel } = useSidebarOption({
     id: id,
     cookies: cookies,
@@ -27,42 +28,71 @@ function SidebarOption({
     currChannel: currChannel,
   });
 
-  
-  // notification feature with local storage comparison
+  // notification block v0.3
   useEffect(() => {
-    let favChannel = false;
     const localDb = JSON.parse(localStorage.getItem(id));
-    if (id && localDb && localDb.length > 0) {
-      db.collection("favouriteChannels")
-        .doc(cookies.user.id)
-        .get()
-        .then((channels) => {
-          favChannel = channels
-            .data()
-            .channels.some((channel) => channel === id);
-        })
-        .then(() => {
-          db.collection("channels")
-            .doc(id)
-            .collection("messages")
-            .onSnapshot((snapshot) => {
-              // console.log(snapshot.docs.length, localDb.length, favChannel);
-              if (snapshot.docs.length > localDb.length && favChannel) {
-                // console.log("Increased, snaps = ", id);
-                // console.log(snapshot.docChanges());
-                snapshot.docChanges().forEach((change) => {
-                  // console.log("Playsound");
-                  if (change.type === "added") playSound(clickAudio);
-                });
-              } // else console.log("The Same");
-
-              // if (snapshot.metadata.fromCache) playSound(clickAudio);
-              // let cache = snapshot.metadata.fromCache
-              // console.log("Data came from ", cache)
+    if (favChannel && localDb && localDb.length > 0) {
+      db.collection("channels")
+        .doc(id)
+        .collection("messages")
+        .onSnapshot((snapshot) => {
+          console.log(snapshot.docs.length, localDb.length, favChannel);
+          if (snapshot.docs.length > localDb.length && favChannel) {
+            // console.log("Increased, snaps = ", id);
+            // console.log(snapshot.docChanges());
+            snapshot.docChanges().forEach((change) => {
+              // console.log("Playsound");
+              if (change.type === "added") playSound(clickAudio);
             });
+          }
         });
     }
-  }, [id]);
+  }, [favChannel]);
+
+  // notification feature with local storage comparison
+  useEffect(() => {
+    // let favChannel = false;
+    if (id) {
+      console.log("db readout");
+      db.collection("favouriteChannels")
+        .doc(cookies.user.id)
+        .onSnapshot((snapsFav) => {
+          setFavChannel(
+            snapsFav.data().channels.some((channel) => channel === id)
+          );
+        });
+      
+      // notification block v0.2
+      // db.collection("favouriteChannels")
+      //   .doc(cookies.user.id)
+      //   .get()
+      //   .then((channels) =>
+      //     setFavChannel(
+      //       channels.data().channels.some((channel) => channel === id)
+      //     )
+      //   )
+      //   .then(() => {
+      //     db.collection("channels")
+      //       .doc(id)
+      //       .collection("messages")
+      //       .onSnapshot((snapshot) => {
+      //         // console.log(snapshot.docs.length, localDb.length, favChannel);
+      //         if (snapshot.docs.length > localDb.length && favChannel) {
+      //           // console.log("Increased, snaps = ", id);
+      //           // console.log(snapshot.docChanges());
+      //           snapshot.docChanges().forEach((change) => {
+      //             // console.log("Playsound");
+      //             if (change.type === "added") playSound(clickAudio);
+      //           });
+      //         } // else console.log("The Same");
+
+      //         // if (snapshot.metadata.fromCache) playSound(clickAudio);
+      //         // let cache = snapshot.metadata.fromCache
+      //         // console.log("Data came from ", cache)
+      //       });
+      //   });
+    }
+  });
 
   useEffect(() => {
     window.addEventListener("beforeunload", function () {
