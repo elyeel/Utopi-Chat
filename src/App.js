@@ -27,6 +27,18 @@ function App() {
     }
   }, [cookies]);
 
+  useEffect(() => {
+    const unloadEvent = () => {
+      db.collection("onlineUsers")
+        .doc('1234')
+        .delete();
+    }
+    window.addEventListener("unload", unloadEvent);
+    return function cleanup() {
+      window.removeEventListener("unload", unloadEvent)
+    };
+  }, []);
+
   return (
     <div className="App">
       <Router>
