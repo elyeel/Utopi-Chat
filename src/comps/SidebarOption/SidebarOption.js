@@ -61,7 +61,7 @@ function SidebarOption({
             snapsFav.data().channels.some((channel) => channel === id)
           );
         });
-      
+
       // notification block v0.2
       // db.collection("favouriteChannels")
       //   .doc(cookies.user.id)
@@ -150,7 +150,9 @@ function SidebarOption({
   return (
     <>
       <div
-        className="sidebarOption"
+        className={
+          currChannel === id ? "sidebarOption__selected" : "sidebarOption"
+        }
         onClick={
           addChannelOption
             ? addChannel

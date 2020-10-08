@@ -6,8 +6,15 @@
 
   &:hover {
     opacity: 0.9;
-    background-color: #7C0185;
+    background-color: #7c0185;
+  }
 
+  &__selected {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: #7c0185;
   }
 
   &__icon {
@@ -24,7 +31,7 @@
   }
 
   h3 {
-    display:flex;
+    display: flex;
     font-weight: 500;
     flex: 1;
     align-items: center;
@@ -33,5 +40,9 @@
   &__numUsers {
     margin-left: auto;
     padding-right: 0.5rem;
+  }
+
+  &__selected {
+    font-weight: bold;
   }
 }
