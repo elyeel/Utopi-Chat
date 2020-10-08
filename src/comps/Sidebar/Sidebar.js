@@ -38,18 +38,18 @@ function Sidebar({
       );
     });
     db.collection("onlineUsers").onSnapshot((snapshot) => {
-      setUserCount(snapshot.size);
+      setUserCount(snapshot.size - 1);
     });
   }, [db]);
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", function () {
-      setUserCount((prev) => prev - 1);
-    });
-    return window.removeEventListener("beforeunload", function () {
-      setUserCount((prev) => prev - 1);
-    });
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", function () {
+  //     setUserCount((prev) => prev - 1);
+  //   });
+  //   return window.removeEventListener("beforeunload", function () {
+  //     setUserCount((prev) => prev - 1);
+  //   });
+  // }, []);
 
   return (
     <div className="sidebar">
