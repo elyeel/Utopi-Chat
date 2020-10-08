@@ -27,16 +27,18 @@ function App() {
     }
   }, [cookies]);
 
+  //removes user from database after they disconnect
   useEffect(() => {
-    const unloadEvent = () => {
+    window.addEventListener("beforeunload", () => {
       db.collection("onlineUsers")
-        .doc('1234')
+        .doc(cookies.user.id)
         .delete();
-    }
-    window.addEventListener("unload", unloadEvent);
-    return function cleanup() {
-      window.removeEventListener("unload", unloadEvent)
-    };
+    });
+    return () => window.removeEventListener("beforeunload", () => {
+      db.collection("onlineUsers")
+        .doc(cookies.user.id)
+        .delete();
+    });
   }, []);
 
   return (
