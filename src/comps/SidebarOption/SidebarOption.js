@@ -118,7 +118,7 @@ function SidebarOption({
             .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
         });
     });
-  }, [id]);user-count/2
+  }, [id]);
 
   useEffect(() => {
     if (id) {
