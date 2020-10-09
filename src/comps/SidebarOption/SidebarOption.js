@@ -151,7 +151,7 @@ function SidebarOption({
     <>
       <div
         className={
-          currChannel === id ? "sidebarOption__selected" : "sidebarOption"
+          ((currChannel === id) && (!addChannelOption)) ? "sidebarOption__selected" : "sidebarOption"
         }
         onClick={
           addChannelOption
