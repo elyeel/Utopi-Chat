@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Chat.scss";
 import db from "../../firebase";
 import { useParams } from "react-router-dom";
@@ -13,6 +13,7 @@ import ChatForm from "../ChatForm/ChatForm";
 
 function Chat({ cookies, currChannel }) {
   const { channelId } = useParams();
+  const [alert, setAlert] = useState(false);
   const {
     setFavourite,
     channelMessages,
@@ -29,12 +30,12 @@ function Chat({ cookies, currChannel }) {
     chatBox.scrollTop = chatBox.scrollHeight;
   };
 
-  // const showAlert = () => {
-  //   setAlert(true);
-  //   setTimeout(()=> {
-  //     setAlert(false);
-  //   }, 3000)
-  // };
+  const showAlert = () => {
+    setAlert(true);
+    setTimeout(()=> {
+      setAlert(false);
+    }, 3000)
+  };
 
   return (
     <div className="chat">
@@ -73,7 +74,7 @@ function Chat({ cookies, currChannel }) {
 
       <div className="chat__form">
         <ChatForm
-          // showAlert={showAlert}
+          showAlert={showAlert}
           key={channelId}
           db={db}
           channelId={channelId}
