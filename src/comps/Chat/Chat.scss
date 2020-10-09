@@ -1,14 +1,11 @@
 .chat {
+  display: flex;
   flex-direction: column;
-  // display: flex;
-  flex: 0.7;
-  flex-grow: 1;
-  height: 100%;
-  // padding-bottom: 65px;
+  flex: 1;
+  height: 82vh;
 
   .chat__header {
     display: flex;
-    flex: 1;
     align-items: flex-start;
     justify-content: space-between;
     padding: 20px;
@@ -39,14 +36,13 @@
   }
 
   .chat__messages {
-    flex: 5;
-    height: 70%;
+    flex: 4;
     overflow-y: scroll;
   }
 
   .chat__form {
     display: flex;
-    flex: 2;
+    // flex: 1;
     border-top: 1px solid lightgray;
     padding: 10px;
   }
