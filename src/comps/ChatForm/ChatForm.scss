@@ -2,18 +2,18 @@
   display: flex;
   border-radius: 20px;
   position: relative;
-  flex: 1;
+  flex: 2;
   align-items: center;
+  // padding: 10px;
   justify-content: center;
 
   .chat__input {
-    flex: 0.9;
+    flex: 0.95;
     font-size: 1.2rem;
     border: 1px solid lightgrey;
     border-radius: 5px;
-    bottom: 10px;
     width: 60%;
-    padding: 20px;
+    padding: 1rem;
   }
 
   // .chat__btn {

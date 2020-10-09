@@ -17,6 +17,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 function Sidebar({
   cookies,
+  setCookie,
   language,
   setFlag,
   currChannel,
@@ -88,6 +89,7 @@ function Sidebar({
             currChannel={currChannel}
             setCurrChannel={setCurrChannel}
             cookies={cookies}
+            setCookie={setCookie}
             db={db}
           />
         );

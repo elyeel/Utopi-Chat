@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./Chat.scss";
 import db from "../../firebase";
 import { useParams } from "react-router-dom";
+import useChatHooks from "../hooks/useChatHooks";
 
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import StarOutlinedIcon from "@material-ui/icons/StarOutlined";
@@ -10,95 +11,18 @@ import Alert from '@material-ui/lab/Alert';
 import Message from "../Message/Message";
 import ChatForm from "../ChatForm/ChatForm";
 
-function Chat({ cookies }) {
+function Chat({ cookies, currChannel }) {
   const { channelId } = useParams();
-  const [channelDetails, setChannelDetails] = useState(null);
-  const [channelMessages, setChannelMessages] = useState([]);
-  const [favouriteChannel, setFavouriteChannel] = useState(false);
-  const [alert, setAlert] = useState(false);
+  const {
+    setFavourite,
+    channelMessages,
+    channelDetails,
+    favouriteChannel,
+  } = useChatHooks(channelId, cookies, currChannel);
 
   useEffect(() => {
     updateScroll();
   }, [channelMessages]);
-
-  // fetch all details from current channel
-
-  useEffect(() => {
-    if (channelId) {
-      db.collection("channels")
-        .doc(channelId)
-        .onSnapshot((snapshot) => setChannelDetails(snapshot.data()));
-    }
-    // fetch all messages from current channel
-    console.log("From chat before", channelId);
-    db.collection("channels")
-      .doc(channelId)
-      .collection("messages")
-      .orderBy("timestamp", "asc")
-      .onSnapshot((snapshot) => {
-        setChannelMessages(
-          snapshot.docs.map((doc) => {
-            console.log("From chat inside snapshot", channelId);
-            return {
-              id: doc.id,
-              message: doc.data().message,
-              user: doc.data().user,
-              userimage: doc.data().userimage,
-              timestamp: doc.data().timestamp,
-            };
-          })
-          // setChannelMessages([...newMessages]);
-          // console.log("docs",doc.id);
-          // console.log("From chat inside snapshot", channelId);
-          // return {
-          //   id: doc.id,
-          //   message: doc.data().message,
-          //   user: doc.data().user,
-          //   userimage: doc.data().userimage,
-          //   timestamp: doc.data().timestamp,
-          // }
-        );
-      });
-    db.collection("favouriteChannels")
-      .doc(cookies.user.id)
-      .onSnapshot((snaps) => {
-        if (snaps)
-          setFavouriteChannel(
-            snaps.data().channels.some((elem) => elem === channelId)
-          );
-      });
-  }, [channelId, cookies.user.id]);
-
-  const setFavourite = () => {
-    // get favourite channels list and save it into channels
-    let channels = [];
-    db.collection("favouriteChannels")
-      .doc(cookies.user.id)
-      .get()
-      .then((doc) => {
-        // console.log("from db ", doc.data().channels);
-        channels = doc.data().channels;
-        // if favourite channel => change it to not and delist channel from favouriteChannel list
-        if (favouriteChannel) {
-          channels = channels.filter((elem) => elem !== channelId);
-          // else => change it to favourite channel and list channel on favouriteChannel list
-        } else {
-          channels.push(channelId);
-          console.log(channels);
-        }
-        // update channels to db
-        db.collection("favouriteChannels")
-          .doc(cookies.user.id)
-          .update({ channels: channels })
-          .then(() => console.log("Favourite Channels is updated"))
-          .catch((error) =>
-            console.error("Error updating Favourite Channels!", error)
-          );
-        // setFavouriteChannel(!favouriteChannel);
-      })
-      .catch((error) => console.log("Document is not exist", error));
-    // console.log("before ", channels);
-  };
 
   const updateScroll = () => {
     const chatBox = document.getElementById("chat__messages");
@@ -150,9 +74,11 @@ function Chat({ cookies }) {
       <div className="chat__form">
         <ChatForm
           showAlert={showAlert}
+          key={channelId}
           db={db}
           channelId={channelId}
           channelName={channelDetails?.name}
+          cookies={cookies}
         />
       </div>
     </div>
