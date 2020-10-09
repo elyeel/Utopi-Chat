@@ -93,7 +93,6 @@ function SidebarOption({
       //   });
     }
   });
-
   useEffect(() => {
     window.addEventListener("beforeunload", function () {
       console.log("hello");
@@ -119,7 +118,7 @@ function SidebarOption({
             .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
         });
     });
-  }, [id]);
+  }, [id]);user-count/2
 
   useEffect(() => {
     if (id) {

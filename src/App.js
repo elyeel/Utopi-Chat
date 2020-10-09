@@ -27,6 +27,20 @@ function App() {
     }
   }, [cookies]);
 
+  //removes user from database after they disconnect
+  useEffect(() => {
+    window.addEventListener("beforeunload", () => {
+      db.collection("onlineUsers")
+        .doc(cookies.user.id)
+        .delete();
+    });
+    return () => window.removeEventListener("beforeunload", () => {
+      db.collection("onlineUsers")
+        .doc(cookies.user.id)
+        .delete();
+    });
+  }, []);
+
   return (
     <div className="App">
       <Router>
