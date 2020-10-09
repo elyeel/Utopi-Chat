@@ -4,10 +4,11 @@
   position: relative;
   flex: 2;
   align-items: center;
-  // justify-content: stretch;
+  // padding: 10px;
+  justify-content: center;
 
   .chat__input {
-    flex: 1;
+    flex: 0.95;
     font-size: 1.2rem;
     border: 1px solid lightgrey;
     border-radius: 5px;
