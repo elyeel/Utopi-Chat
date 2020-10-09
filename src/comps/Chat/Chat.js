@@ -29,12 +29,12 @@ function Chat({ cookies, currChannel }) {
     chatBox.scrollTop = chatBox.scrollHeight;
   };
 
-  const showAlert = () => {
-    setAlert(true);
-    setTimeout(()=> {
-      setAlert(false);
-    }, 3000)
-  };
+  // const showAlert = () => {
+  //   setAlert(true);
+  //   setTimeout(()=> {
+  //     setAlert(false);
+  //   }, 3000)
+  // };
 
   return (
     <div className="chat">
@@ -73,7 +73,7 @@ function Chat({ cookies, currChannel }) {
 
       <div className="chat__form">
         <ChatForm
-          showAlert={showAlert}
+          // showAlert={showAlert}
           key={channelId}
           db={db}
           channelId={channelId}

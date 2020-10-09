@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import "./ChatForm.scss";
 import db from "../../firebase";
 import Loading from "../Loading";
@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import toxicityCheck from "../../helpers/toxicityCheck";
 import ToxicityWarningModal from "../ToxicityWarningModal/ToxicityWarningModal";
 
-export default function ChatForm({ channelId, channelName, cookies, showAlert }) {
+export default function ChatForm({ channelId, channelName, showAlert }) {
   const [cookies] = useCookies(["user"]);
   const [msg, setMsg] = useState("");
   const [modal, setModal] = useState(false);
