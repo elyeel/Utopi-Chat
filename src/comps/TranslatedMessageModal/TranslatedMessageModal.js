@@ -130,7 +130,7 @@ export default function TranslatedMessageModal({isOpen, closeModal, message}) {
             </Select>
             <h4>Original:</h4>
             <p>{message}</p>
-            <h4>Translation:</h4>
+            {translation && <h4>Translation:</h4>}
             {loading ? <Loading type='spokes' color='#0021a3'/> : <p>{translation}</p>}
           </FormControl>
         </DialogContent>
