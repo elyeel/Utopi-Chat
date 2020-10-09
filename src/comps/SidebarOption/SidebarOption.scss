@@ -1,8 +1,8 @@
 .sidebarOption {
   display: flex;
-  align-items: center;
   font-size: 12px;
   cursor: pointer;
+  padding: 10px 0;
 
   &:hover {
     opacity: 0.9;
@@ -11,10 +11,15 @@
 
   &__selected {
     display: flex;
-    align-items: center;
     font-size: 12px;
     cursor: pointer;
     background-color: #7c0185;
+    font-weight: bold;
+    h3 {
+      display: flex;
+      flex: 1;
+      align-items: center;
+    }
   }
 
   &__icon {
@@ -40,9 +45,5 @@
   &__numUsers {
     margin-left: auto;
     padding-right: 0.5rem;
-  }
-
-  &__selected {
-    font-weight: bold;
   }
 }
