@@ -31,8 +31,10 @@ function SidebarOption({
   // notification block v0.3
   useEffect(() => {
     const localDb = JSON.parse(localStorage.getItem(id));
+    
     if (favChannel && localDb && localDb.length > 0) {
-      db.collection("channels")
+      const newMsgOnFavChannel = db
+        .collection("channels")
         .doc(id)
         .collection("messages")
         .onSnapshot((snapshot) => {
@@ -46,6 +48,23 @@ function SidebarOption({
             });
           }
         });
+      return function cleanup() {
+        newMsgOnFavChannel();
+      };
+      // db.collection("channels")
+      //   .doc(id)
+      //   .collection("messages")
+      //   .onSnapshot((snapshot) => {
+      //     console.log(snapshot.docs.length, localDb.length, favChannel);
+      //     if (snapshot.docs.length > localDb.length && favChannel) {
+      //       // console.log("Increased, snaps = ", id);
+      //       // console.log(snapshot.docChanges());
+      //       snapshot.docChanges().forEach((change) => {
+      //         // console.log("Playsound");
+      //         if (change.type === "added") playSound(clickAudio);
+      //       });
+      //     }
+      //   });
     }
   }, [favChannel]);
 
