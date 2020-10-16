@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 // Firebase Database
 import db from "./firebase";
 
 import { useCookies } from "react-cookie";
-import { useStateValue } from './StateProvider';
+import { useStateValue } from "./StateProvider";
 
 // Components
 import Header from "./comps/Header/Header";
@@ -16,9 +16,13 @@ import Login from "./comps/Login/Login";
 // Styling
 import "./App.css";
 
-import { logout, login, register, loginWithGoogle } from './helpers/firebaseAuth'
+import {
+  logout,
+  login,
+  register,
+  loginWithGoogle,
+} from "./helpers/firebaseAuth";
 import Register from "./comps/Register/Register";
-
 
 // db.enablePersistence()
 //   .then((doc) => console.log("Local storage enabled", doc))
@@ -39,11 +43,11 @@ function App() {
 
   const requestLogout = useCallback(() => {
     logout();
-    removeCookie('user');
+    removeCookie("user");
   }, []);
 
-  const requestRegister = useCallback((event, email, password) => {
-    register(event, email, password, setCookie);
+  const requestRegister = useCallback((event, email, password, name) => {
+    register(event, email, password, name, setCookie);
   });
 
   useEffect(() => {
@@ -55,10 +59,10 @@ function App() {
   }, [cookies]);
 
   if (cookies.user) {
-    console.log('cookie', cookies.user);
+    console.log("cookie", cookies.user);
   }
   if (user) {
-    console.log('user', user);
+    console.log("user", user);
   }
   return (
     <div className="App">
@@ -72,15 +76,18 @@ function App() {
                 setMessages={setMessages}
                 messages={messages}
                 onClick={requestLogin}
-                loginWithGoogle={e => (loginWithGoogle(setCookie))}
-              />)
+                loginWithGoogle={(e) => loginWithGoogle(setCookie)}
+              />
+              )
             </Route>
             <Route path="/register">
               {<Register onClick={requestRegister} />}
             </Route>
+            <Route path="/">
+              <Redirect to="/login" />
+            </Route>
           </Switch>
-        ) :
-        (
+        ) : (
           <>
             <Header
               // cookies={cookies}
