@@ -4,13 +4,20 @@ const logout = () => {
   auth.signOut();
 };
 
-const login = (event, email, pass, setCookie) => {
+const login = (event, email, pass, setCookie, name) => {
   event.preventDefault();
 
   auth
     .signInWithEmailAndPassword(email, pass)
-    .then(() => {
-      setCookie("user", email);
+    .then((userRef) => {
+      const userCookie = {
+        name,
+        email,
+        avatar: "nothing",
+        uid: userRef.user.uid,
+      };
+      setCookie("user", userCookie);
+      console.log("User logged in", userCookie, userRef);
     })
     .catch(function (error) {
       var errorCode = error.code;
@@ -23,21 +30,35 @@ const login = (event, email, pass, setCookie) => {
     });
 };
 
-const register = (event, email, password, setCookie, name) => {
+const register = (event, email, password, name, setCookie) => {
   event.preventDefault();
   auth
     .createUserWithEmailAndPassword(email, password)
-    .then(() => {
+    .then((userRef) => {
+      console.log("Got here");
       const userCookie = {
         name,
         email,
         avatar: "nothing",
+        uid: userRef.user.uid,
       };
       setCookie("user", userCookie);
-      console.log("registered", email);
+      console.log("registered", email, userRef, userCookie);
     })
     .catch(function (error) {
+      const errorCode = error.code;
       let errorMessage = error.message;
+      switch (errorCode) {
+        case "auth/weak-password":
+          alert("The password is too weak.");
+          break;
+        case "auth/invalid-email":
+          alert("Invalid email.");
+          break;
+        default:
+          alert(errorMessage);
+      }
+      console.log(error);
     });
 };
 

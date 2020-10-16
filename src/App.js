@@ -37,8 +37,8 @@ function App() {
   const [messages, setMessages] = useState([]);
 
   // listen to acition events from auth comps
-  const requestLogin = useCallback((event, email, password) => {
-    login(event, email, password, setCookie);
+  const requestLogin = useCallback((event, email, password, name) => {
+    login(event, email, password, setCookie, name);
   });
 
   const requestLogout = useCallback(() => {
