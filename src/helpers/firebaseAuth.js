@@ -27,6 +27,7 @@ const login = (event, email, pass, setCookie, name) => {
       } else {
         alert(errorMessage);
       }
+      console.log(error);
     });
 };
 
@@ -35,7 +36,6 @@ const register = (event, email, password, name, setCookie) => {
   auth
     .createUserWithEmailAndPassword(email, password)
     .then((userRef) => {
-      console.log("Got here");
       const userCookie = {
         name,
         email,
