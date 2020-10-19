@@ -14,11 +14,45 @@ import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { auth } from "../../firebase";
+import { useStateValue } from "../../StateProvider";
+import { actionTypes } from "../../reducer";
 
-function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
+// function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
+//   const history = useHistory();
+//   // log out function, erase user id from channel users
+//   const logOut = function (e) {
+//     if (currChannel) {
+//       db.collection("channelUsers")
+//         .doc(currChannel)
+//         .get()
+//         .then((doc) => {
+//           const arrUsers = doc.data().users;
+//           db.collection("channelUsers")
+//             .doc(currChannel)
+//             .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+//         });
+//     }
+//     auth
+//       .signOut()
+//       .then(() => {
+//         removeCookie("user");
+//         removeCookie("channel");
+//         console.log("logged out!");
+
+function Header({
+  setCookie,
+  removeCookie,
+  cookies,
+  db,
+  currChannel,
+  onClick,
+}) {
+  const [state, dispatch] = useStateValue();
+  const [{ user }] = useStateValue();
   const history = useHistory();
-  // log out function, erase user id from channel users
-  const logOut = function (e) {
+
+  const logOut = (event) => {
+    // onclick();
     if (currChannel) {
       db.collection("channelUsers")
         .doc(currChannel)
@@ -30,19 +64,15 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
             .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
         });
     }
-    auth
-      .signOut()
-      .then(() => {
-        removeCookie("user");
-        removeCookie("channel");
-        console.log("logged out!");
-      })
-      .catch((error) => {
-        alert(error.message);
+    auth.signOut().then(() => {
+      removeCookie("user");
+      dispatch({
+        type: actionTypes.LOG_OUT,
+        user: "",
       });
+      console.log("User logged out!");
+    });
   };
-
-  // console.log(cookies);
 
   return (
     <div className="header">
@@ -80,7 +110,7 @@ function Header({ setCookie, removeCookie, cookies, db, currChannel }) {
         </IconButton> */}
 
         {/* log out */}
-        <IconButton onClick={logOut}>
+        <IconButton onClick={onClick}>
           <ExitToAppIcon />
         </IconButton>
       </div>

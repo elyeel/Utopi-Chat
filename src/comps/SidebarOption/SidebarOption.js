@@ -3,6 +3,7 @@ import "./SidebarOption.scss";
 import db from "../../firebase";
 import click from "./graceful.mp3";
 import useSidebarOption from "../hooks/sidebarOptHooks";
+// import { useHistory } from "react-router-dom";
 
 function SidebarOption({
   Icon,
@@ -17,6 +18,9 @@ function SidebarOption({
 }) {
   const [numUsers, setNumUsers] = useState(0);
   const [favChannel, setFavChannel] = useState(false);
+  // const [isSelect, setIsSelect] = useState(true);
+  // const history = useHistory();
+
   let clickAudio = new Audio(click);
   const { addChannel, selectChannel } = useSidebarOption({
     id: id,
@@ -28,10 +32,13 @@ function SidebarOption({
     currChannel: currChannel,
   });
 
+  const playSound = (audioFile) => {
+    audioFile.play();
+  };
   // notification block v0.3
   useEffect(() => {
     const localDb = JSON.parse(localStorage.getItem(id));
-    
+
     if (favChannel && localDb && localDb.length > 0) {
       const newMsgOnFavChannel = db
         .collection("channels")
@@ -80,36 +87,6 @@ function SidebarOption({
             snapsFav.data().channels.some((channel) => channel === id)
           );
         });
-
-      // notification block v0.2
-      // db.collection("favouriteChannels")
-      //   .doc(cookies.user.id)
-      //   .get()
-      //   .then((channels) =>
-      //     setFavChannel(
-      //       channels.data().channels.some((channel) => channel === id)
-      //     )
-      //   )
-      //   .then(() => {
-      //     db.collection("channels")
-      //       .doc(id)
-      //       .collection("messages")
-      //       .onSnapshot((snapshot) => {
-      //         // console.log(snapshot.docs.length, localDb.length, favChannel);
-      //         if (snapshot.docs.length > localDb.length && favChannel) {
-      //           // console.log("Increased, snaps = ", id);
-      //           // console.log(snapshot.docChanges());
-      //           snapshot.docChanges().forEach((change) => {
-      //             // console.log("Playsound");
-      //             if (change.type === "added") playSound(clickAudio);
-      //           });
-      //         } // else console.log("The Same");
-
-      //         // if (snapshot.metadata.fromCache) playSound(clickAudio);
-      //         // let cache = snapshot.metadata.fromCache
-      //         // console.log("Data came from ", cache)
-      //       });
-      //   });
     }
   });
   useEffect(() => {
@@ -139,62 +116,36 @@ function SidebarOption({
     });
   }, [id]);
 
-  useEffect(() => {
-    if (id) {
-      const tempArr = [];
-      db.collection("channels")
-        .doc(id)
-        .collection("messages")
-        .get()
-        .then((msgs) => {
-          for (let msg of msgs.docs) {
-            tempArr.push({
-              messageId: msg.id,
-              message: msg.data().message,
-              timestamp: msg.data().timestamp.toDate(),
-              user: msg.data().user,
-              userimage: msg.data().userimage,
-            });
-          }
-        })
-        .then(() => localStorage.setItem(id, JSON.stringify(tempArr)));
-    }
-  }, [id]);
-
-  const playSound = (audioFile) => {
-    audioFile.play();
-  };
-  // onClick={() => playSound(clickAudio)}
   return (
-    <>
-      <div
-        className={
-          ((currChannel === id) && (!addChannelOption)) ? "sidebarOption__selected" : "sidebarOption"
-        }
-        onClick={
-          addChannelOption
-            ? addChannel
-            : changeLanguage
-            ? changeLanguage
-            : selectChannel
-        }
-      >
-        {Icon && <Icon className="sidebarOption__icon" />}
-        {Icon ? (
-          <h3>{title}</h3>
-        ) : (
-          <h3 className="sidebarOption__channel">
-            <span className="sidebarOption__hash">#</span>
-            {title}
-            {id && (
-              <span className="sidebarOption__numUsers">
-                {numUsers > 0 ? numUsers : ""}
-              </span>
-            )}
-          </h3>
-        )}
-      </div>
-    </>
+    <div
+      className={
+        currChannel === id && !addChannelOption
+          ? "sidebarOption__selected"
+          : "sidebarOption"
+      }
+      onClick={
+        addChannelOption
+          ? addChannel
+          : changeLanguage
+          ? changeLanguage
+          : selectChannel
+      }
+    >
+      {Icon && <Icon className="sidebarOption__icon" />}
+      {Icon ? (
+        <h3>{title}</h3>
+      ) : (
+        <h3 className="sidebarOption__channel">
+          <span className="sidebarOption__hash">#</span>
+          {title}
+          {id && (
+            <span className="sidebarOption__numUsers">
+              {numUsers > 0 ? numUsers : ""}
+            </span>
+          )}
+        </h3>
+      )}
+    </div>
   );
 }
 

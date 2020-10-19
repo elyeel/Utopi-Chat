@@ -7,7 +7,7 @@ import useChatHooks from "../hooks/useChatHooks";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import StarOutlinedIcon from "@material-ui/icons/StarOutlined";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import Alert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
 import Message from "../Message/Message";
 import ChatForm from "../ChatForm/ChatForm";
 
@@ -32,14 +32,18 @@ function Chat({ cookies, currChannel }) {
 
   const showAlert = () => {
     setAlert(true);
-    setTimeout(()=> {
+    setTimeout(() => {
       setAlert(false);
-    }, 3000)
+    }, 3000);
   };
 
   return (
     <div className="chat">
-      {alert && <Alert severity="error" className='error'>Your message is blank!</Alert>}
+      {alert && (
+        <Alert severity="error" className="error">
+          Your message is blank!
+        </Alert>
+      )}
       <div className="chat__header">
         <div className="chat__headerLeft">
           <h4 className="chat__channelName">
@@ -61,15 +65,16 @@ function Chat({ cookies, currChannel }) {
         </div>
       </div>
       <div id="chat__messages" className="chat__messages">
-        {channelMessages.map(({ id, message, timestamp, user, userimage }) => (
-          <Message
-            key={id}
-            message={message}
-            timestamp={timestamp}
-            user={user}
-            userImage={userimage}
-          />
-        ))}
+        {channelMessages &&
+          channelMessages.map(({ message, timestamp, user, userimage }) => (
+            <Message
+              // key={id}
+              message={message}
+              timestamp={timestamp}
+              user={user}
+              userImage={userimage}
+            />
+          ))}
       </div>
 
       <div className="chat__form">

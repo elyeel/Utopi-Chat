@@ -6,32 +6,35 @@ import Loading from "../Loading";
 import Button from "@material-ui/core/Button";
 import toxicityCheck from "../../helpers/toxicityCheck";
 import ToxicityWarningModal from "../ToxicityWarningModal/ToxicityWarningModal";
+import { useStateValue } from "../../StateProvider";
 
 export default function ChatForm({ channelId, channelName, showAlert }) {
   const [cookies] = useCookies(["user"]);
   const [msg, setMsg] = useState("");
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [{ user }] = useStateValue();
 
-const submitMsg = (event) => {
+  const submitMsg = (event) => {
     event.preventDefault();
     if (msg.trim() === "") {
       showAlert();
     } else {
       setLoading(true);
       toxicityCheck(msg).then((res) => {
+        setLoading(false);
         if (res) {
           setModal(true);
           setMsg("");
-        } else {
+        } else if (channelId) {
           db.collection("channels")
             .doc(channelId)
             .collection("messages")
             .add({
               message: msg,
               timestamp: new Date(Date.now()),
-              user: cookies.user.name,
-              userimage: cookies.user.picture,
+              user: user?.displayName || cookies?.user.name || "Eric Ho",
+              userimage: user?.photoURL || cookies?.user.picture || "https://via.placeholder.com/150",
             })
             .then((docRef) => {
               const tempArr = [];
@@ -57,14 +60,14 @@ const submitMsg = (event) => {
                 );
             })
             .catch((error) => console.error("Error adding message: ", error));
-        setLoading(false);
         }
       });
     }
   };
 
   return (
-    <form className="chat__text" onSubmit={submitMsg}>
+    <form className="chat__text">
+      {/* <form className="chat__text" onSubmit={submitMsg}> */}
       <ToxicityWarningModal isOpen={modal} closeModal={() => setModal(false)} />
       <input
         className="chat__input"

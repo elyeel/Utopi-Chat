@@ -29,6 +29,7 @@ function Sidebar({
   // const [languageModal, setLanguageModal] = useState(false);
 
   useEffect(() => {
+    console.log('cookies', cookies);
     // snapshot of channels collection
     db.collection("channels").onSnapshot((snapshot) => {
       setChannels(
@@ -67,9 +68,10 @@ function Sidebar({
           <h2>UtopiChat</h2>
           <h3>
             <FiberManualRecordIcon />
-            {cookies.user.name}
+            {cookies.user.displayName}
           </h3>
         </div>
+                                    {/* Stretch: Language Setting */}
         {/* <SidebarOption Icon={LanguageIcon} changeLanguage={()=>setLanguageModal(true)}/> */}
       </div>
       <StatBox userCount={userCount} />
