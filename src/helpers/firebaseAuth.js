@@ -4,6 +4,21 @@ const logout = () => {
   auth.signOut();
 };
 
+const registerFavChannel = (id) => {
+  db.collection("favouriteChannels")
+    .doc(id)
+    .get()
+    .then((fav) => {
+      if (!fav.data()) {
+        db.collection("favouriteChannels").doc(id).set({
+          id,
+          channels: [],
+        });
+      }
+    })
+    .catch((error) => console.error(error));
+};
+
 const login = (event, email, pass, setCookie, name) => {
   event.preventDefault();
 
@@ -18,9 +33,10 @@ const login = (event, email, pass, setCookie, name) => {
         background: user.background,
         color: user.color,
         avatar: `https://ui-avatars.com/api/?name=${user.name}&background=${user.background}&color=${user.color}`,
-        uid: userRef.user.uid,
+        id: userRef.user.uid,
       };
       setCookie("user", userCookie);
+      registerFavChannel(userRef.user.uid);
       console.log("User logged in", userCookie, userRef.user.uid);
     })
     .catch(function (error) {
@@ -46,7 +62,7 @@ const register = (event, email, password, name, setCookie) => {
         background: "0d8abc",
         color: "fff",
         avatar: `https://ui-avatars.com/api/?name=${name}&background=0d8abc&color=fff`,
-        uid: userRef.user.uid,
+        id: userRef.user.uid,
       };
       setCookie("user", userCookie);
       db.collection("users")
@@ -54,6 +70,7 @@ const register = (event, email, password, name, setCookie) => {
         .set(userCookie)
         .then((docRef) => console.log("User's added with id: ", docRef))
         .catch((error) => console.log("Error in writing user", error));
+      registerFavChannel(userRef.user.uid);
       console.log("registered", email, userRef, userCookie);
     })
     .catch(function (error) {

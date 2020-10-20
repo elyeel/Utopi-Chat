@@ -68,7 +68,7 @@ function Sidebar({
           <h2>UtopiChat</h2>
           <h3>
             <FiberManualRecordIcon />
-            {cookies.user.displayName}
+            {cookies.user.displayName || cookies.user.name} 
           </h3>
         </div>
                                     {/* Stretch: Language Setting */}

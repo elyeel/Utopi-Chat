@@ -11,6 +11,7 @@ import db from "./firebase";
 
 import { useCookies } from "react-cookie";
 import { useStateValue } from "./StateProvider";
+import { actionTypes } from "./reducer";
 
 // Components
 import Header from "./comps/Header/Header";
@@ -47,8 +48,25 @@ function App() {
   });
 
   const requestLogout = useCallback(() => {
+    if (currChannel) {
+      db.collection("channelUsers")
+        .doc(currChannel)
+        .get()
+        .then((doc) => {
+          const arrUsers = doc.data().users;
+          db.collection("channelUsers")
+            .doc(currChannel)
+            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+        });
+    }
     logout();
     removeCookie("user");
+    removeCookie("channel");
+    dispatch({
+      type: actionTypes.LOG_OUT,
+      user: "",
+    });
+    console.log("User logged out!");
   }, []);
 
   const requestRegister = useCallback((event, email, password, name) => {

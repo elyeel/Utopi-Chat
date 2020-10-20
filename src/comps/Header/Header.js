@@ -53,6 +53,7 @@ function Header({
 
   const logOut = (event) => {
     // onclick();
+    console.log("Log out called from header");
     if (currChannel) {
       db.collection("channelUsers")
         .doc(currChannel)
