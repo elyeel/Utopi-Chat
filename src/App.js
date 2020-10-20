@@ -125,8 +125,8 @@ function App() {
               />
               <Switch>
                 <Route path="/channel/:channelId">
-                  {/* <Chat currChannel={currChannel} db={db} cookies={cookies} /> */}
-                  <Chat currChannel={currChannel} db={db} />
+                  <Chat currChannel={currChannel} db={db} cookies={cookies} />
+                  {/* <Chat currChannel={currChannel} db={db} /> */}
                 </Route>
                 <Route path="/">
                   <div className="welcome-page">

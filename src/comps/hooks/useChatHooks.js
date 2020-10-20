@@ -9,7 +9,7 @@ export default function useChatHooks(channelId, cookies, currChannel) {
 
   useEffect(() => {
     // fetch all messages from current channel
-    console.log(channelId)
+    console.log(channelId, cookies.channel)
     if (channelId && cookies.channel) {
       const unsubscribe = db.collection("channels")
         .doc(cookies.channel)
@@ -34,7 +34,7 @@ export default function useChatHooks(channelId, cookies, currChannel) {
           unsubscribe();
         }
       }
-  }, [channelId, cookies.user.id, cookies.channel]);
+  }, [channelId, cookies.channel]);
 
   useEffect(() => {
     if (channelId) {

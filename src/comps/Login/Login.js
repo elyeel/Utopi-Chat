@@ -66,29 +66,6 @@ const localDb = async (db) => {
   }
 };
 
-// function Login({ setCookie, db, messages, setMessages }) {
-//   const signIn = (e) => {
-//     auth
-//       .signInWithPopup(provider)
-//       .then((result) => {
-//         // const token = result.credential.accessToken;
-//         // const user = result.user;
-//         setCookie("user", result.additionalUserInfo.profile);
-//         db.collection("favouriteChannels")
-//           .doc(result.additionalUserInfo.profile.id)
-//           .get()
-//           .then((fav) => {
-//             if (!fav.data()) {
-//               db.collection("favouriteChannels")
-//                 .doc(result.additionalUserInfo.profile.id)
-//                 .set({
-//                   id: result.additionalUserInfo.profile.id,
-//                   channels: [],
-//                 });
-//             }
-//           })
-//           .catch((error) => console.error(error));
-
 // building array of objects from firestore
 // localDb(db);
 function Login({
@@ -100,13 +77,11 @@ function Login({
   loginWithGoogle,
 }) {
   const [state, dispatch] = useStateValue();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onChangeHandler = (event) => {
     const { name, value } = event.currentTarget;
-
     if (name === "email") {
       setEmail(value);
     } else {
@@ -124,88 +99,6 @@ function Login({
       type: actionTypes.SET_USER,
       user: email,
     });
-
-    // })
-    // .catch(error => {
-    //   alert(error.message)
-    // })
-
-    // setCookie("user", result.additionalUserInfo.profile);
-    // db.collection("favouriteChannels")
-    //   .doc(result.additionalUserInfo.profile.id)
-    //   .get()
-    //   .then((fav) => {
-    //     if (!fav.data()) {
-    //       db.collection("favouriteChannels")
-    //         .doc(result.additionalUserInfo.profile.id)
-    //         .set({
-    //           id: result.additionalUserInfo.profile.id,
-    //           channels: [],
-    //         });
-    //     }
-    // else {
-    //   if (fav.data().channels.length <= 0) {
-    //     db.collection("favouriteChannels")
-    //       .doc(result.additionalUserInfo.profile.id)
-    //       .set({
-    //         id: result.additionalUserInfo.profile.id,
-    //         channels: [],
-    //       })
-    //       .then((docRef) =>
-    //         console.log(
-    //           docRef,
-    //           ", ",
-    //           result.additionalUserInfo.profile.id
-    //         )
-    //       )
-    //       .catch((error) =>
-    //         console.error(
-    //           "Error adding user to Favourite Channels List"
-    //         )
-    //       );
-    //   }
-    // }
-    // })
-    // .catch((error) => console.error(error));
-    // .then((fav) => {
-    //   if (fav && fav.data().channels.length <= 0) {
-    //     db.collection("favouriteChannels")
-    //       .doc(result.additionalUserInfo.profile.id)
-    //       .set({
-    //         id: result.additionalUserInfo.profile.id,
-    //         channels: [],
-    //       })
-    //       .then((docRef) =>
-    //         console.log(
-    //           docRef,
-    //           ", ",
-    //           result.additionalUserInfo.profile.id
-    //         )
-    //       )
-    //       .catch((error) =>
-    //         console.error("Error adding user to Favourite Channels List")
-    //       );
-    //   }
-    // });
-
-    // building array of objects from firestore
-    // localDb(db);
-
-    // db.collection("users")
-    //   .doc(result.additionalUserInfo.profile.id)
-    //   .set({
-    //     name: result.additionalUserInfo.profile.name,
-    //     locale: result.additionalUserInfo.profile.locale,
-    //     id: result.additionalUserInfo.profile.id,
-    //     picture: result.additionalUserInfo.profile.picture,
-    //     channelId: "none",
-    //   })
-    //   .then((docRef) => console.log("User added with ID", docRef.id))
-    //   .catch((error) => console.error("Error adding User", error));
-    // })
-    // .catch((error) => {
-    //   alert(error.message);
-    // });
   };
 
   // login -> using google credential
@@ -219,6 +112,20 @@ function Login({
           type: actionTypes.SET_USER,
           user: result.additionalUserInfo.profile,
         });
+        db.collection("favouriteChannels")
+          .doc(result.additionalUserInfo.profile.id)
+          .get()
+          .then((fav) => {
+            if (!fav.data()) {
+              db.collection("favouriteChannels")
+                .doc(result.additionalUserInfo.profile.id)
+                .set({
+                  id: result.additionalUserInfo.profile.id,
+                  channels: [],
+                });
+            }
+          })
+          .catch((error) => console.error(error));
       })
       .catch((error) => {
         alert(error.message);

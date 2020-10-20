@@ -1,4 +1,4 @@
-import { auth, provider } from "../firebase";
+import db, { auth, provider } from "../firebase";
 
 const logout = () => {
   auth.signOut();
@@ -10,14 +10,18 @@ const login = (event, email, pass, setCookie, name) => {
   auth
     .signInWithEmailAndPassword(email, pass)
     .then((userRef) => {
+      const user = db.collection("users").doc(userRef.user.uid).get();
+      console.log(user);
       const userCookie = {
-        name,
-        email,
-        avatar: "nothing",
+        name: user.name,
+        email: user.email,
+        background: user.background,
+        color: user.color,
+        avatar: `https://ui-avatars.com/api/?name=${user.name}&background=${user.background}&color=${user.color}`,
         uid: userRef.user.uid,
       };
       setCookie("user", userCookie);
-      console.log("User logged in", userCookie, userRef);
+      console.log("User logged in", userCookie, userRef.user.uid);
     })
     .catch(function (error) {
       var errorCode = error.code;
@@ -39,10 +43,17 @@ const register = (event, email, password, name, setCookie) => {
       const userCookie = {
         name,
         email,
-        avatar: "nothing",
+        background: "0d8abc",
+        color: "fff",
+        avatar: `https://ui-avatars.com/api/?name=${name}&background=0d8abc&color=fff`,
         uid: userRef.user.uid,
       };
       setCookie("user", userCookie);
+      db.collection("users")
+        .doc(userRef.user.uid)
+        .set(userCookie)
+        .then((docRef) => console.log("User's added with id: ", docRef))
+        .catch((error) => console.log("Error in writing user", error));
       console.log("registered", email, userRef, userCookie);
     })
     .catch(function (error) {
