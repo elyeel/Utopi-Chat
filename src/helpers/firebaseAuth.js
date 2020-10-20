@@ -1,5 +1,11 @@
 import db, { auth, provider } from "../firebase";
 
+const randomColChannel = () => {
+  const col = Math.floor(Math.random() * 255).toString(16);
+  return col.length <= 1 ? `0${col}` : col;
+};
+const background = randomColChannel()+randomColChannel()+randomColChannel();
+
 const logout = () => {
   auth.signOut();
 };
@@ -25,19 +31,42 @@ const login = (event, email, pass, setCookie, name) => {
   auth
     .signInWithEmailAndPassword(email, pass)
     .then((userRef) => {
-      const user = db.collection("users").doc(userRef.user.uid).get();
-      console.log(user);
-      const userCookie = {
-        name: user.name,
-        email: user.email,
-        background: user.background,
-        color: user.color,
-        avatar: `https://ui-avatars.com/api/?name=${user.name}&background=${user.background}&color=${user.color}`,
-        id: userRef.user.uid,
-      };
-      setCookie("user", userCookie);
+      let userCookie = {};
+      db.collection("users")
+        .doc(userRef.user.uid)
+        .get()
+        .then((doc) => {
+          // if doc not exist then create the cookie and save to firebase
+          if (doc.exists) {
+            userCookie.name = doc.data().name;
+            userCookie.email = doc.data().email;
+            userCookie.background = doc.data().background;
+            userCookie.color = doc.data().color;
+            userCookie.avatar = doc.data().avatar;
+            userCookie.id = doc.data().id;
+          } else {
+            if (!name) name = prompt("Enter your name");
+            userCookie.name = name;
+            userCookie.email = email;
+            userCookie.background = background;
+            userCookie.color = "fff";
+            userCookie.avatar = `https://ui-avatars.com/api/?name=${name}&background=${background}&color=fff`;
+            userCookie.id = userRef.user.uid;
+            setCookie("user", userCookie);
+            db.collection("users")
+              .doc(userRef.user.uid)
+              .set(userCookie)
+              .then((docRef) => console.log("User's added with id: ", docRef))
+              .catch((error) => console.log("Error in writing user", error));
+            registerFavChannel(userRef.user.uid);
+          }
+        })
+        .then(() => {
+          setCookie("user", userCookie);
+          console.log("User logged in", userCookie, userRef.user.uid);
+        });
+
       registerFavChannel(userRef.user.uid);
-      console.log("User logged in", userCookie, userRef.user.uid);
     })
     .catch(function (error) {
       var errorCode = error.code;
@@ -56,12 +85,13 @@ const register = (event, email, password, name, setCookie) => {
   auth
     .createUserWithEmailAndPassword(email, password)
     .then((userRef) => {
+      // create random background and colour
       const userCookie = {
         name,
         email,
-        background: "0d8abc",
+        background,
         color: "fff",
-        avatar: `https://ui-avatars.com/api/?name=${name}&background=0d8abc&color=fff`,
+        avatar: `https://ui-avatars.com/api/?name=${name}&background=${background}&color=fff`,
         id: userRef.user.uid,
       };
       setCookie("user", userCookie);
