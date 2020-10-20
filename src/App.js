@@ -48,20 +48,24 @@ function App() {
   });
 
   const requestLogout = useCallback(() => {
-    if (currChannel) {
+    if (currChannel || cookies.channel) {
       db.collection("channelUsers")
-        .doc(currChannel)
+        .doc(currChannel ? currChannel : cookies.channel)
         .get()
         .then((doc) => {
           const arrUsers = doc.data().users;
           db.collection("channelUsers")
-            .doc(currChannel)
+            .doc(currChannel ? currChannel : cookies.channel)
             .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+        })
+        .then(() => {
+          logout();
+          removeCookie("user");
+          removeCookie("channel");
         });
     }
-    logout();
-    removeCookie("user");
-    removeCookie("channel");
+    // logout();
+
     dispatch({
       type: actionTypes.LOG_OUT,
       user: "",
