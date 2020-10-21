@@ -22,6 +22,7 @@ export default function useSidebarOption({
     if (id) {
       history.push(`/channel/${id}`);
       setCookie("channel", id);
+      // useEffect here?
       // check # of users online on this channel
       db.collection("channelUsers")
         .doc(id)
@@ -64,12 +65,12 @@ export default function useSidebarOption({
                 })
                 .then(() => {
                   // set current channel to current
-                  // console.log("got here");
+                  console.log("got here", id, currChannel);
                   return id;
                 });
               // return id;
             }
-            // console.log("id =", id);
+            console.log("id =", id, currChannel);
             return id;
           });
         })

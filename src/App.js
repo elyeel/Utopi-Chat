@@ -48,21 +48,27 @@ function App() {
   });
 
   const requestLogout = useCallback(() => {
-    if (currChannel || cookies.channel) {
+    console.log(currChannel, cookies.channel, cookies.user.id);
+    if (currChannel) {
       db.collection("channelUsers")
-        .doc(currChannel ? currChannel : cookies.channel)
+        .doc(currChannel)
         .get()
         .then((doc) => {
           const arrUsers = doc.data().users;
           db.collection("channelUsers")
-            .doc(currChannel ? currChannel : cookies.channel)
-            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) });
+            .doc(currChannel)
+            .update({ users: arrUsers.filter((e) => e !== cookies.user.id) })
+            .then(() => {
+              console.log(arrUsers);
+            });
         })
         .then(() => {
           logout();
           removeCookie("user");
           removeCookie("channel");
         });
+    } else {
+      console.log("Aneh");
     }
     // logout();
 
@@ -71,7 +77,7 @@ function App() {
       user: "",
     });
     console.log("User logged out!");
-  }, []);
+  }, [cookies.user, currChannel, cookies.channel, dispatch, removeCookie]);
 
   const requestRegister = useCallback((event, email, password, name) => {
     register(event, email, password, name, setCookie);
@@ -133,7 +139,7 @@ function App() {
               removeCookie={removeCookie}
               // user={user}
               // setUser={setUser}
-              onClick={requestLogout}
+              onClick={() => requestLogout()}
               currChannel={currChannel}
               db={db}
             />

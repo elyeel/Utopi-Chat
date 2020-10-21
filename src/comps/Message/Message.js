@@ -25,11 +25,11 @@ function Message({ message, timestamp, user, userImage }) {
             <div className="message-box">
               <p>{message}</p>
             </div>
-            {/* <TranslatedMessageModal
+            <TranslatedMessageModal
               isOpen={showTranslation}
               closeModal={() => setShowTranslation(false)}
               message={message}
-            /> */}
+            />
           </h4>
         </div>
       </div>

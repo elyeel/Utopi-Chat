@@ -66,9 +66,9 @@ function Chat({ cookies, currChannel }) {
       </div>
       <div id="chat__messages" className="chat__messages">
         {channelMessages &&
-          channelMessages.map(({ message, timestamp, user, userimage }) => (
+          channelMessages.map(({ message, timestamp, user, userimage, id }) => (
             <Message
-              // key={id}
+              key={id}
               message={message}
               timestamp={timestamp}
               user={user}

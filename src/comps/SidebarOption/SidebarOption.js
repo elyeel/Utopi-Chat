@@ -3,6 +3,7 @@ import "./SidebarOption.scss";
 import db from "../../firebase";
 import click from "./graceful.mp3";
 import useSidebarOption from "../hooks/sidebarOptHooks";
+import { cleanup } from "@testing-library/react";
 // import { useHistory } from "react-router-dom";
 
 function SidebarOption({
@@ -80,13 +81,17 @@ function SidebarOption({
     // let favChannel = false;
     if (id) {
       console.log("db readout");
-      db.collection("favouriteChannels")
+      const notifFavourite = db
+        .collection("favouriteChannels")
         .doc(cookies.user.id)
         .onSnapshot((snapsFav) => {
           setFavChannel(
             snapsFav.data().channels.some((channel) => channel === id)
           );
         });
+      return function cleanup() {
+        notifFavourite();
+      };
     }
   });
   useEffect(() => {

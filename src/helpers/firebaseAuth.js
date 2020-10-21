@@ -43,7 +43,7 @@ const login = (event, email, pass, setCookie, name) => {
             userCookie.background = doc.data().background;
             userCookie.color = doc.data().color;
             userCookie.avatar = doc.data().avatar;
-            userCookie.id = doc.data().id;
+            userCookie.id = userRef.user.uid;
           } else {
             if (!name) name = prompt("Enter your name");
             userCookie.name = name;
@@ -52,7 +52,7 @@ const login = (event, email, pass, setCookie, name) => {
             userCookie.color = "fff";
             userCookie.avatar = `https://ui-avatars.com/api/?name=${name}&background=${background}&color=fff`;
             userCookie.id = userRef.user.uid;
-            setCookie("user", userCookie);
+            // setCookie("user", userCookie);
             db.collection("users")
               .doc(userRef.user.uid)
               .set(userCookie)
