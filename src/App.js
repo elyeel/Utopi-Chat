@@ -47,7 +47,7 @@ function App() {
     login(event, email, password, setCookie, name);
   });
 
-  const requestLogout = useCallback(() => {
+  const requestLogout = () => {
     console.log(currChannel, cookies.channel, cookies.user.id);
     if (currChannel) {
       db.collection("channelUsers")
@@ -77,7 +77,7 @@ function App() {
       user: "",
     });
     console.log("User logged out!");
-  }, [cookies.user, currChannel, cookies.channel, dispatch, removeCookie]);
+  };//, [cookies.user, currChannel, cookies.channel, dispatch, removeCookie]);
 
   const requestRegister = useCallback((event, email, password, name) => {
     register(event, email, password, name, setCookie);
